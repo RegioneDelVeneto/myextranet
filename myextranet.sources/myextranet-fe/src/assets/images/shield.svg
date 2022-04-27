@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="77px" width="77px" >
+    <defs>
+        <style>.a,.h{fill:#4eab85;}.b,.f{fill:#fff;}.b{stroke:#7addb5;stroke-miterlimit:10;}.c{font-size:18px;font-family:TitilliumWeb-SemiBold, Titillium Web;font-weight:600;}.d{fill:#707070;font-family:TitilliumWeb-Regular, Titillium Web;}.d,.i{font-size:16px;}.e{fill:#7addb5;}.g{clip-path:url(#a);}.h{opacity:0.5;}.i,.j{fill:#095d70;}.i{font-family:TitilliumWeb-Bold, Titillium Web;font-weight:700;}.k{stroke:none;}.l{fill:none;}</style>
+        <clipPath id="a">
+            <rect class="a" width="37.466" height="76.635" />
+        </clipPath>
+    </defs>
+    <g >
+        <g >
+            <circle class="e" cx="38.317" cy="38.317" r="38.317" />
+            <path class="f" d="M179.663,70.346c-6.26-1.667-12.37-3.8-17.853-7.668a.506.506,0,0,0-.538,0c-5.55,3.878-11.671,5.985-17.941,7.679-.176.047-.321.161-.326.259-.005.057-.005.114-.005.171.124,4.147.217,8.3.394,12.447a25.278,25.278,0,0,0,4.52,13.571,32.657,32.657,0,0,0,13.317,11.044.937.937,0,0,0,.7-.031A33.676,33.676,0,0,0,173.119,99.4a26.82,26.82,0,0,0,6.622-17.48c.057-2.175.186-4.349.238-6.529.036-1.543.016-3.091.01-4.624a.469.469,0,0,0-.326-.425Z" transform="translate(-122.5 -46.789)" />
+            <g class="g" transform="translate(39.169 0)">
+                <path class="h" d="M37.653,0A37.653,37.653,0,1,1,0,37.653,37.653,37.653,0,0,1,37.653,0Z" transform="translate(-38.555 0.614)" />
+            </g>
+        </g>
+    </g>
+</svg>

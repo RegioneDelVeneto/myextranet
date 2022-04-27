@@ -1,0 +1,194 @@
+#
+#     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+#     Copyright (C) 2022  Regione Veneto
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU Affero General Public License as
+#     published by the Free Software Foundation, either version 3 of the
+#     License, or (at your option) any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU Affero General Public License for more details.
+#
+#     You should have received a copy of the GNU Affero General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+server:
+  port: 443
+  use-forward-headers: true
+  ssl:
+    enabled: true
+    key-store: "__YOUR_DATA__"
+    key-store-password: __YOUR_DATA__
+    key-alias: __YOUR_DATA__
+    key-password: __YOUR_DATA__
+  servlet:
+    context-path: "/"
+  error:
+    path: "/failure"
+cors:
+  enabled: false
+auth:
+  fake:
+    enabled: false
+static:
+  serve:
+    enabled: true
+    path: "/myextranet"
+saml:
+  proxy:
+    enabled: false
+    scheme: "https"
+    server-name: "YOUR_DATA"
+    server-port: 443
+    include-port: false
+    context-path: "/"
+  key-store: "__YOUR_DATA__"
+  key-store-password: "__YOUR_DATA__"
+  key-alias: "__YOUR_DATA__"
+  key-password: "__YOUR_DATA__"
+  app-base-url: "__YOUR_DATA__"
+  app-entity-id: "__YOUR_DATA__"
+  idp-metadata-url: "__YOUR_DATA__"
+  idp-metadata-https-cert: "__YOUR_DATA__"
+  app-metadata-file: "__YOUR_DATA__"
+  idp-selection-path: "/saml/idpSelection"
+  failure-url: "/failure"
+  logout-url: "/index.html"
+  entry:
+    logout: "/saml/logout/**"
+    metadata: "/saml/metadata/**"
+    login: "/saml/login/**"
+    SSO: "/saml/SSO/**"
+    SSOHoK: "/saml/SSOHoK/**"
+    SingleLogout: "/saml/SingleLogout/**"
+    discovery: "/saml/discovery/**"
+jwt:
+  secret: "__YOUR_DATA__"
+  validity:
+    seconds: 36000
+mychannel:
+  baseUrl: "__YOUR_DATA__"
+  addresses:
+    funzionarioCollaborazioni:
+      myConfigKeys:
+        emailAddress: ">params>myextranet>mychannel.addresses.funzionarioCollaborazioni.emailAddress"
+    responsabileProdotti:
+      myConfigKeys:
+        emailAddress: ">params>myextranet>mychannel.addresses.responsabileProdotti.emailAddress"
+  messages:
+    invioAttestato:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.invioAttestato.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.invioAttestato.emailBodyTemplateFile"
+    nuovoIscritto:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.nuovoIscritto.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.nuovoIscritto.emailBodyTemplateFile"
+    annullamentoIscritto:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.annullamentoIscritto.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.annullamentoIscritto.emailBodyTemplateFile"
+    richiestaQuestionario:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.richiestaQuestionario.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.richiestaQuestionario.emailBodyTemplateFile"
+    nuovoCollaboratore:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.nuovoCollaboratore.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.nuovoCollaboratore.emailBodyTemplateFile"
+    rifiutoCollaboratore:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.rifiutoCollaboratore.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.rifiutoCollaboratore.emailBodyTemplateFile"
+    cancellazioneCollaboratore:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.cancellazioneCollaboratore.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.cancellazioneCollaboratore.emailBodyTemplateFile"
+    richiestaCollaborazione:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.richiestaCollaborazione.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.richiestaCollaborazione.emailBodyTemplateFile"
+    nuovoRappresentante:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.nuovoRappresentante.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.nuovoRappresentante.emailBodyTemplateFile"
+    rifiutoRappresentante:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.rifiutoRappresentante.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.rifiutoRappresentante.emailBodyTemplateFile"
+    richiestaRappresentante:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.richiestaRappresentante.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.richiestaRappresentante.emailBodyTemplateFile"
+    stepRichiestaProdotto:
+      myConfigKeys:
+        emailTitle: ">params>myextranet>mychannel.messages.stepRichiestaProdotto.emailTitle"
+        emailBodyTemplateFile: ">params>myextranet>mychannel.messages.stepRichiestaProdotto.emailBodyTemplateFile"
+mybox:
+  bucket: "__YOUR_DATA__"
+  configPath : "mybox.properties"
+  download:
+    context: "/mybox/"
+myprofile : 
+  protocol : "http"
+  adminHost : "__YOUR_DATA__"
+  port : "__YOUR_DATA__"
+  baseContextAdmin : "/myprofile-server/admin"
+  baseContextApi : "/myprofile-server/api"
+  adminBaseUrl: "__YOUR_DATA__"
+  adminBaseUrlDev: "__YOUR_DATA__"
+  baseUrl: "__YOUR_DATA__"
+  devUrl : "__YOUR_DATA__"
+  application: "MyExtranet"
+myintranet:
+  baseUrl : "__YOUR_DATA__"
+  progress:
+    unitMultiplier: 820
+myportal :
+    ipa: "__YOUR_DATA__"
+    paginationWorkaround: true
+    devUrl : "__YOUR_DATA__"
+    baseUrl : "__YOUR_DATA__"
+    contentContext: ""
+    myConfigKeys:
+      eventDetailTemplate: ">params>myextranet>mychannel.messages.eventDetailTemplate"
+      productActivationRequestDetailTemplate: ">params>myextranet>mychannel.messages.productActivationRequestDetailTemplate"
+myconfig : 
+    baseUrl : "__YOUR_DATA__"    
+mysysconfig:
+  baseUrl : "__YOUR_DATA__"
+cache :
+  type: "standalone"
+  timeoutSeconds: 120
+  redisCommandTimeoutSeconds: 60
+  standalone:
+    redisHost: "__YOUR_DATA__"
+    redisPort: "__YOUR_DATA__"
+  sentinel:
+    master: "mymaster"
+    nodes: "__YOUR_DATA__"
+    masterPassword: "__YOUR_DATA__"
+   #sentinelPassword: "__YOUR_DATA__"
+    database-index: 0
+  cacheExpirations:
+    MyExtranet-UserRoles: 600
+    MyExtranet-UserValidity: 600
+    MyExtranet-ValidTokens: 36000
+cookie:
+  httpOnly: true
+springdoc:
+  swagger-ui:
+    enabled: true
+logstash:
+  host: __YOUR_DATA__
+  port: "__YOUR_DATA__"
+logging:
+  level:
+    org.springframework.web: DEBUG
+    it.regioneveneto.myp3: DEBUG
+    it.regioneveneto.myp3.myextranet: DEBUG
+  

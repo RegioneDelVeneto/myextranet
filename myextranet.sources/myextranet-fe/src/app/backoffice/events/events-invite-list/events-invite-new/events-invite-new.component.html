@@ -1,0 +1,30 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+  <div class="title-container mt-3 d-flex flex-row justify-content-between" *ngIf="!!event">
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title">  Nuovo invito all'evento {{ event.titolo }} </div>
+  </div>
+  <div *appLoading="isLoading">
+      <div class="form-container pt-5 pb-5 pl-5 pr-5">
+        <mrf-form class="morfeo" *ngIf="!!eventId" [form]="formJson" [config]="formSubmit"></mrf-form>
+      </div>
+  </div>
+</div>

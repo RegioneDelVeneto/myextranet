@@ -1,0 +1,222 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3 c-roles">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+  <div class="title-container mt-3 mt-3 d-flex flex-row justify-content-between">
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title">
+      Configurazione richiesta per: {{ product.nomeProdottoAttiv }}
+    </div>
+  </div>
+
+  <div *appLoading="isLoading">
+    <!-- FORM con i dati GENERALI : Tipo richista, Flg attivabile o no, descrizione breve, descrizione estesa -->
+    <div class="form-container p-5" *ngIf="!isError" [hidden]="showForm">
+      <div class="container row col-12">
+        <div class="data-form col-12">
+          <form [formGroup]="productRequestDetails">
+            <div class="row">
+              <mat-form-field class="form-field col-6" appearance="standard">
+                <mat-label> Tipo di richiesta </mat-label>
+
+                <mat-select formControlName="tipoRichiestaProdotto">
+                  <mat-option *ngFor="let tipo of tipiRichiesta" [value]="tipo.codTipoRich">{{
+                    tipo.desTipoRich
+                  }}</mat-option>
+                </mat-select>
+
+                <mat-error
+                  *ngIf="
+                    productRequestDetails.controls.tipoRichiestaProdotto.touched &&
+                    productRequestDetails.controls.tipoRichiestaProdotto.invalid
+                  "
+                >
+                  <span *ngIf="productRequestDetails.controls.tipoRichiestaProdotto.errors.required">
+                    Campo obbligatorio</span
+                  >
+                </mat-error>
+              </mat-form-field>
+              <div class="mat-form-field-wrapper col-6">
+                <div class="form-field mat-form-field-infix mat-form-field">
+                  <mat-checkbox formControlName="flgEnabled"> Richiesta abilitata </mat-checkbox>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <mat-form-field class="form-field col-12" appearance="standard">
+                <mat-label> Descrizione breve </mat-label>
+                <input matInput formControlName="desProdottoProc" required />
+                <mat-error
+                  *ngIf="
+                    productRequestDetails.controls.desProdottoProc.touched &&
+                    productRequestDetails.controls.desProdottoProc.invalid
+                  "
+                >
+                  <span *ngIf="productRequestDetails.controls.desProdottoProc.errors.required">
+                    Campo obbligatorio</span
+                  >
+                  <span *ngIf="productRequestDetails.controls.desProdottoProc.errors.maxlength">
+                    Il campo ha lunghezza massima di
+                    {{ productRequestDetails.controls.desProdottoProc.errors.maxlength.requiredLength }} caratteri
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field class="form-field col-12" appearance="standard">
+                <mat-label> Descrizione estesa </mat-label>
+                <textarea matInput formControlName="desProdottoProcEstesa" rows="5" required></textarea>
+                <mat-error
+                  *ngIf="
+                    productRequestDetails.controls.desProdottoProcEstesa.touched &&
+                    productRequestDetails.controls.desProdottoProcEstesa.invalid
+                  "
+                >
+                  <span *ngIf="productRequestDetails.controls.desProdottoProcEstesa.errors.required">
+                    Campo obbligatorio</span
+                  >
+                  <span *ngIf="productRequestDetails.controls.desProdottoProcEstesa.errors.maxlength">
+                    Il campo ha lunghezza massima di
+                    {{ productRequestDetails.controls.desProdottoProcEstesa.errors.maxlength.requiredLength }} caratteri
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabella con gli step, simile a quella di gestione utente. Footer con "nuovo step" e possibilità di spostare l'ordine -->
+    <div *ngIf="!isError">
+      <div [hidden]="!showForm">
+        <div class="form-container p-5">
+          <div class="container row col-12">
+            <div class="data-form col-12">
+              <form [formGroup]="productRequestStep">
+                <div class="row">
+                  <mat-form-field class="form-field col-12" appearance="standard">
+                    <mat-label> Codice stato </mat-label>
+                    <input matInput formControlName="codStato" required />
+                    <mat-error
+                      *ngIf="
+                        productRequestStep.controls.codStato.touched && productRequestStep.controls.codStato.invalid
+                      "
+                    >
+                      <span *ngIf="productRequestStep.controls.codStato.errors.required"> Campo obbligatorio</span>                      
+                      <span *ngIf="productRequestStep.controls.codStato.errors.maxlength">
+                        Il campo ha lunghezza massima di
+                        {{ productRequestStep.controls.codStato.errors.maxlength.requiredLength }} caratteri
+                      </span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="form-field col-12" appearance="standard">
+                    <mat-label> Descrizione stato </mat-label>
+                    <textarea matInput formControlName="desStato" rows="5"></textarea>
+                    <mat-error
+                      *ngIf="
+                        productRequestStep.controls.desStato.touched && productRequestStep.controls.desStato.invalid
+                      "
+                    >
+                      <span *ngIf="productRequestStep.controls.desStato.errors.required"> Campo obbligatorio</span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="row">
+                  <mat-form-field class="form-field col-6" appearance="standard">
+                    <mat-label>Competenza </mat-label>
+
+                    <mat-select formControlName="competenza">
+                      <mat-option *ngFor="let competenza of competenze" [value]="competenza.value">{{
+                        competenza.label
+                      }}</mat-option>
+                    </mat-select>
+
+                    <mat-error
+                      *ngIf="
+                        productRequestStep.controls.competenza.touched && productRequestStep.controls.competenza.invalid
+                      "
+                    >
+                      <span *ngIf="productRequestStep.controls.competenza.errors.required"> Campo obbligatorio</span>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="form-field col-6" appearance="standard">
+                    <mat-label>Stato della richiesta per questo STEP </mat-label>
+
+                    <mat-select formControlName="flgFineRich">
+                      <mat-option *ngFor="let statoRic of statiRichiesta" [value]="statoRic.value">{{
+                        statoRic.label
+                      }}</mat-option>
+                    </mat-select>
+
+                    <mat-error
+                      *ngIf="
+                        productRequestStep.controls.flgFineRich.touched &&
+                        productRequestStep.controls.flgFineRich.invalid
+                      "
+                    >
+                      <span *ngIf="productRequestStep.controls.flgFineRich.errors.required"> Campo obbligatorio</span>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </form>
+              <div class="row p-3">
+                <div clas="buttons-c">
+                  <button class="mr-2" (click)="back()" mat-stroked-button color="primary" type="button">
+                    ANNULLA
+                  </button>
+                  <button
+                    [disabled]="productRequestStep.invalid"
+                    (click)="save()"
+                    mat-flat-button
+                    color="primary"
+                    type="button"
+                  >
+                    {{ isEditing ? "MODIFICA" : "AGGIUNGI" }}
+                  </button>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- FORM CON I DATI DELLO STEP ... va al posto di tutto? solo della tabella? da vedere-->
+
+      <div class="table-c" [hidden]="showForm">
+        <app-card-table-container
+          [footer]="footer"
+          (toolBarEvent)="manageEvent($event)"
+          [configuration]="null"
+          [displayedColumns]="tableHeader"
+          [dataSource]="{ data: stepDataSource, preselectedRows: null }"
+        >
+        </app-card-table-container>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toolbar-bottom d-flex flex-column justify-content-center" *ngIf="!showForm && !isError">
+  <div class="pl-5">
+    <button class="mr-2" (click)="undo()" mat-stroked-button color="primary" type="button">ANNULLA</button>
+    <button class="mr-2" (click)="undo(false)" mat-stroked-button color="primary" type="button">RIPRISTINA</button>
+    <button (click)="postToDb()" mat-flat-button color="primary" type="button">SALVA</button>
+  </div>
+</div>

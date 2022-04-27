@@ -1,0 +1,211 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading"></div>
+<div *appLoading="isFirstLoading">
+  <div class="container mt-3 mb-3" *ngIf="isErrorLoading">
+    <app-alert-in-page-fo
+      *ngIf="isErrorLoading"
+      [type]="3"
+      [title]="'Attenzione'"
+      [msg]="mainErrorMsg"
+      [template]=" showGoBackLink ? templateError : null"
+    >
+    <ng-template #templateError>
+      <div *ngIf="showGoBackLink">
+        <a class="link"
+        [routerLink]="['/utente/prodotti/gestione']"
+        [queryParams]="{ idEnte : idEnte,  idRappr : idRappr}"
+        routerLinkActive="router-link-active">
+          Torna alla gestione dei prodotti
+        </a>
+      </div>
+    </ng-template>
+    </app-alert-in-page-fo>
+  </div>
+  <div class="container mt-3 mb-3" *ngIf="!isErrorLoading">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-2">
+      <div class="h1">{{ activableProduct?.nomeProdottoAttiv }}</div>
+    </div>
+    <!-- MSG DI SUCESSO ERRORE O AVVISO GENERICI -->
+    <div class="allerts-notes">
+      <div class="msg-container">
+        <app-alert-in-page-fo
+          *ngIf="isError"
+          [type]="3"
+          [title]="errorTitle || 'Attenzione'"
+          [msg]="errorMsg || 'Errore durante la risoluzione della richiesta'"
+        >        
+        </app-alert-in-page-fo>
+        
+        <app-alert-in-page-fo
+          *ngIf="isSuccess"
+          [type]="1"
+          [title]="successTitle || 'Operazione avenuta con sucesso'"
+          [msg]="successMsg || null"
+        >
+        </app-alert-in-page-fo>
+        <app-alert-in-page-fo *ngIf="isWarning" [type]="2" [title]="warningTitle || ''" [msg]="warningMsg || null">
+        </app-alert-in-page-fo>
+      </div>
+      <div class="notes-container">
+        <app-alert-in-page-fo
+          *ngIf="showNotes"
+          [type]="notesType"
+          [title]="null"
+          [msg]="null"
+          [template]="templateNote"
+          [bottomTemplate]="bottomTemplate"
+        >
+          <ng-template #templateNote>
+            <div [ngSwitch]="status">
+              <div *ngSwitchCase="0">
+                <p>
+                  Questo prodotto è:
+                  <span class="font-weight-bold">{{ isProductActive ? "ATTIVO" : "DA ATTIVARE" }}</span>
+                </p>
+                <p>
+                  Per il seguente ente: <span class="font-weight-bold"> {{ ente.denominazione || null }}</span>
+                </p>
+              </div>
+              <div *ngSwitchCase="1">
+                <p>
+                  Questo prodotto è:
+                  <span class="font-weight-bold">{{ isProductActive ? "ATTIVO" : "IN FASE DI ATTIVAZIONE" }}</span>
+                </p>
+                <p>
+                  Per il seguente ente: <span class="font-weight-bold"> {{ ente.denominazione || null }}</span>
+                </p>
+              </div>
+              <div *ngSwitchCase="2">
+                <p>Questo prodotto è: <span class="font-weight-bold">ATTIVO</span></p>
+                <p>
+                  Per il seguente ente: <span class="font-weight-bold"> {{ ente.denominazione || null }}</span>
+                </p>
+              </div>
+              <div *ngSwitchCase="3">
+                <p>Questo prodotto è: <span class="font-weight-bold">DISATTIVATO</span></p>
+                <p>
+                  Per il seguente ente: <span class="font-weight-bold"> {{ ente.denominazione || null }}</span>
+                </p>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template #bottomTemplate>
+            <div class="p-3 bottom-box mt-3" *ngIf="status !== 2 && status !== 3">
+              <div class="d-flex justify-content-between">
+                <p>
+                  E’ in corso una richiesta di <span class="font-weight-bold">{{ richDesProdottoProc }}</span> in stato: <span class="font-weight-bold">{{ richStatus }} </span>
+                </p>
+                <button
+                  *ngIf="isAssignedToTenant && status !== 0"
+                  class="mr-2"
+                  (click)="manageToolBarEvent('undo')"
+                  mat-stroked-button
+                  color="accent"
+                  type="button"
+                >
+                  ANNULLA RICHIESTA
+                </button>
+              </div>              
+
+              <p>
+                La richiesta è in carico a : <span class="font-weight-bold"> {{ richAssignedTo }}</span>
+              </p>
+              <p>Indicazioni sull'attuale stato della richiesta: {{ richDesStep }}</p>
+              <p *ngIf="!!ultimeNote">
+                <span class="font-weight-bold"> Ultime note :</span>
+              </p>
+              <div>
+                <p *ngIf="!!ultimeNote">
+                  <span class="font-italic">{{ ultimeNote }}</span>
+                </p>
+              </div>
+            </div>
+          </ng-template>
+        </app-alert-in-page-fo>
+      </div>
+    </div>
+    <div class="logo-description d-flex flex-row" *ngIf="!!productCMS">
+      <div class="logo-c mr-3">
+        <img class="generic-card-image" [src]="logoSrc" alt="{{ 'immagine di ' + productCMS?.titolo }}" />
+      </div>
+      <div class="cms-description-link">
+        <div class="inner-html" [innerHTML]="productCMS?.descrizione"></div>
+        <div class="link-c"></div>
+      </div>
+    </div>
+    <div class="col-12 mt-5 p-0">
+      <app-product-request-step-management
+        #productRequestStepManagement
+        [status]="status"
+        [isRo]="isRo"
+        [isFo]="true"
+        [documentsDs]="documentsDs"
+        [documentOperations]="documentOperations"
+        [utentiRuoliArray]="utentiRuoliArray"
+        (showSaveBar)="showSaveBar($event)"
+      >
+      </app-product-request-step-management>
+      <div class="mt-3 box-green mb-5" *ngIf="status === 2 || status === 3">
+        <div class="p-3">
+          <div class="h3">Disattiva prodotto</div>
+          <div class="m-2">
+            <p class="mt-2 mb-3">Seleziona la data di disattivazione del prodotto e conferma con il tasto disattiva.</p>
+            <div class="row">
+              <mat-form-field class="form-field col-3" appearance="outline">
+                <mat-label> Data disattivazione </mat-label>
+                <input matInput [matDatepicker]="pickerDtFineVal" [formControl]="disableProductControl" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDtFineVal"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDtFineVal></mat-datepicker>
+                <mat-error *ngIf="disableProductControl.touched && disableProductControl.invalid">
+                  <span *ngIf="disableProductControl.errors.required"> Campo obbligatorio</span>
+                </mat-error>
+              </mat-form-field>
+              <div class="p-1 col-2">
+                <button
+                  *ngIf="status === 2"
+                  class="ml-2 btn-h"
+                  [disabled]="disableProductControl?.invalid"
+                  mat-stroked-button
+                  color="warn"
+                  type="button"
+                  (click)="updateEndOfCal()"
+                  aria-label="aggiorna data di fine validita' del prodotto"
+                >
+                  <span class="pl-2 pr-2">DISATTIVA</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar-bottom d-flex flex-column justify-content-center" *ngIf="showSave && isAssignedToTenant">
+    <app-request-toolbar
+      [isFo]="true"
+      [configuration]="{ status: status, valid: true, step: step }"
+      (sendEventTofather)="manageToolBarEvent($event)"
+    >
+    </app-request-toolbar>
+  </div>
+</div>

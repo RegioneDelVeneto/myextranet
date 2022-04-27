@@ -1,0 +1,32 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *ngFor="let ruolo of utentiRuoliExtended; let i = index">
+  <div class="mt-4 mb-2" *ngIf="showOnly === null || showOnly === undefined || showOnly === i">
+    <app-user-manage-table
+      [isRo]="isRo"
+      [isFo]="isFo"
+      [utenteRuolo]="ruolo"
+      [arrayIdx]="i"
+      (showOnlyThis)="showOnlyThis($event)"
+      (operationEventEmitter)="manageOperation($event)"
+    >
+    </app-user-manage-table>
+  </div>
+</div>

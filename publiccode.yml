@@ -1,0 +1,104 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+categories:
+  - it-management
+  - collaboration
+description:
+  it:
+    features:
+      - 'Ricerca, elenco utenti che si sono registrati all''area privati'
+      - 'Ricerca, elenco, dettaglio degli enti gestiti'
+      - 'Ricerca, elenco degli eventi pubblicati nel portale pubblico'
+      - Gestione degli iscritti all'evento
+      - 'Ricerca, elenco dei progetti pubblicati nel portale pubblico'
+      - Gestione dei collaboratori al progetto
+      - Ricerca ed elenco dei prodotti attivabili
+      - Configurazione del prodotto attivabile
+      - Ricerca ed elenco dei prodotti attivati
+      - Gestione degli utenti e delle richieste sui prodotti
+      - Ricerca ed elenco dei Rappresentanti Attivazione dei Prodotti
+      - Gestione della conferma  dei Rappresentanti Attivazione dei Prodotti
+    genericName: Product & Event Manager
+    longDescription: |2
+        MyExtranet è la soluzione attraverso la quale un ente rende disponibili tutte le informazioni  sui propri:
+
+      - Piattaforme abilitanti
+
+      - Prodotti
+
+      - Servizi
+
+      - Progetti
+
+      - Eventi
+
+      - Linee guida
+
+
+      MyExtranet si rivolge quindi a tutta la platea degli utenti che devono e
+
+      vogliono utilizzare e collaborare con l’ente sia su eventi e progetti
+
+      promossi sia sui prodotti offerti.
+
+
+      A fronte della consultazione dei contenuti nel portale pubblico
+
+      (pubblicati tramite il modulo MyCMS di MyPortal) l'utente ha la
+
+      possibilità di:
+
+
+      - iscriversi ad un evento
+
+      - collaborare ad un progetto
+
+      - attivare un prodotto
+
+
+      Tramite il portale di back-office gli utenti amministratori hanno la
+
+
+      possibilità di gestire il ciclo di vita di eventi, progetti e prodotti.
+
+      ​
+    shortDescription: 'MyExtranet, Impara, partecipa e collabora'
+developmentStatus: beta
+it:
+  conforme:
+    gdpr: true
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: true
+    modelloInteroperabilita: false
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+  riuso:
+    codiceIPA: r_veneto
+legal:
+  license: AGPL-3.0-or-later
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: false
+maintenance:
+  contacts:
+    - email: antonino.mola@regione.veneto.it
+      name: Antonino Mola
+  contractors:
+    - name: SPAC Community
+      until: '2024-04-30'
+  type: contract
+name: MyExtranet
+platforms:
+  - web
+  - linux
+releaseDate: '2022-03-01'
+softwareType: standalone/backend
+url: 'https://github.com/RegioneDelVeneto/myextranet.git'

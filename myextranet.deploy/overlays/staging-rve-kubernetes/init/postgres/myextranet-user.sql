@@ -1,0 +1,2 @@
+-- -- CREATE USER evecal
+CREATE USER myextranet WITH PASSWORD '__YOUR_DATA__';

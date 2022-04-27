@@ -1,0 +1,321 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-2">
+      <div class="h1">{{ denominazioneInput }}</div>
+    </div>
+    <div class="col-12 mt-5 p-0">
+      <div class="title mt-2">
+        <div class="h4">DATI DELL'ENTE</div>
+      </div>
+      <div class="form-container mt-3 pt-2 pb-2">
+        <div class="">
+          <div class="data-form" *ngIf="!!tenantDataForm">
+            <form [formGroup]="tenantDataForm" (ngSubmit)="(tenantDataForm.invalid || isRo)? null : sendData()">
+              <div class="row">                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Codice IPA </mat-label>
+                  <input matInput formControlName="codIpa" required />
+                  <mat-error *ngIf="tenantDataForm.controls.codIpa.touched && tenantDataForm.controls.codIpa.invalid">
+                    <span *ngIf="tenantDataForm.controls.codIpa.errors.required"> Campo obbligatorio</span>                    
+                    <span *ngIf="tenantDataForm.controls.codIpa.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.codIpa.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> categoria </mat-label>                  
+                  <mat-select formControlName="categoria">
+                    <mat-option *ngFor="let categoria of categorieEnte" [value]="categoria.idCategoria">{{
+                      categoria.desCategoria
+                    }}</mat-option>
+                  </mat-select>
+
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.categoria.touched && tenantDataForm.controls.categoria.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.categoria.errors.required"> Campo obbligatorio</span>                    
+                  </mat-error>
+                </mat-form-field>                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Denominazione </mat-label>
+                  <input matInput formControlName="denominazione" required />
+                  <mat-error
+                    *ngIf="
+                      tenantDataForm.controls.denominazione.touched && tenantDataForm.controls.denominazione.invalid
+                    "
+                  >
+                    <span *ngIf="tenantDataForm.controls.denominazione.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.denominazione.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.denominazione.errors.maxlength.requiredLength}} caratteri
+                  </span>                    
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Indirizzo PEC </mat-label>
+                  <input matInput formControlName="pec" required />
+                  <mat-error *ngIf="tenantDataForm.controls.pec.touched && tenantDataForm.controls.pec.invalid">
+                    <span *ngIf="tenantDataForm.controls.pec.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.pec.errors.pattern"> La pec inserita non è valida</span>
+                    <span *ngIf="tenantDataForm.controls.pec.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.pec.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Indirizzo email </mat-label>
+                  <input matInput formControlName="email" required />
+                  <mat-error *ngIf="tenantDataForm.controls.email.touched && tenantDataForm.controls.email.invalid">
+                    <span *ngIf="tenantDataForm.controls.email.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.email.errors.pattern"> La mail inserita non è valida</span>
+                    <span *ngIf="tenantDataForm.controls.email.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.email.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Codice Fiscale o P.Iva</mat-label>
+                  <input matInput formControlName="codFiscale" required />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.codFiscale.touched && tenantDataForm.controls.codFiscale.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.codFiscale.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.codFiscale.errors.pattern"> Il codice fiscale inserito non è valido</span>
+                    <span *ngIf="tenantDataForm.controls.codFiscale.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.codFiscale.errors.maxlength.requiredLength}} caratteri
+                  </span>                    
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">                
+
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Comune della sede</mat-label>
+                  <input aria-label="Comune" matInput formControlName="codComune" required [matAutocomplete]="auto" />
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDenomination.bind(this)">
+                    <mat-option *ngFor="let comune of comuniArray" [value]="comune">
+                      {{ comune.desComune }} ({{ comune.provincia.codProvincia }})
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.codComune.touched && tenantDataForm.controls.codComune.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.codComune.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.codComune.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.codComune.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Indirizzo della sede </mat-label>
+                  <input matInput formControlName="indirizzo" required />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.indirizzo.touched && tenantDataForm.controls.indirizzo.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.indirizzo.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.indirizzo.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.indirizzo.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> CAP della sede</mat-label>
+                  <input matInput formControlName="cap" required />
+                  <mat-error *ngIf="tenantDataForm.controls.cap.touched && tenantDataForm.controls.cap.invalid">
+                    <span *ngIf="tenantDataForm.controls.cap.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.cap.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.cap.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  <span *ngIf="tenantDataForm.controls.codComune.errors.minLength"> 
+                    Il campo ha lunghezza massima di {{tenantDataForm.controls.cap.errors.minLength.requiredLength}} caratteri
+                </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Telefono </mat-label>
+                  <input matInput formControlName="telefono" />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.telefono.touched && tenantDataForm.controls.telefono.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.telefono.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.telefono.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.telefono.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Fax </mat-label>
+                  <input matInput formControlName="fax" />
+                  <mat-error *ngIf="tenantDataForm.controls.fax.touched && tenantDataForm.controls.fax.invalid">
+                    <span *ngIf="tenantDataForm.controls.fax.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.fax.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.fax.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> URL Sito Web </mat-label>
+                  <input matInput formControlName="urlWebSite" />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.urlWebSite.touched && tenantDataForm.controls.urlWebSite.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.urlWebSite.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.urlWebSite.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.urlWebSite.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Pagina Facebook ufficiale </mat-label>
+                  <input matInput formControlName="urlFacebook" />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.urlFacebook.touched && tenantDataForm.controls.urlFacebook.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.urlFacebook.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.urlFacebook.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.urlFacebook.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Pagina Instagram ufficiale</mat-label>
+                  <input matInput formControlName="urlInstagram" />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.urlInstagram.touched && tenantDataForm.controls.urlInstagram.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.urlInstagram.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.urlInstagram.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.urlInstagram.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Pagina Twitter ufficiale</mat-label>
+                  <input matInput formControlName="urlTwitter" />
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.urlTwitter.touched && tenantDataForm.controls.urlTwitter.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.urlTwitter.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="tenantDataForm.controls.urlTwitter.errors.maxlength"> 
+                      Il campo ha lunghezza massima di {{tenantDataForm.controls.urlTwitter.errors.maxlength.requiredLength}} caratteri
+                  </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="row" [hidden]="!isEdit">                
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Data di inizio validità </mat-label>
+                  <input matInput [matDatepicker]="pickerDtInizioVal" formControlName="dtInizioVal" />
+                  <mat-datepicker-toggle matSuffix [for]="pickerDtInizioVal"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerDtInizioVal></mat-datepicker>
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.dtInizioVal.touched && tenantDataForm.controls.dtInizioVal.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.dtInizioVal.errors.required"> Campo obbligatorio</span>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field col-12 col-lg-4" appearance="outline">
+                  <mat-label> Data di fine validità </mat-label>
+                  <input matInput [matDatepicker]="pickerDtFineVal" formControlName="dtFineVal" />
+                  <mat-datepicker-toggle matSuffix [for]="pickerDtFineVal"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerDtFineVal></mat-datepicker>
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.dtFineVal.touched && tenantDataForm.controls.dtFineVal.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.dtFineVal.errors.required"> Campo obbligatorio</span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+               </div>
+              <div class="row d-flex flex-row justify-content-between">
+                <mat-form-field class="form-field col-6 col-md-8 col-lg-9 col-xl-10" appearance="outline">
+                  <mat-label> Logo dell'ente </mat-label>
+                  <input matInput formControlName="fileNameRO" required/>
+                  <mat-error
+                    *ngIf="tenantDataForm.controls.fileLogoName.touched && tenantDataForm.controls.fileLogoName.invalid"
+                  >
+                    <span *ngIf="tenantDataForm.controls.fileLogoName.errors.required"> Campo obbligatorio</span>
+                  </mat-error>
+                </mat-form-field>
+                <div class="mat-form-field-wrapper d-flex flex-column justify-content-around pr-15">
+                  <app-file-upload
+                    [isReadOnly]="isRo"
+                    [showPreview]="false"
+                    [isFo]="true"
+                    [downloadId]="!!downloadLink ? downloadLink : null"
+                    [downloadOn]="true"
+                    [hideLabel]="true"
+                    formControlName="fileLogoName"
+                    (fileUpload) = "updateFileSrc($event)"
+                  >
+                  </app-file-upload>
+                </div>
+              </div>
+              <div class="row">
+                <div
+                  class="preview-c row col-12 container mb-3 mt-3 p-5"
+                  *ngIf="(!!imgSrc)"
+                >
+                  <img
+                    class="preview-image"
+                    id="image-preview"
+                    [src]="imgSrc || null"
+                    [alt]="'Anteprima immagine caricata come logo per il Comune di' +denominazioneInput"
+                  />
+                </div>
+              </div>
+              <div class="bottom-ac mt-3 mb-3">
+                <button mat-stroked-button color="accent" class="mr-3" type="button" (click)="undo()" (keyup.enter)="undo()">
+                  ANNULLA
+                </button>
+                <button
+                  [disabled]="tenantDataForm.invalid || isRo"
+                  mat-flat-button
+                  color="accent"
+                  type="submit"
+                >                  
+                  SALVA
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

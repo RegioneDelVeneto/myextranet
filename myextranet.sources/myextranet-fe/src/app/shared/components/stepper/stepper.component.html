@@ -1,0 +1,88 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+ 
+  <div class="bottom-box">
+    <mat-horizontal-stepper
+      [linear]="true"
+      [selectedIndex]="0"
+      labelPosition="bottom"
+      #stepper
+    >
+      <mat-step [hasError]="true" [editable]="false" [stepControl]="fakeform">
+        <ng-template matStepLabel>IN INSERIMENTO</ng-template>
+      </mat-step>
+      <mat-step [hasError]="true" [editable]="false" [stepControl]="fakeform">
+        <ng-template matStepLabel>IN VERIFICA</ng-template>
+      </mat-step>
+      <mat-step [hasError]="true" [editable]="false" [stepControl]="fakeform">
+        <ng-template matStepLabel>IN INSTALLAZIONE</ng-template>
+      </mat-step>
+      <mat-step [hasError]="true" [editable]="false" [stepControl]="fakeform">
+        <ng-template matStepLabel>IN POPOLAMENTO</ng-template>
+      </mat-step>
+      <mat-step
+        [hasError]="true"
+        [editable]="false"
+        [stepControl]="fakeform"
+        state="more"
+      >
+        <ng-template matStepLabel> </ng-template>
+      </mat-step>
+  
+      <mat-step
+        [hasError]="true"
+        [editable]="false"
+        [stepControl]="fakeform"
+        state="end"
+      >
+        <ng-template matStepLabel>CONCLUSA</ng-template>
+      </mat-step>
+      <ng-template matStepperIcon="more">
+        <mat-icon>more_horiz</mat-icon>
+      </ng-template>
+      <ng-template matStepperIcon="1">
+        1
+      </ng-template>
+      <ng-template matStepperIcon="2">
+        2
+      </ng-template>
+      <ng-template matStepperIcon="3">
+        3
+      </ng-template>
+      <ng-template matStepperIcon="4">
+        4
+      </ng-template>
+      <ng-template matStepperIcon="5">
+        5
+      </ng-template>
+      <ng-template matStepperIcon="6">
+        6
+      </ng-template>
+      <ng-template matStepperIcon="7">
+        7
+      </ng-template>
+      <ng-template matStepperIcon="8">
+        8
+      </ng-template>
+  
+      <ng-template matStepperIcon="end"> F </ng-template>
+    </mat-horizontal-stepper>
+  </div>
+  

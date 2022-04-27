@@ -1,0 +1,82 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3">
+    
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+  <div class="title-container mt-3 d-flex flex-row justify-content-between">
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title"> Lista configurazioni richieste</div>
+    <div class="actions" *ngIf="!!productId">
+      <button
+        *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['gestisci'] }"
+        class="button"
+        mat-raised-button
+        [routerLink]="['/backoffice/activable-products/requests-list/request-configuration']"
+        [queryParams]="{ productId: productId }"
+        routerLinkActive="router-link-active"
+      >
+        NUOVA RICHIESTA
+      </button>
+    </div>
+  </div>
+  <div class="card-c" *ngIf="!!product">
+    <mat-card class="requests-card mb-3">
+      <div class="flex-sm-column flex-lg-row list-card-header-actions">
+        <div>
+          <mat-card-header>
+            <div mat-card-avatar class="list-card-header">
+              <mat-icon aria-label="Icona decorativa richieste del prodotto" class="big-icon"> view_quilt </mat-icon>
+            </div>
+            <mat-card-title> Configurazioni richieste del prodotto attivabile: {{ product.nomeProdottoAttiv }}</mat-card-title>
+            <mat-card-subtitle class="subtitle-c"> {{ product.desAttivazioneBreve }} </mat-card-subtitle>
+          </mat-card-header>
+        </div>
+        
+      </div>
+
+      
+
+    </mat-card>
+  </div>
+  
+
+  <div *appLoading="isLoading">
+    <app-card-table-container
+      (toolBarEvent)="manageEvent($event)"
+      [configuration]="null"
+      [displayedColumns]="tableHeader"
+      (sortEvent)="manageSort($event)"
+      [dataSource]="{
+        data: productsDataSource,
+        preselectedRows: null,
+        sortField: { active: sortBy, direction: sortOrder }
+      }"
+    >
+    </app-card-table-container>
+    <mat-paginator
+      [length]="length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="updatePaginator($event)"
+    >
+    </mat-paginator>
+  </div>
+  
+</div>

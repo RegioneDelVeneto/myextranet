@@ -1,0 +1,58 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<mat-card class="generic-card">
+  <mat-card-header
+    routerLinkActive="router-link-active"
+    [routerLink]="[data.routerLink]"
+    [queryParams]="data.queryParams"
+    (keyup.enter)="navigateToRoute(data?.routerLink, data.queryParams)"
+    (keyup.Space)="navigateToRoute(data?.routerLink, data.queryParams)"
+  >
+    <div *ngIf="data.icon" mat-card-avatar class="generic-header-image">
+      <mat-icon [ngClass]="'icon-type-' + data.icon" class="icon-vertical-big" attr.aria-label="{{ data.titolo }}">
+        {{ data.icon }}
+      </mat-icon>
+    </div>
+    <mat-card-title class="mat-title-card text-cut-2"> {{ data.titolo }}</mat-card-title>
+    <!-- <mat-card-subtitle class="text-cut-1"> {{ data.subtitle }}</mat-card-subtitle> -->
+  </mat-card-header>
+  <img
+    [routerLink]="[data.routerLink]"
+    (keyup.enter)="navigateToRoute(data?.routerLink, data.queryParams)"
+    (keyup.Space)="navigateToRoute(data?.routerLink, data.queryParams)"
+    [queryParams]="data.queryParams"
+    routerLinkActive="router-link-active"
+    class="generic-card-image"
+    mat-card-image
+    [src]="data.card"
+    alt="{{ 'immagine di ' + data.title }}"
+  />
+  <mat-card-content>
+    <div class="text-cut-2 padding-detail" [innerHtml]="data.body"></div>
+  </mat-card-content>
+  <mat-card-actions *ngIf="!!data.data">
+    <span class="date-r mr-2">
+      <mat-icon attr.aria-label="icona decorativa: {{ data.data }}" class="icon-vertical mr-2">
+        {{ data.miniIcon }}
+      </mat-icon>
+      <span> {{ data.data | date: "dd/MM/y HH:mm" }} </span></span
+    >
+  </mat-card-actions>
+</mat-card>

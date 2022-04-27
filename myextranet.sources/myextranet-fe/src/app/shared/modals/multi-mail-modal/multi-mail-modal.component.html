@@ -1,0 +1,109 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container" *ngIf="!!data">
+  <div class="d-flex justify-content-between title-container">
+    <div mat-dialog-title class="h1 title">{{ data.title }}</div>
+    <button tabindex="-1"  mat-dialog-close class="ml-4 modal-close-c" attr.aria-label="Chiudi la Modale {{data.title}}">
+      <mat-icon role="presentation"> clear</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <p>{{ data.description }}</p>
+    <div class="mt-3">
+      <button
+        mat-stroked-button
+        type="button"
+        color="primary"
+        aria-label="Example icon button with a delete icon"
+        (click)="addAddress()"
+      >
+        <mat-icon>add</mat-icon> Aggiungi destinatario
+      </button>
+      <form [formGroup]="mailForm">
+        <div class="row d-flex justify-content-between" *ngFor="let control of indirizzi; let i = index">
+          <mat-form-field class="form-field col-8" appearance="standard">
+            <mat-label> Indirizzo email destinatario n. {{ i+1 }}</mat-label>
+            <input matInput [formControl]="control" required />
+            <mat-error *ngIf="control.touched && control.invalid">
+              <span *ngIf="control.errors.required"> Campo obbligatorio</span>
+              <span *ngIf="control.errors.pattern"> Indirizzo mail non valido</span>
+              <span *ngIf="control.errors.maxlength"> 
+                Il campo ha lunghezza massima di {{control.errors.maxlength.requiredLength}} caratteri
+            </span>
+            </mat-error>
+          </mat-form-field>
+          <div>
+            <button
+              type="button"
+              mat-fab
+              color="primary"
+              aria-label="Delete action button with a delete icon"
+              (click)="removeAddress(i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="form-field mat-form-field-infix mat-form-field">
+          <mat-checkbox formControlName="flgAllegaUtentiRich"> Allega elenco utenti richiesta alla email </mat-checkbox>
+        </div>
+        <div class="row">
+          <mat-form-field class="form-field col-12" appearance="standard">
+            <mat-label> Oggetto </mat-label>
+            <input matInput formControlName="oggetto" required />
+            <mat-error *ngIf="mailForm.controls.oggetto.touched && mailForm.controls.oggetto.invalid">
+              <span *ngIf="mailForm.controls.oggetto.errors.required"> Campo obbligatorio</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="form-field col-12" appearance="standard">
+            <mat-label> Messaggio </mat-label>
+            <textarea matInput formControlName="messaggio" required rows="5"> </textarea>
+            <mat-error *ngIf="mailForm.controls.messaggio.touched && mailForm.controls.messaggio.invalid">
+              <span *ngIf="mailForm.controls.messaggio.errors.required"> Campo obbligatorio</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button
+      attr.aria-label="pulsante salva i dati e chiudi la Modale {{ data.title }}"
+      mat-flat-button
+      color="primary"
+      type="button"
+      [disabled]="mailForm?.invalid"
+      [mat-dialog-close]="mailForm.value"
+    >
+      Invia
+    </button>
+    <button
+      attr.aria-label="pulsante chiudi la Modale {{ data.title }} senza salvare i dati"
+      mat-stroked-button
+      type="button"
+      mat-dialog-close
+    >
+      Annulla
+    </button>
+  </div>
+</div>

@@ -1,0 +1,156 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+
+  <div class="title-container mt-3 d-flex flex-column flex-md-row justify-content-between">
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title"> Lista collaboratori</div>   
+    <div class="actions flex-sm-column flex-lg-row">
+      <button
+        mat-raised-button
+        class="button save-mgu"
+        *ngIf="showCollaboratorsMangament"
+        (click)="saveCollaboratorsActions()"
+        aria-label="Salva operazione avanzata attiva"
+      >
+        <mat-icon role="presentation" aria-label="icona salvataggio operazioni avanzate"> save </mat-icon>
+        {{ saveLabel }}
+      </button>
+      <button
+        aria-label="Annulla operazione avanzata attiva"
+        class="button undo-mgu"
+        mat-raised-button
+        *ngIf="showCollaboratorsMangament"
+        (click)="signUpObject = {}; showCollaboratorsMangament = false; changeHeader(false)"
+      >
+        <mat-icon
+          role="presentation"
+          aria-label="icona decorativa annulla operazione avanzata attiva"
+          aria-label="undo"
+        >
+          clear
+        </mat-icon>
+        Annulla
+      </button>
+      <div
+        class="flex-sm-column flex-lg-row list-card-header-actions"
+        *ngIf="!!projectId && !showCollaboratorsMangament"
+      >
+        <button
+          class="button mr-2"
+          *appACLDirective="{ acl: 'myextranet.progetti', permissions: ['gestisci'] }"
+          mat-raised-button
+          [routerLink]="['/backoffice/projects/collaborators-list/edit']"
+          [queryParams]="{ projectId: projectId }"
+          routerLinkActive="router-link-active"
+        >
+          Aggiungi Collaboratore
+        </button>
+        <button
+          *appACLDirective="{ acl: 'myextranet.progetti', permissions: ['gestisci'] }"
+          (click)="sendCommToColl()"
+          mat-raised-button
+          class="button mr-2"
+        >
+          Invia comunicazione ai Collaboratori
+        </button>
+        <button
+          class="button"
+          *ngIf="!!projectId && !showCollaboratorsMangament"
+          mat-raised-button
+          [matMenuTriggerFor]="menu"
+          aria-label="apri lista operazioni avanzate"
+        >
+          <mat-icon role="presentation" aria-label="icona operazioni avanzate"> list </mat-icon>
+          Azioni
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card-c" *ngIf="!!project">
+    <mat-card class="events-card mb-3">
+      <div class="flex-sm-column flex-lg-row list-card-header-actions">
+        <div>
+          <mat-card-header>
+            <div mat-card-avatar class="list-card-header">
+              <mat-icon aria-label="icona progetto" class="big-icon"> groups </mat-icon>
+            </div>
+            <mat-card-title> Collaboratori al progetto {{ project.titolo }}</mat-card-title>
+            <mat-card-subtitle class="subtitle-c"> {{ project.sottotitolo }} </mat-card-subtitle>
+          </mat-card-header>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="morfeo-c">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isOpen">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Filtro di ricerca Collaboratori </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <mrf-form
+            #projectFilter
+            *ngIf="!!projectId"
+            [form]="!!formJson ? formJson : null"
+            [config]="formFilterConfig"
+          ></mrf-form>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <hr />    
+    <div *appLoading="isLoading">
+      <app-card-table-container
+        (toolBarEvent)="manageEvent($event)"
+        [configuration]="null"
+        [displayedColumns]="tableHeader"
+        (sortEvent)="manageSort($event)"
+        [dataSource]="{
+          data: collaboratorsDataSource,
+          preselectedRows: { objMapper: signUpObject, key: 'idCollab' },
+          sortField: { active: sortByHeaderFilter, direction: sortOrder }
+        }"
+      >
+      </app-card-table-container>
+      <mat-paginator
+        [length]="length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="updatePaginator($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+
+<mat-menu #menu="matMenu">
+  <button
+    aria-label="Operazione avanzata : Imposta Coordinatori"
+    *appACLDirective="{ acl: 'myextranet.progetti', permissions: ['gestisci'] }"
+    (click)="showCollaboratorsMangament = true; opType = 'ImpostaCoordinatore'; signUpObject = {}; changeHeader(true)"
+    class="button-menu"
+    mat-menu-item
+    [disableRipple]="true"
+  >
+    Imposta Coordinatori
+  </button>
+</mat-menu>

@@ -1,0 +1,61 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+.list-container {
+  margin-left: 0;
+  padding: 20px;
+  padding-top: 0;
+  .mat-card-avatar.list-card-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    button:not(.modal-close-c) {
+      color: black;
+      background-color: #f76483;
+      font-size: 12px;
+    }
+    .title {
+      margin-bottom: 10px;
+      margin-top: 0px;
+      font-size: 32px;
+      line-height: normal;
+      font-family: "Titillium Web", sans-serif;
+      font-weight: 700;
+    }
+  }
+  .mat-expansion-panel {
+    border-radius: 0px !important;
+
+    .mat-expansion-panel-header:not([type="fake-row"]) {
+      background-color: #d9d3d4 !important;
+    }
+    .mat-expansion-panel-header {
+      border: 1px solid #c9bbbc;
+
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 0 !important;
+      height: 40px;
+    }
+  }
+}

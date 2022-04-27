@@ -1,0 +1,31 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<mat-grid-list cols="2" rowHeight="1:1" gutterSize="10" *ngIf="!!cardsConfig && cardsConfig.length > 0">
+  <mat-grid-tile *ngFor="let card of cardsConfig; let i=index">
+    <div class="icon-text-c">
+      <span class="circle">
+        <span class="circle-int">
+          <mat-icon aria-hidden="true" attr.aria-label="card {{(i+1) + ' - ' + card.label}}"> {{card.icon}} </mat-icon>
+        </span>
+      </span>
+      <p class="label mt-2">{{card.label}}</p>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

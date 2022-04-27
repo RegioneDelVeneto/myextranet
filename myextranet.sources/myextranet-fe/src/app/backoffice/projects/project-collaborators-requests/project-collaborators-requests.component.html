@@ -1,0 +1,85 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3">
+    <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+  
+    <div class="title-container mt-3 d-flex flex-row mt-3 mb-3 justify-content-end">
+
+    </div>
+    <div class="card-c mt-3" *ngIf="!!project">
+      <mat-card class="events-card mb-3">
+        <div class="flex-sm-column flex-lg-row list-card-header-actions">
+          <div>
+            <mat-card-header>
+              <div mat-card-avatar class="list-card-header">
+                <mat-icon aria-label="icona progetto" class="big-icon"> groups </mat-icon>
+              </div>
+              <mat-card-title> Richieste di collaborazione al progetto: {{ project.titolo }}</mat-card-title>
+              <mat-card-subtitle class="subtitle-c"> {{ project.sottotitolo }} </mat-card-subtitle>
+            </mat-card-header>
+          </div>
+          <div class="actions mt-3 mb-3">           
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  
+    <div class="morfeo-c">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="isOpen">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Filtro di ricerca Richieste di collaborazione </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <mrf-form
+              #morfeoCollaboratorRequests
+              *ngIf="!!projectId"
+              [form]="!!formJson ? formJson : null"
+              [config]="formFilterConfig"
+            ></mrf-form>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <hr />      
+      <div *appLoading="isLoading">
+        <app-card-table-container
+          (toolBarEvent)="manageEvent($event)"
+          [configuration]="null"
+          [displayedColumns]="tableHeader"
+          (sortEvent)="manageSort($event)"
+          [dataSource]="{
+            data: collaboratorsDataSource,
+            preselectedRows: null,
+            sortField: { active: sortByHeaderFilter, direction: sortOrder }
+          }"
+        >
+        </app-card-table-container>
+        <mat-paginator
+          [length]="length"
+          [pageIndex]="pageIndex"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="updatePaginator($event)"
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+    

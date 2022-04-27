@@ -1,0 +1,191 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="dashboard-container">
+  <mat-toolbar class="header" role="banner">
+    <span> <img alt="logo myextranet" aria-label="logo myextranet" title="logo myextranet" class="img" src="assets/images/u101.png" /> </span>
+    <button
+      mat-icon-button
+      class="example-icon"
+      (click)="sidenav.toggle()"
+      [attr.aria-label]="sidenavOpened ? 'Nascondi menu laterale' : 'Mostra menu laterale'"
+    >
+      <mat-icon role="presentation" aria-hidden="true">menu</mat-icon>
+    </button>
+    <span class="backoffice-spacer"></span>
+    <button
+      type="button"
+      *ngIf="!!userInfo"
+      [matMenuTriggerFor]="menu"
+      mat-button
+      class="example-icon favorite-icon"
+      aria-label="menu profilo con logout"
+    >
+      <mat-icon class="profile-icon" aria-label="apri menu" class="icon-white"> person </mat-icon>
+
+      {{ userInfo?.givenName }}
+      {{ userInfo?.familyName }}
+    </button>
+    <mat-menu #menu="matMenu">
+      <button
+        type="button"
+        [routerLink]="['/backoffice']"
+        aria-label="Vai alla bacheca del backoffice"
+        mat-menu-item
+        [disableRipple]="true"
+        class="icon-white"
+      >
+        <mat-icon role="presentation" aria-label="icona bacheca" class="icon-white profile-icon"> groups </mat-icon>
+        Bacheca
+      </button>
+      <button
+        type="button"
+        aria-label="Esci dalla sessione utente"
+        mat-menu-item
+        [disableRipple]="true"
+        class="icon-white"
+        (click)="logout()"
+      >
+        <mat-icon role="presentation" aria-label="icona logout" class="icon-white profile-icon"> exit_to_app </mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" [(opened)]="sidenavOpened">
+      <mat-nav-list aria-label="menu">
+        <mat-list-item
+          [routerLink]="'tenants'"
+          routerLinkActive="active-link"
+          (keyup.enter)="navigateToRoute('tenants')"
+          (keyup.Space)="navigateToRoute('tenants')"
+          *appACLDirective="{ acl: 'myextranet.enti', permissions: ['visualizza'] }"
+        >
+          <span class="text">{{ "Enti" }}</span>
+        </mat-list-item>
+        <mat-list-item
+          *appACLDirective="{ acl: 'myextranet.utenti', permissions: ['visualizza'] }"
+          [routerLink]="'users'"
+          (keyup.enter)="navigateToRoute('users')"
+          (keyup.Space)="navigateToRoute('users')"
+          routerLinkActive="active-link"
+        >
+          <span class="text">{{ "Utenti" }}</span>
+        </mat-list-item>
+        <mat-list-item
+          *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['visualizza'] }"
+          [routerLink]="'events'"
+          (keyup.enter)="navigateToRoute('events')"
+          (keyup.Space)="navigateToRoute('events')"
+          routerLinkActive="active-link"
+        >
+          <span class="text">{{ "Eventi" }}</span>
+        </mat-list-item>
+
+        <mat-list-item
+          *appACLDirective="{ acl: 'myextranet.progetti', permissions: ['visualizza'] }"
+          [routerLink]="'projects'"
+          (keyup.enter)="navigateToRoute('projects')"
+          (keyup.Space)="navigateToRoute('projects')"
+          routerLinkActive="active-link"
+        >
+          <span class="text">{{ "Progetti" }}</span>
+        </mat-list-item>
+        <mat-list-item *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }">
+          <span class="text">{{ "Prodotti" }}</span>
+        </mat-list-item>
+        <mat-list-item
+          *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+          [routerLink]="'activable-products'"
+          (keyup.enter)="navigateToRoute('activable-products')"
+          (keyup.Space)="navigateToRoute('activable-products')"
+          routerLinkActive="active-link"
+          class="child"
+        >
+          <span class="ml-3 text">{{ "Prodotti attivabili" }}</span>
+        </mat-list-item>
+        <mat-list-item
+          *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+          [routerLink]="'active-products'"
+          (keyup.enter)="navigateToRoute('active-products')"
+          (keyup.Space)="navigateToRoute('active-products')"
+          routerLinkActive="active-link"
+          class="child"
+        >
+          <span class="ml-3 text">{{ "Prodotti attivati" }}</span>
+        </mat-list-item>
+        <mat-list-item *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }">
+          <span class="text">{{ "RAP" }}</span>
+        </mat-list-item>
+        <mat-list-item
+          [routerLink]="['RAP']"
+          routerLinkActive="active-link"
+          (keyup.enter)="navigateToRoute('RAP')"
+          (keyup.Space)="navigateToRoute('RAP')"
+          *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+          class="child"
+        >
+          <span class="ml-3 text">{{ "RAP confermati" }}</span>
+        </mat-list-item>
+        <mat-list-item
+          [routerLink]="['RAP-requests']"
+          routerLinkActive="active-link"
+          (keyup.enter)="navigateToRoute('RAP-requests')"
+          (keyup.Space)="navigateToRoute('RAP-requests')"
+          *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['gestisci'] }"
+          class="child"
+        >
+          <span class="ml-3 text">{{ "Richieste RAP" }}</span>
+        </mat-list-item>
+
+        <div class="line-separator" *ngIf="progressBars.length > 0"></div>
+        <mat-list-item *ngFor="let bar of progressBars">
+          <!-- dovrei creare un array, potrei avere multiple operazioni di questo tipo attive -->
+          <span class="progress-bar-c">
+            <span class="text text-center"> {{ bar.operation }} </span>
+            <mat-progress-bar mode="determinate" [value]="bar.progress"></mat-progress-bar>
+          </span>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-toolbar class="sidenav-footer">
+        <a href="http://www.regione.veneto.it"
+          ><img alt="menu" class="img" src="assets/images/logo-regioneveneto.svg"
+        /></a>
+      </mat-toolbar>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div role="main">
+      <router-outlet></router-outlet>
+    </div>
+      <div style="margin-bottom: 100px"></div>
+
+      <mat-toolbar id="footer-toolbar-RV" class="footer" [ngClass]="{ 'side-menu-padding': sidenavOpened }" role="contentinfo">
+        <div class="text">Regione Veneto</div>
+        <ul class="external-links">
+          <li><a class="link" href="https://www.regione.veneto.it/web/guest/accessibilita" target="_blank">Accessibilità</a></li>
+          <li><a class="link" href="http://www.regione.veneto.it/web/guest/privacy" target="_blank">Privacy</a></li>
+          <li><a class="link" href="http://myportal-infopbl.regione.veneto.it/myportal/INFOPBL/informative/note_legali" target="_blank">Note Legali</a></li>
+          <li><a class="link" href="http://myportal-infopbl.regione.veneto.it/myportal/INFOPBL/informative/info_cookies" target="_blank">Informativa Cookie</a></li>
+          <li><a class="link" href="http://www.regione.veneto.it" target="_blank">www.regione.veneto.it</a></li>
+        </ul>
+      </mat-toolbar>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

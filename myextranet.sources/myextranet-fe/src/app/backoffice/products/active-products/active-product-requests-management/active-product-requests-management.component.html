@@ -1,0 +1,71 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+  <div
+    *ngIf="idAttivazione !== null && idAttivazione !== undefined && !!prodotto"
+    class="title-container mt-3 d-flex flex-row justify-content-between"
+  >
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title">Lista richieste</div>
+
+
+  </div>
+  <div class="card-c" *ngIf="!!prodotto">
+    <mat-card class="events-card mb-3">
+      <div class="flex-sm-column flex-lg-row list-card-header-actions">
+        <div>
+          <mat-card-header>
+            <div mat-card-avatar class="list-card-header">
+              <mat-icon aria-label="icona gestione utenti prodotti attivati" class="big-icon"> fact_check </mat-icon>
+            </div>
+            <mat-card-title>
+              Richieste del Prodotto {{ prodotto.prodottoAttivabile.nomeProdottoAttiv }} per l'ente
+              {{ prodotto.ente.denominazione }}
+            </mat-card-title>
+          </mat-card-header>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+  <div class="morfeo-c">
+    <div *appLoading="isLoading">
+      <app-card-table-container
+        (toolBarEvent)="manageEvent($event)"
+        [configuration]="null"
+        [displayedColumns]="tableHeader"
+        (sortEvent)="manageSort($event)"
+        [dataSource]="{
+          data: productsDataSource,
+          preselectedRows: null,
+          sortField: { active: sortBy, direction: sortOrder }
+        }"
+      >
+      </app-card-table-container>
+      <mat-paginator
+        [length]="length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="updatePaginator($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+
+images:
+- name: __YOUR_DATA__
+  newTag: 1.2.3
+
+
+configMapGenerator:
+- files:
+  - config/application-coll.yml
+  - config/application.yml
+  - config/mybox.properties
+  name: myextranet-config
+
+namespace: k905ac
+
+patches:
+- path: endpoints/logstash-endpoints.yaml
+  target:
+    kind: Endpoints
+    name: k930-logstash
+- path: envvars/proxy-settings.yaml
+  target:
+    kind: Deployment
+    name: myextranet-deployment
+
+patchesJson6902:
+- path: ingress/ingress-myextranet.yaml
+  target:
+    group: networking.k8s.io
+    kind: Ingress
+    name: myextranet-ingress
+    version: v1
+

@@ -1,0 +1,111 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="u-hiddenPrint wg-footer">
+  <footer class="wg-footer__container container">
+    <div class="row justify-content-between wg-footer__brand__row">
+      <div class="u-cf wg-footer__brand col-12 col-sm-auto">
+        <a *ngIf="configuration.urlLogo" tabindex="0" [routerLink]="'/'">
+          <img class="wg-footer__logo" [src]="configuration.urlLogo" [alt]="'logo ' + configuration.title" />
+        </a>
+        <p [routerLink]="'/'" class="wg-footer__nome pointer" role="button">
+          {{ configuration.title }}
+        </p>
+      </div>
+      <div class="wg-footer__endorsement-link col-lg-6">
+        <a
+          tabindex="0"
+          href="http://www.regione.veneto.it/web/informatica-e-e-government/myportal3"
+          title="MyPortal"
+          class="wg-footer__endorsement-link__myportal"
+        >
+          <img [src]="'assets/images/logo-myportal-neg.svg'" alt="MyPortal Logo" />
+          <span class="sr-only">MyPortal</span>
+        </a>
+        <a
+          tabindex="0"
+          href="https://www.regione.veneto.it"
+          title="Regione Veneto"
+          class="wg-footer__endorsement-link__regione-veneto"
+        >
+          <img [src]="'assets/images/logo-regione-veneto--bw.png'" alt="Regione Veneto Logo" />
+          <span class="sr-only">Regione Veneto</span>
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="row wg-footer__row"
+      *ngIf="
+        (configuration?.links && configuration?.links.length > 0) ||
+        !!configuration?.freeText1Title ||
+        !!configuration?.freeText2Title
+      "
+    >
+      <div class="col-12">
+        <div class="row">
+          <div class="wg-footer__block col-sm-6 col-lg-3" *ngFor="let link of configuration.links; let i = index">
+            <h2 class="wg-footer__block-title">{{ link.name }}</h2>
+            <nav role="navigation">
+              <ul class="wg-footer__nav">
+                <li *ngFor="let item of link.items; let i = index">
+                  <a [routerLink]="[item.url]" tabindex="0" title="{{ item.label }}">{{ item.label }}</a>                  
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12" *ngIf="!!configuration?.freeText1Title || !!configuration?.freeText2Title">
+        <div class="row">
+          <div class="wg-footer__block col-sm-6 col-lg-6" *ngIf="configuration.freeText1Title">
+            <h2 class="wg-footer__block-title">{{ configuration.freeText1Title }}</h2>
+            <div class="u-margin-bottom-m free-text" [innerHtml]="decodeHTML(configuration.freeText1Text)"></div>
+          </div>
+
+          <div class="wg-footer__block col-sm-6 col-lg-6" *ngIf="configuration.freeText2Title">
+            <h2 class="wg-footer__block-title">{{ configuration.freeText2Title }}</h2>
+            <div class="wg-footer__contact-list free-text" [innerHtml]="decodeHTML(configuration.freeText2Text)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between wg-footer__row">
+      <div class="col col-sm-auto">
+        <nav>
+          <ul class="wg-footer__links">
+            <li *ngFor="let bottomLink of configuration.bottomLinks; let i = index">
+              <a *ngIf="bottomLink.type === 'url'" [href]="bottomLink.url" title="{{ bottomLink.label }}">{{
+                bottomLink.label
+              }}</a>
+              <a *ngIf="bottomLink.type === 'route'" [routerLink]="[bottomLink.url]" title="{{ bottomLink.label }}">{{
+                bottomLink.label
+              }}</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="col-12 col-sm-auto wg-footer__credits" *ngIf="configuration.copyright">
+        {{ configuration.copyright }}
+      </div>
+    </div>
+  </footer>
+</div>

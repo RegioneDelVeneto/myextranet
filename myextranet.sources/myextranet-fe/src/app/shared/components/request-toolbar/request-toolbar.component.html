@@ -1,0 +1,98 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="pl-5 pr-5" *ngIf="barType !== null">
+
+  <div [ngSwitch]="barType">
+    <!-- STEP 1 -->
+    <div class="d-flex justify-content-between" *ngSwitchCase="1">
+      <button
+        [color]="isFo ? 'accent' : 'primary'"
+        (click)="sendEventTofather.emit('navBack')"
+        mat-stroked-button
+        type="button"
+      >
+        TORNA INDIETRO
+      </button>
+      <button
+        [color]="isFo ? 'accent' : 'primary'"
+        (click)="sendEventTofather.emit('goOn')"
+        [disabled]="!valid"
+        mat-flat-button
+        type="button"
+      >
+        CONFERMA
+      </button>
+    </div>
+    <!-- step intermedio -->
+    <div class="d-flex justify-content-between" *ngSwitchCase="2">
+      <button
+        class="mr-2"
+        (click)="sendEventTofather.emit('navBack')"
+        mat-stroked-button
+        [color]="isFo ? 'accent' : 'primary'"
+        type="button"
+      >
+        TORNA INDIETRO
+      </button>
+      <div>
+        <button
+          class="mr-2"
+          [disabled]="!valid"
+          (click)="sendEventTofather.emit('goBack')"
+          mat-flat-button
+          type="button"
+          [color]="isFo ? 'accent' : 'primary'"
+        >
+          RIFIUTA
+        </button>
+        <button
+          (click)="sendEventTofather.emit('goOn')"
+          [disabled]="!valid"
+          mat-flat-button
+          type="button"
+          [color]="isFo ? 'accent' : 'primary'"
+        >
+          CONFERMA
+        </button>
+      </div>
+    </div>
+    <!-- step dettaglio -->
+    <div class="d-flex justify-content-between" *ngSwitchCase="3">
+      <button
+      (click)="sendEventTofather.emit('navBack')"
+      mat-stroked-button
+      [color]="isFo ? 'accent' : 'primary'"
+      type="button"
+    >
+      TORNA INDIETRO
+    </button>
+      <button
+        (click)="sendEventTofather.emit('reOpen')"
+        [disabled]="!valid"
+        mat-flat-button
+        [color]="isFo ? 'accent' : 'primary'"
+        type="button"
+      >
+        MODIFICA PRODOTTO ATTIVO
+      </button>
+
+    </div>
+  </div>
+</div>

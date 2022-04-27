@@ -1,0 +1,152 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+$assetPath: './myextranet/assets' !default;
+
+$fontPath: #{$assetPath}/font !default;
+$textFontPath: $fontPath/TitilliumWeb !default;
+$iconFontPath: $fontPath/my_iconfont !default;
+
+$enable-rounded:            false !default; //disable rounded elements
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+) !default;
+
+// Color
+$white:                     #fff !default;
+$orange:                    #f3a113 !default;
+$orange-dark:               #8c5d0b !default;
+$green-tea-dark:            #30ce95 !default;
+
+
+// Create grayscale
+$gray-dark:                 #1c2024 !default;
+$gray-medium:               #4d4f50 !default;
+$gray:                      #5a6772 !default;
+$gray-light:                #acb3b8 !default;
+$gray-lighter:              #dddddd !default;
+$gray-more-lighter:         #e5e5e5 !default;
+$gray-lightest:             #f2f2f2 !default;                 
+
+$brand-primary:             #00576B !default; //link
+$brand-primary-hover:       #005c66 !default;
+$brand-primary-btn:         #7addb5 !default;
+
+//Violetscale
+$active-bg:                 #d1c4e9 !default;
+$violet-hover:              #ede7f6 !default;
+
+// Body
+//
+// Settings for the `<body>` element.
+
+$body-bg:       $white !default;
+$body-color:    $gray-dark !default;
+$inverse-bg:    $gray-dark !default;
+$inverse-color: $gray-light !default;
+
+$body-secondary-color: $gray;
+
+
+// Links
+//
+// Style anchor elements.
+$link-dark:             #004352 !default;
+$link-color:            $brand-primary !default;
+$link-decoration:       none !default;
+$link-hover-color:      $brand-primary-hover !default;
+$link-hover-decoration: underline !default;
+
+
+// Fonts
+
+$font-family-sans-serif: "Titillium Web", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-family-serif:      "Titillium Web", serif !default;
+$font-family-monospace:  "Titillium Web", monospace !default;
+$font-family-base:       $font-family-sans-serif !default;
+
+$font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
+$font-size-lg:   1.25rem !default;
+$font-size-sm:   .875rem !default;
+$font-size-xs:   .75rem !default;
+
+$font-weight-normal: normal !default;
+$font-weight-bold: bold !default;
+
+$font-weight-base: $font-weight-normal !default;
+$line-height-base: 1.5 !default;
+
+$font-size-h1: 2.5rem !default;
+$font-size-h2: 2rem !default;
+$font-size-h3: 1.5rem !default;
+$font-size-h4: 1.25rem !default;
+$font-size-h5: 1.125rem !default;
+$font-size-h6: 1rem !default;
+
+$headings-font-family:   inherit !default;
+$headings-font-weight:   700 !default; // h3 font-weight = 600
+$headings-line-height:   1.2 !default;
+$headings-color:         inherit !default;
+
+$line-separator-bg:     $gray-lighter;
+
+// Components
+
+$border-radius:          0 !default;
+$border-radius-lg:       0 !default;
+$border-radius-sm:       0 !default;
+
+
+// Buttons
+$btn-primary-color:              $gray-dark !default;
+$btn-primary-bg:                 $brand-primary-btn !default;
+$btn-primary-border:             $btn-primary-bg !default;
+
+// Input
+$input-group-bg:                $gray-lightest !default;
+
+// Header
+$header-bg:                     #095D70 !default;
+$header-color:                  $white !default;
+$header-link-color:             $white !default;
+$header-link-decoration:        none !default;
+$header-link-hover-color:       #ccc !default;
+$header-link-hover-decoration:  underline !default;
+$header-topbar-bg:              #303030 !default; // Not change by user
+
+
+// Footer
+$footer-bg:                     #303030 !default; // Not change by user
+$footer-color:                  rgba(255, 255, 255, 0.75)!default;  // Not change by user
+$footer-link-hover-color:       $green-tea-dark;
+$footer-margin-top:             80px;
+
+// Carousel
+$carousel-control-color: $gray;
+$carousel-control-bgcolor: rgba(229, 229, 229, 0.75);
+
+//widget
+$widget-min-height: 200px;
+
+//Alerts
+$alert-warning-bg: rgba(250, 177, 48, 0.10);
+$alert-warning-text: #fab130;
+$alert-success-text: rgba(82, 165, 38, 1);

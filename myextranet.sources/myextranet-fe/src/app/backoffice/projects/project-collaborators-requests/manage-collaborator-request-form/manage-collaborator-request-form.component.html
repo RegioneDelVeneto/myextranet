@@ -1,0 +1,79 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3" *appLoading="isLoading">
+    <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+    <div class="card-c mt-3" *ngIf="!!project">
+      <mat-card class="events-card mb-3">
+        <div class="flex-sm-column flex-lg-row list-card-header-actions">
+          <div>
+            <mat-card-header>
+              <div mat-card-avatar class="list-card-header">
+                <mat-icon aria-label="icona progetto" class="big-icon"> groups </mat-icon>
+              </div>
+              <mat-card-title>
+                Gestisci richiesta di collaborazione al Progetto: {{ project.titolo }}</mat-card-title
+              >
+              <mat-card-subtitle class="subtitle-c"> {{ project.sottotitolo }} </mat-card-subtitle>
+            </mat-card-header>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="form-container pt-2 pb-2 pl-5 pr-5" *ngIf="!!projectId">
+      <app-generic-user-form *ngIf="!!formSettings" [settings]="formSettings"> </app-generic-user-form>
+      <div>
+        <form *ngIf="!!collStatus" [formGroup]="collStatus">
+            <div class="row">
+              <div class="form-field col-12" appearance="standard">
+                <fieldset>
+                  <legend class="h6 mb-4">Stato della richiesta:</legend>
+                  <mat-radio-group
+                    class="d-flex flex-column pl-2"
+                    aria-label="Stato della richiesta"
+                    formControlName="flgConferma"
+                    required
+                  >
+                    <mat-radio-button *ngFor="let status of stati" [value]="status.value">
+                      {{ status.label }}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </fieldset>
+              </div>
+            </div>
+            <div class="row" [hidden]="collStatus?.value?.flgConferma !== 2">
+              <mat-form-field class="form-field col-12" appearance="standard">
+                <mat-label> Motivazione </mat-label>
+                <textarea matInput formControlName="motivation" rows="5"></textarea>
+                <mat-error *ngIf="collStatus.controls.motivation.touched && collStatus.controls.motivation.invalid">
+                  <span *ngIf="collStatus.controls.motivation.errors.required"> Campo obbligatorio</span>
+                  <span *ngIf="collStatus.controls.motivation.errors.maxlength"> Il campo ha lunghezza massima di {{collStatus.controls.motivation.errors.maxlength.requiredLength}} caratteri</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+      </div>
+      <div class="bottom-ac mt-3 mb-3" *ngIf="!isRo">
+        <button [disabled]="collStatus.invalid" aria-label="conferma aggiornamento stato" type="button" mat-raised-button color="primary" (click)="sendData()">
+            Aggiorna richiesta
+        </button>
+      </div>
+    </div>
+  </div>
+  

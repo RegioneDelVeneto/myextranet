@@ -1,0 +1,333 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<table
+  mat-table
+  matSort
+  (matSortChange)="manageSort($event)"
+  [dataSource]="dataSource"
+  [matSortActive]="sortField?.active"
+  [matSortDirection]="sortField?.direction"
+  class="w-100"
+>
+  <!-- Checkbox Column -->
+
+  <!-- Data Column -->
+  <ng-container *ngFor="let column of displayedColumnsDefinition; let i = index" [matColumnDef]="column">
+    <ng-container
+      *ngIf="!displayedColumns[i].type || (!!displayedColumns[i].type && displayedColumns[i].type !== 'select')"
+    >
+      <ng-container *ngIf="displayedColumns[i].sortActive">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef [ngStyle]="{ width: displayedColumnsSpan[i] + '%' }">
+          {{ displayedColumnsHeader[i] }}
+        </th>
+      </ng-container>
+      <ng-container *ngIf="!displayedColumns[i].sortActive">
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="{ width: displayedColumnsSpan[i] + '%' }">
+          {{ displayedColumnsHeader[i] }}
+        </th>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!!displayedColumns[i].type && displayedColumns[i].type === 'select'">
+      <th mat-header-cell *matHeaderCellDef [ngStyle]="{ width: displayedColumnsSpan[i] + '%' }">
+        <mat-checkbox
+          (change)="$event ? masterToggle(displayedColumns[i].showOnlyIf) : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [aria-label]="checkboxLabel()"
+        >
+        </mat-checkbox>
+      </th>
+    </ng-container>
+    <ng-container *ngIf="!displayedColumns[i].type">
+      <td
+        mat-cell
+        *matCellDef="let element; let tbIdx = index"
+        [ngStyle]="{ width: displayedColumnsSpan[i] + '%' }"
+        [ngClass]="{
+          'line-through':
+            !!lineThroughKeyCheck &&
+            !!element[lineThroughKeyCheck] &&
+            displayedColumns[i].type !== 'buttons' &&
+            displayedColumns[i].type !== 'actions' &&
+            displayedColumns[i].type !== 'move'
+        }"
+      >
+        <ng-container
+          *ngIf="
+            (!displayedColumns[i].showOnlyIf ||
+              (!!displayedColumns[i].showOnlyIf && !!element[displayedColumns[i].showOnlyIf])) &&
+            (!displayedColumns[i].hiddenIf ||
+              (!!displayedColumns[i]?.hiddenIf && !checkShowOnly(element, displayedColumns[i].hiddenIf)))
+          "
+        >
+          <div [ngClass]="!!displayedColumns[i].textCut ? 'text-cut-' + displayedColumns[i].textCut : ''">
+            {{ element[column] }}
+          </div>
+        </ng-container>
+      </td>
+    </ng-container>
+    <ng-container *ngIf="!!displayedColumns[i].type">
+      <ng-container [ngSwitch]="displayedColumns[i].type">
+        <td
+          mat-cell
+          *matCellDef="let element; let tbIdx = index"
+          [ngStyle]="{ width: displayedColumnsSpan[i] + '%' }"
+          [ngClass]="{
+            'line-through':
+              !!lineThroughKeyCheck &&
+              !!element[lineThroughKeyCheck] &&
+              displayedColumns[i].type !== 'buttons' &&
+              displayedColumns[i].type !== 'actions' &&
+              displayedColumns[i].type !== 'move'
+          }"
+        >
+          <div [ngClass]="!!displayedColumns[i].textCut ? 'text-cut-' + displayedColumns[i].textCut : ''">
+            <ng-container
+              *ngIf="
+                (!displayedColumns[i].showOnlyIf ||
+                  (!!displayedColumns[i].showOnlyIf && !!element[displayedColumns[i].showOnlyIf])) &&
+                (!displayedColumns[i].hiddenIf ||
+                  (!!displayedColumns[i]?.hiddenIf && !checkShowOnly(element, displayedColumns[i].hiddenIf)))
+              "
+            >
+              <!-- DEEPPROP -->
+              <ng-container *ngSwitchCase="'deepProp'">
+                <!-- {{ element[column] }} -->
+                <app-general-table-deep-prop
+                  [configuration]="{ displayedColumns: displayedColumns[i], column: column, element: element }"
+                >
+                </app-general-table-deep-prop>
+              </ng-container>
+              <!-- DATE -->
+              <ng-container *ngSwitchCase="'date'">
+                {{
+                  element[column]
+                    | date: (!displayedColumns[i].dateFormat ? "dd/MM/y HH:mm" : displayedColumns[i].dateFormat)
+                }}
+              </ng-container>
+              <!-- HTML -->
+              <ng-container *ngSwitchCase="'html'">
+                <div class="text-cut-1" [innerHTML]="element[column]"></div>
+              </ng-container>
+              <!-- BOOLEAN -->
+              <ng-container *ngSwitchCase="'boolean'">
+                {{ !!element[column] ? "Sì" : "No" }}
+              </ng-container>
+              <!-- ASSOCIATION (with myportal) -->
+              <ng-container *ngSwitchCase="'association'">
+                <app-association-table-label
+                  [associationData]="{ id: element[column], key: displayedColumns[i].associationLabel }"
+                >
+                </app-association-table-label>
+              </ng-container>
+              <!-- CHIP -->
+              <ng-container *ngSwitchCase="'chip'">
+                <app-table-chip [config]="{ data: element[column], array: displayedColumns[i].chipsArray }">
+                </app-table-chip>
+              </ng-container>
+              <!-- OBJECTMAPPER -->
+              <ng-container *ngSwitchCase="'objectMapper'">
+                <ng-container
+                  *ngIf="!!displayedColumns[i]?.objectMapped && !!displayedColumns[i]?.objectMapped[element[column]]"
+                >
+                  {{ displayedColumns[i]?.objectMapped[element[column]] }}
+                </ng-container>
+              </ng-container>
+              <!-- LIST -->
+              <ng-container *ngSwitchCase="'list'">
+                <div
+                  class="d-flex flex-column"
+                  [ngClass]="{ 'mb-2': element[column]?.length > 1, 'mt-2': element[column]?.length > 1 }"
+                >
+                  <p
+                    [ngClass]="{
+                      'mb-1': listIdx !== element[column].length - 1,
+                      'mb-0': listIdx === element[column].length - 1
+                    }"
+                    *ngFor="let listElm of element[column]; let listIdx = index"
+                    attr.aria-label="{{ listElm }}"
+                  >
+                    {{ displayedColumns[i].dateFormat ? (listElm | date: displayedColumns[i].dateFormat) : listElm }}
+                  </p>
+                </div>
+              </ng-container>
+              <!-- ACTIONS -->
+              <ng-container *ngSwitchCase="'actions'">
+                <ng-container
+                  *ngIf="
+                    !displayedColumns[i]?.showAsButtonIfOne ||
+                    (!!displayedColumns[i]?.showAsButtonIfOne &&
+                      (displayedColumns[i].actions | actionsFilterPipe: element)?.length > 1)
+                  "
+                >
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Apri toolbar azioni in lista">
+                    <mat-icon aria-label="icona apri toolbar">more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <ng-container
+                      *ngFor="let item of displayedColumns[i].actions | actionsFilterPipe: element; let len = count"
+                    >
+                      <ng-container>
+                        <button
+                          attr.aria-label="{{ item.label }}"
+                          *appACLDirective="{ acl: item?.acl, permissions: item?.permissions }"
+                          (click)="manageEvent(element, item.event, tbIdx)"
+                          mat-menu-item
+                        >
+                          <mat-icon  role="presentation" attr.aria-label="Icona decorativa relativa all'azione {{ item.label }}">
+                            {{ item.icon }}</mat-icon
+                          >
+                          <span>{{ item.label }}</span>
+                        </button>
+                      </ng-container>
+                    </ng-container>
+                  </mat-menu>
+                </ng-container>
+                <ng-container
+                  *ngIf="
+                    !!displayedColumns[i]?.showAsButtonIfOne &&
+                    (displayedColumns[i].actions | actionsFilterPipe: element)?.length == 1
+                  "
+                  ><ng-container
+                    *ngFor="let item of displayedColumns[i].actions | actionsFilterPipe: element; let len = count"
+                  >
+                    <button
+                      mat-flat-button
+                      [color]="item.color ? item.color : 'primary'"
+                      class="t-buttons"
+                      type="button"
+                      attr.aria-label="{{ item.label }}"
+                      *appACLDirective="{ acl: item?.acl, permissions: item?.permissions }"
+                      (click)="manageEvent(element, item.event, tbIdx)"
+                    >
+                      <mat-icon
+                      role="presentation"
+                        *ngIf="!!item?.icon"
+                        attr.aria-label="Icona decorativa relativa all'azione {{
+                          item.label ? item.label : item.legend
+                        }}"
+                        >{{ item.icon }}</mat-icon
+                      >
+                      <span>{{ item.label }}</span>
+                    </button>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+              <!-- MOVE -->
+              <ng-container *ngSwitchCase="'move'">
+                <ng-container *ngFor="let item of displayedColumns[i].actions; let moveIdx = index">
+                  <ng-container
+                    *ngIf="
+                      (!item?.showOnlyIf || (!!item?.showOnlyIf && checkShowOnly(element, item.showOnlyIf))) &&
+                      (!item.hiddenIf || (!!item?.hiddenIf && !checkShowOnly(element, item.hiddenIf)))
+                    "
+                  >
+                    <ng-container
+                      *ngIf="(moveIdx === 0 && tbIdx !== 0) || (moveIdx === 1 && tbIdx !== dataSource.length - 1)"
+                    >
+                      <button
+                        [matTooltip]="item.label"
+                        attr.aria-label="{{ item.label }}"
+                        *appACLDirective="{ acl: item?.acl, permissions: item?.permissions }"
+                        (click)="manageEvent(element, item.event, tbIdx)"
+                      >
+                        <mat-icon 
+                        role="presentation"
+                        attr.aria-label="Icona decorativa relativa all'azione {{ item.label }}">{{
+                          item.icon
+                        }}</mat-icon>
+                      </button>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+              <!-- buttons -->
+              <ng-container *ngSwitchCase="'buttons'">
+                <div class="d-flex justify-content-around button-column">
+                  <ng-container *ngFor="let item of displayedColumns[i].actions">
+                    <ng-container
+                      *ngIf="
+                        (!item?.showOnlyIf || (!!item?.showOnlyIf && checkShowOnly(element, item.showOnlyIf))) &&
+                        (!item.hiddenIf || (!!item?.hiddenIf && !checkShowOnly(element, item.hiddenIf)))
+                      "
+                    >
+                      <button
+                        mat-flat-button
+                        [color]="item.color ? item.color : 'primary'"
+                        class="t-buttons"
+                        type="button"
+                        attr.aria-label="{{ item.label }}"
+                        *appACLDirective="{ acl: item?.acl, permissions: item?.permissions }"
+                        (click)="manageEvent(element, item.event, tbIdx)"
+                      >
+                        <mat-icon
+                        role="presentation"
+                          *ngIf="!!item?.icon"
+                          attr.aria-label="Icona decorativa relativa all'azione {{
+                            item.label ? item.label : item.legend
+                          }}"
+                          >{{ item.icon }}</mat-icon
+                        >
+                        <span>{{ item.label }}</span>
+                      </button>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+
+              <!-- SELECT -->
+              <ng-container *ngSwitchCase="'select'">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? onCheckBoxChange(element) : null"
+                  [checked]="selection.isSelected(element)"
+                  [aria-label]="checkboxLabel(element)"
+                >
+                </mat-checkbox>
+              </ng-container>
+            </ng-container>
+          </div>
+        </td>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumnsDefinition"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumnsDefinition"></tr>
+</table>
+<div class="footer-c pt-4 pb-4" *ngIf="!!footer && !!footer.active">
+  <div class="button-c" *ngFor="let button of footer.buttons">
+    <button
+      (click)="manageEvent(null, button.event, null)"
+      class="mr-2"
+      type="button"
+      mat-stroked-button
+      [attr.aria-label]="button.label"
+      [color]="button.color ? button.color : 'primary'"
+    >
+      <mat-icon 
+      role="presentation"
+      [attr.aria-label]="'icona decorativa relativa a' + button.label">
+        {{ button.icon }}
+      </mat-icon>
+      {{ " " + button.label }}
+    </button>
+  </div>
+</div>

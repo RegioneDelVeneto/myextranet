@@ -1,0 +1,92 @@
+#
+#     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+#     Copyright (C) 2022  Regione Veneto
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU Affero General Public License as
+#     published by the Free Software Foundation, either version 3 of the
+#     License, or (at your option) any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU Affero General Public License for more details.
+#
+#     You should have received a copy of the GNU Affero General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+spring:
+    profiles:
+        active: default
+    jackson:
+      serialization:
+        fail-on-empty-beans: false
+    quartz:
+      job-store-type: jdbc
+    datasource:
+      url: __YOUR_DATA__
+      username: __YOUR_DATA__
+      password: __YOUR_DATA__
+  ## Spring JPA properties
+    jpa:
+      show_sql: false
+      open-in-view: false
+      hibernate:
+        ddl-auto: validate
+      properties:
+        hibernate:
+          use_sql_comments: true
+          format_sql: true
+          # Inserted to resolve issue org.postgresql.jdbc.PgConnection.createClob() non yet implemented
+          jdbc:
+            lob:
+              non_contextual_creation: true
+          # The SQL dialect makes Hibernate generate better SQL for the chosen database
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# Spring Actuator for liveness and readiness
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+      show-details: "always"
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: "livenessState"
+        readiness:
+          include: "readinessState,db,redis"
+    info:
+      enabled: true
+
+logging:
+    path: logs
+myextranet:
+    example: "esempio"
+    quartz:
+      job:
+        - name: "RemoteAttendanceInstructionsJob"
+          cron: "0 0/30 * 1/1 * ? *"
+report:
+  generator:
+    url: __YOUR_DATA__
+  jasper:
+    foglio-presenze: foglio-presenze.jrxml
+    attestato-partecipazione: attestato-partecipazione.jrxml
+    
+myprofile : 
+  adminBaseUrl: "__YOUR_DATA__"
+  baseUrl: "__YOUR_DATA__"
+server:
+  servlet:
+    context-path: "/myextranet-be"
+
+
+

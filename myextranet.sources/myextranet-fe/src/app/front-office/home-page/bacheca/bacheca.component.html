@@ -1,0 +1,93 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+    <div clasS="cards-h-c mt-2  mb-5">
+      <div class="title mt-2 d-flex flex-sm-row flex-column">
+        <div class="h1 title-card mr-2">I miei Eventi</div>
+        <hr class="w-100 border-dark border-bottom d-none d-sm-block" />
+        <div class="d-flex flex-column justify-content-center ml-2">
+          <a title="Vai a tutti gli eventi" class="link-int" [routerLink]="['/utente/eventi']" routerLinkActive="router-link-active">
+            VISUALIZZA TUTTI
+          </a>
+        </div>
+      </div>
+      <div class="col-12 mt-3 p-0" *ngIf="!!eventsCardList?.length">
+        <app-generic-card-container [configuration]="{ type: 'events', inputCards: eventsCardList }">
+        </app-generic-card-container>
+      </div>
+      <div class="col-12 mt-3 p-0"  *ngIf="!eventsCardList?.length">
+        <p class="font-weight-bold">Non sei iscritto a nessun evento</p>
+        <p>Vai nella sezione pubblica per consultare gli eventi ed iscriverti.</p>
+        <button type="button" mat-flat-button color="accent" (click)="navigateToMyPortal('events')">
+          VAI ALLA PAGINA DEGLI EVENTI
+        </button>
+      </div>
+    </div>
+    <div clasS="cards-h-c mt-4 mb-5">
+      <div class="title mt-2 d-flex d-flex flex-column flex-sm-row">
+        <div class="h1 title-card mr-2">I miei Progetti</div>
+        <hr class="w-100 border-dark border-bottom d-none d-sm-block" />
+        <div class="d-flex flex-column justify-content-center ml-2">
+          <a class="link-int" title="Vai a tutti i progetti"  [routerLink]="['/utente/progetti']" routerLinkActive="router-link-active">
+            VISUALIZZA TUTTI
+          </a>
+        </div>
+      </div>
+      <div class="col-12 mt-3 p-0"  *ngIf="!!projectCardsList?.length">
+        <app-generic-card-container [configuration]="{ type: 'projects', inputCards: projectCardsList }">
+        </app-generic-card-container>
+      </div>
+      <div class="col-12 mt-3 p-0"  *ngIf="!projectCardsList?.length">
+        <p class="font-weight-bold">Non ci sono progetti attivi</p>
+        <p>Vai nella sezione pubblica per consultare i progetti e per collaborare.</p>
+        <button type="button" mat-flat-button color="accent" (click)="navigateToMyPortal('projects')">
+          VAI ALLA PAGINA DEI PROGETTI
+        </button>
+      </div>
+    </div>
+    <div clasS="cards-v-c mt-4 mb-5">
+      <div class="title mt-2 d-flex flex-sm-row flex-column">
+        <div class="h1 title-card mr-2">I miei Prodotti</div>
+        <hr class="w-100 border-dark border-bottom d-none d-sm-block" />
+        <div class="d-flex flex-column justify-content-center ml-2">
+          <a title="Vai a tutti i prodotti"  class="link-int" [routerLink]="['/utente/prodotti']" routerLinkActive="router-link-active">
+            VISUALIZZA TUTTI
+          </a>
+        </div>
+      </div>
+      <div class="text-pre-card mt-2"  *ngIf="!!rappEnte?.length">
+        Vai nella sezione per modificare i dati e gestire i prodotti di un ente che rappresenti.
+      </div>
+      <div class="col-12 mt-3 p-0">
+        <app-horizontal-card-container [configuration]="{ type: 'tenant-rap', inputCards: rappEnte }">
+        </app-horizontal-card-container>
+      </div>
+      <div class="col-12 mt-3 p-0"  *ngIf="!rappEnte?.length">
+        <p class="font-weight-bold">Non sei RAP per nussun Ente.</p>
+        <p>Fai richiesta di diventare RAP per poter gestire i prodotti di un ente.</p>
+        <button type="button" mat-flat-button color="accent" (click)="navigateToMyPortal('RAP')">
+          VAI A NUOVA RICHIESTA RAP
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

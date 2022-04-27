@@ -1,0 +1,60 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/* You can add global styles to this file, and also import other style files */
+/*
+@import "optionals/variables";
+
+@import "mixins";
+@import "font";
+@import "icon";
+@import "base";
+@import "optionals/widgets";
+@import "theme";
+
+@import "ngx-carousel";
+
+*/
+@import "./styles/optionals/variables";
+@import "./styles/variables";
+@import '~bootstrap/scss/bootstrap';
+
+//material theme
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+@import "./styles/mixins";
+@import "./styles/font";
+@import "./styles/icon";
+@import "./styles/base";
+@import "./styles/optionals/widgets";
+@import "./styles/theme";
+@import "./styles/theme/theme";
+@import "./styles/ngx-carousel";
+
+
+
+//@import "./styles/main.scss";
+/* Importing Bootstrap SCSS file. */
+
+//@import "./styles/variables";
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+//    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    font-family: "Titillium Web", sans-serif !important;
+}

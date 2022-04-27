@@ -1,0 +1,58 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container" *ngIf="!!data">
+  <div class="title-container">
+    <div mat-dialog-title class="h1 title">{{ data.title }}</div>
+    <button tabindex="-1"  mat-dialog-close class="ml-4 modal-close-c" attr.aria-label="Chiudi la Modale {{data.title}}">
+      <mat-icon role="presentation"> clear</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <p>{{ data.description }}</p>
+    <mat-form-field class="form-field col-12 col-lg-12 mt-3 mb-3" appearance="standard">
+      <mat-label> Data di fine validità </mat-label>
+      <input matInput [matDatepicker]="pickerDtFineVal" [(ngModel)]="thisDate" />
+      <mat-datepicker-toggle matSuffix [for]="pickerDtFineVal"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDtFineVal></mat-datepicker>
+      <mat-error *ngIf="!status">
+        <span> Campo obbligatorio</span>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button
+      [disabled]="!status"
+      attr.aria-label="pulsante conferma e chiudi la Modale {{ data.title }}"
+      mat-flat-button
+      type="button"
+      [mat-dialog-close]="thisDateTZ"
+    >
+      Invia
+    </button>
+    <button
+      attr.aria-label="pulsante annulla e chiudi la Modale {{ data.title }}"
+      mat-stroked-button
+      type="button"
+      mat-dialog-close
+    >
+      Annulla
+    </button>
+  </div>
+</div>

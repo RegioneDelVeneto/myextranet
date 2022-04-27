@@ -1,0 +1,66 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@use './../../../style/liststyle';
+app-rap-management {
+
+  .big-icon {
+    font-size: 40px !important;
+  }
+
+  .bottom-ac{
+    display: flex;
+    justify-content: flex-end;
+  }
+    .events-card {
+        background-color: white;
+        .list-card-header-actions {
+            display: flex;
+            justify-content: space-between;
+          }
+      }
+    
+  .list-container {
+    .form-container {
+  
+      background-color: white;
+    }
+    .button-c {
+
+      padding-left: 0px !important;
+       mat-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .mat-button {
+        padding: 0 16px;
+        padding-top: 0px;
+        padding-right: 16px;
+        padding-bottom: 0px;
+        padding-left: 16px;
+        margin-right: 50px;
+        margin-top: 2rem;
+        color: black;
+        background-color: #f76483 !important;
+        font-size: 12px;
+      }
+    }
+
+  }
+}

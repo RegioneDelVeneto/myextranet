@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myextranet
+spec:
+  ports:
+  - name: myextranet-port
+    port: __YOUR_DATA__
+    targetPort: __YOUR_DATA__
+  selector:
+    templateName: myextranet-template
+  type: ClusterIP

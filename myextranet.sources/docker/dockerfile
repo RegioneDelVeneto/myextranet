@@ -1,0 +1,15 @@
+FROM registry.access.redhat.com/ubi8/openjdk-11
+USER root
+WORKDIR /opt
+
+ADD application.yml application-svi.yml application-colleng.yml mybox.properties myextranet.jar setup-rve-myextranet.sh start-rve-myextranet.sh wait-for-it.sh ./
+
+RUN dnf install nmap-ncat -y
+RUN dnf install vi -y
+
+RUN chmod +x wait-for-it.sh && sync && ./setup-rve-myextranet.sh && sync && rm -f setup-rve-myextranet.sh
+
+EXPOSE 8080
+
+CMD ./start-rve-myextranet.sh
+

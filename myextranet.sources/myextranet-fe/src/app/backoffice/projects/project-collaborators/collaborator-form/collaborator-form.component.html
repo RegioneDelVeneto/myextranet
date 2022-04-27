@@ -1,0 +1,44 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+<div class="list-container mt-3">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+  <div class="title-container mt-3 d-flex flex-row justify-content-between">
+   
+  <div role="heading" aria-label="h1" aria-level="1" class="h1 title">  {{ !isEdit ? "Nuovo collaboratore al Progetto" : "Modifica collaboratore al Progetto" }} :
+    {{ project.titolo }} </div>
+  </div>
+ 
+  <div class="form-container pt-2 pb-2 pl-5 pr-5" *ngIf="!!projectId">
+    <div class="bottom-ac mt-3 mb-3">
+      <button mat-stroked-button (click)="openDialog()">
+        <mat-icon aria-label="ricerca utente"> search</mat-icon>
+        Ricerca Utente
+      </button>
+    </div>
+    <app-generic-user-form *ngIf="!!formSettings" [settings]="formSettings"> </app-generic-user-form>
+    <div class="bottom-ac mt-3 mb-3">
+      <button [disabled]="disabledSend" mat-raised-button color="primary" (click)="sendData()">    
+        Inserisci Collaboratore
+      </button>
+    </div>
+  </div>
+</div>
+</div>

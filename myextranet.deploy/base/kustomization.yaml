@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ingress/myextranet-ingress.yaml
+- myextranet/myextranet-service.yaml
+- myextranet/myextranet-deployment.yaml
+- external-services/logstash-endpoints.yaml
+- external-services/logstash-service.yaml
+- ingress/myextranet-errorpages-deployment.yaml
+- ingress/myextranet-errorpages-service.yaml
+
+configMapGenerator:
+- files:
+  - ingress/myextranet-error.html
+  name: errorpages
+
+- files:
+  - ingress/default.conf
+  name: myextranet-errorpages-nginx-config

@@ -1,0 +1,155 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="list-container mt-3">
+    <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+    <div class="title-container mt-3 d-flex flex-row justify-content-between">
+
+      <div role="heading" aria-label="h1" aria-level="1" class="h1 title">
+        {{
+          !isEdit
+            ? "Nuovo Prodotto attivabile"
+            : "Modifica Prodotto attivabile: " + (product ? product.nomeProdottoAttiv : "")
+        }}
+      </div>
+    </div>
+    
+    <div class="form-container pt-2 pb-2 pl-5 pr-5">
+      <div class="container row col-12">
+        <div class="data-form col-12">
+          <form [formGroup]="productDataForm">
+            <div class="row">
+          
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="standard">
+                <mat-label> Denominazione </mat-label>
+                <input matInput formControlName="nomeProdottoAttiv" required />
+                <mat-error
+                  *ngIf="
+                    productDataForm.controls.nomeProdottoAttiv.touched &&
+                    productDataForm.controls.nomeProdottoAttiv.invalid
+                  "
+                >
+                  <span *ngIf="productDataForm.controls.nomeProdottoAttiv.errors.required"> Campo obbligatorio</span>
+                  <span *ngIf="productDataForm.controls.nomeProdottoAttiv.errors.maxlength">
+                    Il campo ha lunghezza massima di
+                    {{ productDataForm.controls.nomeProdottoAttiv.errors.maxlength.requiredLength }} caratteri</span
+                  >
+
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="standard">
+                <mat-label> Associazione a prodotto pubblicato </mat-label>
+                <mat-select formControlName="idProdotto">
+                  <mat-option *ngFor="let product of products" [value]="product.value">
+                    {{ product.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="productDataForm.controls.idProdotto.touched && productDataForm.controls.idProdotto.invalid"
+                >
+                  <span *ngIf="productDataForm.controls.idProdotto.errors.required"> Campo obbligatorio</span>
+               
+                </mat-error>
+              </mat-form-field>              
+            </div>
+            <div class="row">
+              
+              <mat-form-field class="form-field col-12" appearance="standard">
+                <mat-label> Descrizione </mat-label>
+                <input matInput formControlName="desAttivazioneBreve" />
+                <mat-error
+                  *ngIf="
+                    productDataForm.controls.desAttivazioneBreve.touched &&
+                    productDataForm.controls.desAttivazioneBreve.invalid
+                  "
+                >
+                  <span *ngIf="productDataForm.controls.desAttivazioneBreve.errors.required"> Campo obbligatorio</span>
+                  <span *ngIf="productDataForm.controls.desAttivazioneBreve.errors.maxlength">
+                    Il campo ha lunghezza massima di
+                    {{ productDataForm.controls.desAttivazioneBreve.errors.maxlength.requiredLength }} caratteri
+                  </span>
+                  
+                </mat-error>
+              </mat-form-field>
+             
+            </div>
+            <div class="row">
+              
+              <mat-form-field class="form-field col-12" appearance="standard">
+                <mat-label> Descrizione estesa </mat-label>
+                <textarea matInput formControlName="desAttivazione" rows="5"></textarea>
+                <mat-error
+                  *ngIf="
+                    productDataForm.controls.desAttivazione.touched && productDataForm.controls.desAttivazione.invalid
+                  "
+                >
+                  <span *ngIf="productDataForm.controls.desAttivazione.errors.required"> Campo obbligatorio</span>
+              
+                  <span *ngIf="productDataForm.controls.desAttivazione.errors.maxlength">
+                    Il campo ha lunghezza massima di
+                    {{ productDataForm.controls.desAttivazione.errors.maxlength.requiredLength }} caratteri
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="standard">
+                <mat-label> Attivabile Da </mat-label>
+                <input matInput [matDatepicker]="pickerDtAttivabileDa" required formControlName="dtAttivabileDa" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDtAttivabileDa"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDtAttivabileDa></mat-datepicker>
+                <mat-error
+                  *ngIf="
+                    productDataForm.controls.dtAttivabileDa.touched && productDataForm.controls.dtAttivabileDa.invalid
+                  "
+                >
+                  <span *ngIf="productDataForm.controls.dtAttivabileDa.errors.required"> Campo obbligatorio</span>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="standard">
+                <mat-label> Attivabile A </mat-label>
+                <input matInput [matDatepicker]="pickerDtAttivabileA" formControlName="dtAttivabileA" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDtAttivabileA"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDtAttivabileA></mat-datepicker>
+                <mat-error
+                  *ngIf="
+                    productDataForm.controls.dtAttivabileA.touched && productDataForm.controls.dtAttivabileA.invalid
+                  "
+                >
+                  <span *ngIf="productDataForm.controls.dtAttivabileA.errors.required"> Campo obbligatorio</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="bottom-ac mt-3 mb-3">
+        <button mat-stroked-button color="primary" class="mr-3" type="button" (click)="undo()" (keyup.enter)="undo()">
+          ANNULLA
+        </button>
+        <button [disabled]="productDataForm.invalid" mat-raised-button color="primary" (click)="sendData()">
+          Salva Prodotto
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

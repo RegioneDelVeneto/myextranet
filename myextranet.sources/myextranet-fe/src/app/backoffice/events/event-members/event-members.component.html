@@ -1,0 +1,207 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="list-container mt-3">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+
+  <div class="title-container mt-3 d-flex flex-row justify-content-between">
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title">Lista iscritti</div>
+    <div class="actions flex-sm-column flex-lg-row">
+      <button
+        aria-label="Salva operazione avanzate attiva"
+        mat-raised-button
+        class="button save-mgu"
+        *ngIf="showSignUpMangament"
+        (click)="saveSignUp()"
+      >
+        <mat-icon
+          role="presentation"
+          *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+          aria-label="icona decorativa salva operazione avanzata attiva"
+        >
+          save
+        </mat-icon>
+        {{ saveLabel }}
+      </button>
+
+      <button
+        aria-label="Annulla operazione avanzate attiva"
+        class="button undo-mgu"
+        mat-raised-button
+        *ngIf="showSignUpMangament"
+        (click)="signUpObject = {}; showSignUpMangament = false; changeHeader(false)"
+      >
+        <mat-icon role="presentation" aria-label="icona decorativa annulla operazione avanzata attiva">
+          clear
+        </mat-icon>
+        Annulla
+      </button>
+      <div class="flex-column flex-lg-row list-card-header-actions" *ngIf="!!eventId && !showSignUpMangament">
+        <button
+        aria-label="Aggiungi nuovo iscritto"
+          class="button mr-lg-2 mr-0 mb-2 m-lg-0"
+          *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+          mat-raised-button
+          [routerLink]="['/backoffice/events/members/new']"
+          [queryParams]="{ eventId: eventId }"
+          routerLinkActive="router-link-active"
+        >
+          Aggiungi Iscritto
+        </button>
+        <button
+        aria-label="Stampa foglio presenze"
+          (click)="printAll()"
+          class="button mr-lg-2 mr-0 mb-2 m-lg-0"
+          mat-raised-button
+          *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['visualizza'] }"
+        >
+          Stampa foglio presenze
+        </button>
+        <button
+        aria-label="Invia comunicazione agli iscritti"
+          *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+          (click)="opType = 'InviaCommunicazioneIscritti'; sendCommToMembers()"
+          class="button mr-lg-2 mr-0 mb-2 m-lg-0"
+          mat-raised-button
+        >
+          Invia comunicazione agli iscritti
+        </button>
+        <button  aria-label="apri lista operazioni avanzate"  class="button" *ngIf="!!eventId && !showSignUpMangament" mat-raised-button [matMenuTriggerFor]="menu">
+          <mat-icon role="presentation" aria-label="icona decorativa apri operazioni avanzate">
+            list
+          </mat-icon>
+          Azioni
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card-c" *ngIf="!!event">
+    <mat-card class="events-card mb-3">
+      <div class="flex-sm-column flex-lg-row list-card-header-actions">
+        <div>
+          <mat-card-header>
+            <div mat-card-avatar class="list-card-header">
+              <mat-icon aria-label="icona evento" class="big-icon"> event_available </mat-icon>
+            </div>
+            <mat-card-title> Iscritti all'evento {{ event.titolo }}</mat-card-title>
+            <mat-card-subtitle class="subtitle-c"> {{ event.sottotitolo }} </mat-card-subtitle>
+          </mat-card-header>
+        </div>
+      </div>
+      <mat-card-content>
+        <span class="span-date-icon">
+          <mat-icon aria-label="icona evento da a" class="icon-vertical-mini"> event </mat-icon> Dal
+          {{ event.dateDa | date: "dd/MM/y HH:mm" }} al
+          {{ event.dateA | date: "dd/MM/y HH:mm" }}
+        </span>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="morfeo-c">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="isOpen">
+        <mat-expansion-panel-header>
+          <mat-panel-title> Filtro di ricerca Iscritti </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>
+          <mrf-form
+            #membersForm
+            *ngIf="!!eventId"
+            [form]="!!formJson ? formJson : null"
+            [config]="formFilterConfig"
+          ></mrf-form>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <hr />
+    
+    <div *appLoading="isLoading">
+      <app-card-table-container
+        (toolBarEvent)="manageEvent($event)"
+        [configuration]="null"
+        [displayedColumns]="tableHeader"
+        (sortEvent)="manageSort($event)"
+        [dataSource]="{
+          data: eventsDataSource,
+          preselectedRows: { objMapper: signUpObject, key: 'idIscritto' },
+          sortField: { active: sortByHeaderFilter, direction: sortOrder }
+        }"
+      >
+      </app-card-table-container>
+      <mat-paginator
+        [length]="length"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (page)="updatePaginator($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+
+<mat-menu #menu="matMenu">
+  <button
+  aria-label="Imposta presenze"
+    *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+    (click)="showSignUpMangament = true; opType = 'ImpostaPresenze'; signUpObject = {}; changeHeader(true)"
+    class="button-menu"
+    mat-menu-item
+    [disableRipple]="true"
+  >
+    Imposta presenze
+  </button>
+  <button
+  aria-label="Imposta Relatori"
+    *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+    (click)="showSignUpMangament = true; opType = 'ImpostaRelatore'; signUpObject = {}; changeHeader(true)"
+    class="button-menu"
+    mat-menu-item
+    [disableRipple]="true"
+  >
+    Imposta relatori
+  </button>
+  <button
+  aria-label="Invio attestati"
+    *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+    [disabled]="inviaAttestatiActive"
+    (click)="showSignUpMangament = true; opType = 'InviaAttestati'; signUpObject = {}; changeHeader(true)"
+    class="button-menu"
+    mat-menu-item
+    [disableRipple]="true"
+  >
+    Invio attestati
+  </button>
+  <button
+  aria-label="Richiesta questonario"
+    *appACLDirective="{ acl: 'myextranet.eventi', permissions: ['gestisci'] }"
+    (click)="
+      showSignUpMangament = true;
+      opType = 'InviaRichiestaCompilazioneQuestionario';
+      signUpObject = {};
+      changeHeader(true)
+    "
+    class="button-menu"
+    mat-menu-item
+    [disableRipple]="true"
+  >
+    Richiesta questonario
+  </button>
+</mat-menu>

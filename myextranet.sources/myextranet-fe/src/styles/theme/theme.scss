@@ -1,0 +1,650 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@import "~@angular/material/theming";
+@include mat-core();
+
+$custom-typography: mat-typography-config(
+  $font-family: "Titillium Web, sans-serif",
+  $headline: mat-typography-level(32px, 48px, 700),
+  $title: mat-typography-level(24px, 30px, 600),
+);
+//
+//$body-1: mat-typography-level(16px, 24px, 600),
+@include angular-material-typography($custom-typography);
+
+$primary: mat-palette($mat-pink, 500, 900, A100);
+$accent: mat-palette($mat-red, 500, 900, A100);
+$warn: mat-palette($mat-deep-orange);
+$color-dark-pink: #990f3d; // #f76483;
+$color-light-pink: #eec0d0;
+$color-light-pink-hover: #e4bac9;
+$color-grey: #f2f2f2;
+
+$myextranet-fe-theme: mat-light-theme($primary, $accent, $warn);
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
+  ::-webkit-scrollbar {
+    width: $size;
+    height: $size;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+
+  // For Internet Explorer
+  body {
+    scrollbar-face-color: $foreground-color;
+    scrollbar-track-color: $background-color;
+  }
+}
+
+app-detail div mrf-form form {
+  margin-top: 1px !important;
+}
+
+.mat-header-row {
+  background-color: #e5e5e5;
+  min-height: 40px;
+  border: 0;
+}
+
+.mat-row {
+  height: 45px;
+  min-height: 45px;
+  background-color: white; //$color-grey;
+}
+
+.mat-row:hover {
+  background-color: $color-light-pink !important;
+}
+
+/*.mat-tab-header {
+  background-color: $color-grey !important;
+}*/
+
+// List filter
+mrf-data-table mat-accordion mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
+  padding: 0 24px 40px !important;
+}
+
+// List paginator
+.mat-paginator-container {
+  background-color: $color-grey;
+}
+
+// DETAIL FIELDS
+mat-form-field div {
+  //padding-bottom: 1px !important;
+  div div {
+    label {
+      height: 20px !important;
+    }
+    input {
+      height: 20px !important;
+      font-size: 16px !important;
+    }
+  }
+}
+
+// mat-for
+
+// Not morfeo inputs
+.mat-form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: wrap !important;
+  mat-form-field .mat-form-field-wrapper {
+    padding-bottom: 1.25em !important;
+    .mat-form-field-flex {
+      padding-top: 0 !important;
+    }
+  }
+}
+
+mat-select span {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+// ATTACHMENTS
+// 1. Read Only form
+app-detail div mat-accordion mat-expansion-panel .mat-expansion-panel-content .mat-expansion-panel-body {
+  padding: 0 24px 0px !important;
+  // input text color
+  mrf-element-wrapper div mrf-form-element div:nth-child(5) {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    mrf-button-element {
+      button {
+        background-color: $color-light-pink !important;
+      }
+    }
+  }
+
+  // download button (idem repeatable download button)
+  mrf-form form mat-card-content mrf-element-wrapper div mrf-form-element {
+    div:nth-child(5) {
+      margin-right: -10% !important;
+      margin-left: -8% !important;
+      mrf-element-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        height: 35px !important;
+        margin-top: 5px !important;
+      }
+    }
+    div mrf-form-element div mrf-data-table {
+      thead {
+        display: none;
+      }
+      tbody {
+        mar-row:nth-child(1) {
+          display: none !important;
+        }
+        mat-row {
+          border: 0 solid black;
+          button {
+            border-radius: 10% !important;
+            height: 35px !important;
+            margin-top: 0px !important;
+            width: 50px !important;
+            background-color: $color-light-pink !important;
+            span {
+              margin-top: 0px !important;
+              display: flex !important;
+              flex-direction: row !important;
+              align-items: center !important;
+              justify-content: center !important;
+              mat-icon {
+                color: black !important;
+              }
+            }
+          }
+          button:hover {
+            background-color: $color-light-pink-hover !important;
+          }
+        }
+        mat-row:hover {
+          background-color: $color-grey !important;
+        }
+        mat-row mat-cell:nth-child(1) {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
+div app-eng-dynamic-forms form {
+  mat-card-content {
+    margin-bottom: 0px !important;
+  }
+  .mat-card-actions {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    button {
+      background-color: $color-light-pink;
+      margin-right: 5px !important;
+      span {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+      }
+    }
+  }
+}
+
+// ATTACHMENTS
+//2. Editable form
+//'Add Attachment' button
+mrf-repeatable-container div a {
+  background-color: $color-light-pink !important;
+  span {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+}
+//'Download' button
+// div mrf-layout-columns div {
+//   div:nth-child(5) {
+//     margin-right: -10% !important;
+//     margin-left: -8% !important;
+//     mrf-element-wrapper {
+//       display: flex !important;
+//       flex-direction: row !important;
+//       align-items: center !important;
+//       height: 35px !important;
+//       margin-top: 5px !important;
+//     }
+//   }
+//   div mrf-form-element div mrf-data-table {
+//     thead {
+//       display: none;
+//     }
+//     tbody {
+//       mat-row {
+//         border: 0 solid black !important;
+//         button {
+//           border-radius: 10% !important;
+//           height: 35px !important;
+//           width: 50px !important;
+//           span {
+//             margin-top: 8px !important;
+//             display: flex !important;
+//             flex-direction: row !important;
+//             align-items: center !important;
+//             justify-content: center !important;
+//             mat-icon {
+//               color: black !important;
+//             }
+//           }
+//         }
+//         button:hover {
+//           background-color: $color-light-pink-hover !important;
+//         }
+//       }
+//       mat-row:hover {
+//         background-color: $color-grey !important;
+//       }
+//       mat-row mat-cell:nth-child(1) {
+//         display: none !important;
+//       }
+//     }
+//   }
+// }
+
+.mat-expansion-panel {
+  background-color: white; //$color-grey !important;
+}
+
+mat-option {
+  background-color: $color-grey !important;
+  background: $color-grey !important;
+}
+
+// Single Line
+mrf-repeatable-container div {
+  box-shadow: none !important;
+  div {
+    button {
+      background-color: $color-light-pink !important;
+      height: 35px !important;
+      width: 50px !important;
+      margin-top: 5px !important;
+      min-width: 0px !important;
+      max-width: 200px !important;
+      span {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+    }
+  }
+}
+
+// OTHER
+mat-option:hover {
+  background-color: #efdae1 !important;
+  background: #efdae1 !important;
+}
+
+// New Association button
+mrf-form
+  form
+  mat-card-content
+  mrf-element-wrapper
+  div
+  mrf-form-element
+  div
+  mrf-layout-tabs
+  mat-tab-group
+  div
+  .mat-tab-body-active
+  div
+  mat-card
+  mat-card-content
+  mrf-element-wrapper
+  div
+  mrf-form-element
+  div
+  mrf-layout-tabs
+  mat-tab-group
+  div
+  mat-tab-body
+  div
+  mat-card
+  mat-card-content
+  mrf-element-wrapper
+  div
+  mrf-form-element
+  div
+  mrf-button-element {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
+
+  button {
+    margin: 5px !important;
+    background-color: $color-light-pink !important;
+    color: #5a5a5a !important;
+    cursor: pointer !important;
+  }
+  button:hover {
+    background-color: $color-light-pink-hover !important;
+  }
+}
+mat-card {
+  background-color: white; //$color-grey !important;
+}
+
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Material Icons"), local("MaterialIcons-Regular"),
+    url(https://fonts.gstatic.com/s/materialicons/v21/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2) format("woff2");
+}
+
+@include angular-material-theme($myextranet-fe-theme);
+
+.msg-snackbar-success {
+  color: #fff;
+  font-weight: 600;
+  background: #4caf50;
+}
+.msg-snackbar-error {
+  color: #fff;
+  font-weight: 600;
+  background: #f44336;
+}
+
+.no-margin-r-l {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.icon-vertical {
+  //display: flex !important;
+  //flex-direction: column !important;
+  //justify-content: center !important;
+  // justify-content: flex-end;
+  //font-size: 40px !important;
+  // opacity: (0.6);
+}
+
+.icon-pointer {
+  cursor: pointer;
+}
+
+mat-form-field {
+  font-family: "Titillium Web", sans-serif !important;
+}
+.mat-form-field-underline {
+  padding-bottom: 0px !important;
+}
+
+.text-cut-3 {
+  //display: flex;
+  @include multiLineEllipsis($lineHeight: 1.5em, $lineCount: 3, $bgColor: white);
+}
+.text-cut-2 {
+  //display: flex;
+  @include multiLineEllipsis($lineHeight: 1.5em, $lineCount: 2, $bgColor: white);
+}
+
+.text-cut-1 {
+  //display: flex;
+  @include multiLineEllipsis($lineHeight: 1.5em, $lineCount: 1, $bgColor: white);
+}
+.mat-error {
+  color: #b90000 !important;
+}
+.mat-form-field-invalid {
+  .mat-form-field-outline {
+    color: #b90000 !important;
+  }
+}
+
+.mat-stroked-button {
+  background-color: white;
+  border-width: 2px !important;
+  border-radius: 0px !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  min-height: 43px !important;
+  font-family: "Titillium Web", sans-serif !important;
+}
+
+.mat-raised-button {
+  border-radius: 0px !important;
+  //font-size: 18px !important;
+  //font-weight: bold !important;
+  //min-height: 43px !important;
+  font-family: "Titillium Web", sans-serif !important;
+}
+
+.mat-flat-button {
+  border-radius: 0px !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  min-height: 43px !important;
+  font-family: "Titillium Web", sans-serif !important;
+}
+
+.pr-15 {
+  // padding-right: 15px;
+}
+
+mrf-text-area-element {
+  textarea {
+    min-height: 8rem;
+  }
+}
+
+app-backoffice-layout {
+  .mat-flat-button.mat-primary {
+    background-color: #f76483;
+    color: black;
+  }
+  .mat-stroked-button.mat-primary {
+   // background-color: #f76483;
+    color: black;
+    border: 2px solid #f66482 !important;
+  }
+  mat-expansion-panel {
+    mrf-form {
+      form {
+        margin-top: 1rem !important;
+      }
+    }
+  }
+  button {
+    text-transform: uppercase;
+    font-weight: 600 !important;
+  }
+  .actions {
+    .event-header-actions {
+      .button {
+        border-radius: 0 !important;
+        border: 2px solid #f66482 !important;
+      }
+      .button-menu {
+        border-radius: 0 !important;
+        border: 2px solid #f66482 !important;
+      }
+    }
+  }
+  .undo-mgu {
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    border: 2px solid #f66482 !important;
+  }
+  .save-mgu {
+    border-radius: 0 !important;
+    border: 2px solid #f66482 !important;
+  }
+  app-general-data-table {
+    table .mat-header-row {
+      height: 40px;
+      border: 0;
+      .mat-header-cell {
+        font-weight: 700;
+        color: #000;
+        font-size: 17px;
+        //font-family: Titillium Web, sans-serif;
+        background-color: #d9d3d4;
+      }
+    }
+    .mat-row {
+      min-height: 45px;
+    }
+    .mat-row:nth-child(2n) {
+      background-color: #eeebeb;
+      opacity: 1;
+    }
+  }
+  mrf-form {
+    .mat-card-actions {
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+      .mat-button {
+        //border-color: rgba(0, 0, 0, 0.12);
+        //border: 1px solid;
+        color: black; // #f66482!important;
+        margin-left: 8px;
+        margin-right: 8px;
+        font-weight: 600;
+        border: 2px solid #f66482 !important;
+        border-radius: 0 !important;
+        //min-width: 124px!important;
+      }
+      .mat-button:not([type="submit"]) {
+        //float: right;
+
+        background-color: transparent !important;
+      }
+      .mat-button[type="submit"] {
+        background-color: #f66482 !important;
+        border-radius: 0 !important;
+        float: right;
+        margin-right: 18px;
+      }
+      .mat-button[type="reset"] {
+        float: right;
+      }
+      /* .mat-button[type="button"]:first-child {
+        
+      }*/
+      .mat-button:hover {
+        background-color: $color-light-pink-hover !important;
+      }
+    }
+  }
+}
+app-public-layout {
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+  .mat-row:hover {
+    background-color: $color-grey;
+  }
+  .footer-c {
+    background-color: white !important;
+  }
+
+  .msg-cont {
+    box-shadow: 3px 3px 20px #00000029;
+  }
+
+  .mat-paginator-container {
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mat-flat-button.mat-accent {
+    background-color: #70d1b6;
+    color: black;
+  }
+
+  .mat-stroked-button.mat-accent {
+    border-color: #70d1b6;
+    border-width: 1.5px;
+    //-color:
+    color: black;
+  }
+  .mat-form-field-disabled {
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
+mat-form-field.mat-form-field {
+  font-weight: 600;
+  .mat-form-field-label {
+    font-weight: 400;
+  }
+}
+button:focus {
+  outline: Highlight solid 2px !important;
+  outline: -webkit-focus-ring-color solid 2px!important;
+  
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #be134c;
+  font-weight: bold;
+}
+
+mat-option:active:not(.mat-option-disabled) {
+  background-color: #efdae1 !important;
+  background: #efdae1 !important;
+}
+mat-option.mat-active:not(.mat-option-disabled) {
+  background-color: #efdae1 !important;
+  background: #efdae1 !important;
+}
+/*
+.mat-option:not(.mat-option-disabled):active {
+  background-color: #f2f2f2;
+  background: #f2f2f2;
+}*/
+
+.mat-menu-item:hover:not([disabled]) {
+  background: rgba(0, 0, 0, 0.08);
+}
+.mat-expansion-panel-header:focus {
+  //outline: -webkit-focus-ring-color solid 2px !important;
+  border :2px solid black !important;
+
+}
+
+mrf-form form .mat-card-content mrf-element-wrapper mrf-form-element .mat-form-field-infix:focus-within {
+  //outline: -webkit-focus-ring-color solid 2px !important;
+}
+.mat-paginator-page-size-label,.mat-paginator-range-label{
+ color: rgba(0, 0, 0, 0.64);
+}

@@ -1,0 +1,79 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@use './../../../style/liststyle';
+app-events-invite-new {
+
+  .list-card-header-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  .big-icon {
+    font-size: 40px !important;
+  }
+
+  .events-card {
+    background-color: white;
+  }
+  .icon-vertical-mini {
+    font-size: 18px !important;
+    opacity: (0.6);
+  }
+  .span-date-icon,
+  .subtitle-c {
+    display: flex;
+    flex-direction: row;
+  }
+
+
+
+  .list-container {
+    .form-container {
+      // padding : 15px;
+      background-color: white;
+    }
+    
+    .morfeo {
+      ::ng-deep .mat-button-base {
+        color: black;
+        background-color: #f76483;
+        font-size: 12px;
+      }
+      ::ng-deep .mat-card-actions {
+      }
+
+      button[name="openModal"] {
+        //margin-right: 50px;
+        border-color: #f76483 !important;
+        border-width: 2px;
+        border-style: solid;
+
+      }
+
+      ::ng-deep button[type="reset"] {
+        margin-right: 50px;
+        margin-top: 2rem;
+      }
+
+      ::ng-deep mat-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+}

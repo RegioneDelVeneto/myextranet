@@ -1,0 +1,398 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="wrapper">  
+  <div id="fake-header" aria-hidden="true">
+    <div class="main_nav_container">
+      <!-- topBar -->
+      <div class="topBar"></div>
+      <!-- End topBar -->
+
+      <div class="menu-main">
+        <!-- Menu button -->
+        <div class="menu-button">
+          <div class="nav-icon nav-icons-menu" tabindex="-1">
+            <div id="fake-nav-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span class="font-menu d-none">MENU</span>
+          </div>
+        </div>
+
+        <!-- Heading -->
+        <div class="container main-nav">
+          <div class="row">
+            <div class="nav-padding-left col-8 col-sm-8 brand">
+              <div class="logo-img p-2">
+                <a [routerLink]="'/'" tabindex="-1">
+                  <img [src]="urlLogo" [alt]="'logo ' + configuration.title" />
+                </a>
+              </div>
+              <div class="logo-text p-2 pointer" [routerLink]="'/'" tabindex="-1">
+                <div class="h1 d-none d-sm-block">{{ configuration.title }}</div>
+                <p class="d-none d-sm-block">{{ configuration.subtitle }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Heading -->
+      </div>
+      <hr />
+
+      <!-- Navigation link -->
+      <div class="nav-bar d-none d-lg-block"></div>
+    </div>
+
+    <!-- End Navigation link -->
+    <div class="clearfix"></div>
+  </div>
+  <header id="headerId" class="fixed-top" #header>
+    <div class="main_nav_container">
+      <!-- topBar -->
+      <div class="topBar">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-sm-6 left-header">
+              <p>
+                <a href="http://www.regione.veneto.it" [tabindex]="isMenuOpen ? 0 : -1" class="">Regione del Veneto</a>
+              </p>
+            </div>
+            <div class="col-sm-3 pr-0 d-none d-md-block">
+              <div class="public-area-link">
+                <a tabindex="0" [href]="myportalUrl">
+                  <mat-icon aria-label="Vai all'area pubblica"> keyboard_arrow_left </mat-icon>
+                  <span class="title-extended" [title]="'Va all&rsquo;area pubblica'">Vai all'area pubblica</span>
+                </a>
+              </div>
+            </div>
+            <div class="col-sm-3 pl-0 d-none d-md-block">
+              <div *ngIf="!!userInfo" class="dropdown-login">
+                <a
+                  tabindex="0"
+                  href="javascript:void(0)"
+                  class="dropdown-toggle"
+                  id="user-button-menu"
+                  [title]="userLoginDropdown? 'Apri menu utente':'Chiudi menu utente'"
+                  (click)="userLoginDropdown = !userLoginDropdown"
+                >
+                  <span class="title-extended" [title]="'Apri il menu dell&rsquo;utente'"
+                    >Ciao, {{ userInfo.givenName }} {{ userInfo.familyName }}</span
+                  >
+                  <span class="title-short" [title]="'Apri il menu dell&rsquo;utente'">
+                    {{ userInfo.givenName }} {{ userInfo.familyName }}</span
+                  >
+                  <mat-icon *ngIf="!userLoginDropdown"  aria-label="chiudi menu utente"> keyboard_arrow_down </mat-icon>
+                  <mat-icon aria-label="apri menu utente" *ngIf="!!userLoginDropdown"> keyboard_arrow_up </mat-icon>
+                </a>
+                <div [hidden]="!userLoginDropdown" class="dropdown-login-content" aria-labelledby="user-button-menu">
+                  <button
+                    [tabindex]="userLoginDropdown ? 0 : -1"
+                    class="dropdown-item flex-row"
+                    (click)="userLoginDropdown = !userLoginDropdown"
+                    [routerLink]="['/utente/bacheca']"
+                    type="button"
+                    aria-label="Vai alla bacheca"
+                  >
+                    <mat-icon role="presentation"> groups </mat-icon> Bacheca
+                  </button>
+                  <hr />
+                  <button
+                    [tabindex]="userLoginDropdown ? 0 : -1"
+                    class="dropdown-item flex-row"
+                    (click)="userLoginDropdown = !userLoginDropdown"
+                    [routerLink]="['/utente/user/edit']"
+                    type="button"
+                    aria-label="Vai alla modifica del profilo utente"
+                  >
+                    <mat-icon role="presentation"> account_circle </mat-icon> Modifica profilo
+                  </button>
+                  <hr />
+                  <button
+                    [tabindex]="userLoginDropdown ? 0 : -1"
+                    class="dropdown-item flex-row"
+                    (click)="logout()"
+                    type="button"
+                    aria-label="Esci"
+                  >
+                    <mat-icon role="presentation"> logout </mat-icon> Esci
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- End topBar -->
+
+      <div class="menu-main">
+        <!-- Menu button -->
+        <div class="menu-button d-block d-lg-none">
+          <div
+            tabindex="0"
+            title="Apre il menu principale"
+            class="nav-icon nav-icons-menu"
+            (click)="toggleMenu()"
+            (keyup.enter)="toggleMenu()"
+          >
+            <div id="nav-icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span class="font-menu">MENU</span>
+          </div>
+        </div>
+
+        <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" #cbpspmenu aria-label="menu laterale di navigazione">
+          <div>
+            <p class="menu-span inline">
+              Menu
+              <button title="Chiudi menu" [tabindex]="isMenuOpen ? 0 : -1" (click)="toggleMenu()">
+                <span class="sr-only">Chiude il menu principale</span>
+                <span class="icon-close secondary-grey-text"></span>
+              </button>
+            </p>
+          </div>
+          <div class="clearfix">
+            <ul class="cbp-spmenu-vertical-group">
+              <li>
+                <div>
+                  <a
+                    [routerLink]="'/'"
+                    role="button"
+                    class="pointer"
+                    [tabindex]="isMenuOpen ? 0 : -1"
+                    data-toggle="collapse"
+                  >
+                    <span>Home</span>
+                  </a>
+                </div>
+              </li>
+            </ul>
+            <ul class="cbp-spmenu-vertical-group" *ngFor="let group of configuration.menu; let i = index">
+              <li>
+                <div *ngIf="group?.items?.length">
+                  <a
+                    href="javascript:void(0)"
+                    class="btn-outline-primary pointer"
+                    [tabindex]="isMenuOpen ? 0 : -1"
+                    data-toggle="collapse"
+                    (click)="collaspeGroupMenu('vertical-1-', removeSpaces(group.name))"
+                    [routerLinkActive]="'active'"
+                    #rla="routerLinkActive"
+                    [ngClass]="{ active: rla.isActive }"
+                    role="button"
+                  >
+                    <span>{{ group.name }}</span>
+                    <span class="pull-right icon-arrow-left"></span>
+                  </a>
+                </div>
+                <div *ngIf="!group?.items?.length">
+                  <a
+                    class="btn-outline-primary pointer"
+                    [tabindex]="isMenuOpen ? 0 : -1"
+                    data-toggle="collapse"
+                    [routerLink]="[group.openInto]"
+                    (click)="toggleMenu()"
+                    [routerLinkActive]="'active'"
+                    #rla="routerLinkActive"
+                    [ngClass]="{ active: rla.isActive }"
+                    role="button"
+                  >
+                    <span>{{ group.name }}</span>
+                  </a>
+                </div>
+                <ul
+                  id="vertical-1-{{ removeSpaces(group.name) }}"
+                  class="cbp-spmenu-vertical-group-item d-none"
+                  *ngIf="group?.items?.length"
+                >
+                  <li class="first-leaf" *ngFor="let item of group.items" [routerLinkActive]="['active']">
+                    <a
+                      href="javascript:void(0)"
+                      *ngIf="isAbsoluteUrl(item.url)"
+                      (click)="openExternalUrl(item.url)"
+                      [tabindex]="isMenuOpen ? 0 : -1"
+                      [title]="item.label"
+                      >{{ item.label }}</a
+                    >
+                    <a
+                      *ngIf="!isAbsoluteUrl(item.url)"
+                      [routerLink]="[item.url]"
+                      [title]="item.label"
+                      [tabindex]="isMenuOpen ? 0 : -1"
+                      >{{ item.label }}</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <!-- end menu button -->
+
+        <!-- Heading -->
+        <div class="container main-nav">
+          <div class="row">
+            <div class="nav-padding-left col-8 col-sm-8 brand">
+              <div class="logo-img p-2">
+                <a [routerLink]="'/'" [tabindex]="isMenuOpen ? 0 : -1">
+                  <img [src]="urlLogo" [alt]="'logo ' + configuration.title" />
+                </a>
+              </div>
+              <div class="d-none d-sm-block logo-text p-2 pointer" [routerLink]="'/'" tabindex="0">
+                <div class="h1 d-none d-sm-block">{{ configuration.title }}</div>
+                <p class="header-sub d-none d-md-block">{{ configuration.subtitle }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Heading -->
+      </div>
+      <hr />      
+      <!-- Navigation link -->
+      <div class="nav-bar d-none d-lg-block">
+        <nav class="container" aria-label="Menu di navigazione orizzontale">
+          <div class="row">
+            <ul class="col navBar-link text-center">
+              <li *ngFor="let group of configuration.menu">
+                <a
+                  *ngIf="isAbsoluteUrl(group.openInto)"
+                  (click)="openExternalUrl(group.openInto)"
+                  id="nav-link-{{ removeSpaces(group.name) }}"
+                  class="megamenu-group-link"
+                  [tabindex]="isMenuOpen ? -1 : 0"
+                  title="{{ group.name }}"
+                >
+                  {{ group.name }}
+                </a>
+                <a
+                  *ngIf="!isAbsoluteUrl(group.openInto)"
+                  [routerLink]="[group.openInto]"
+                  id="nav-link-{{ removeSpaces(group.name) }}"
+                  class="megamenu-group-link"
+                  [tabindex]="isMenuOpen ? -1 : 0"
+                  title="{{ group.name }}"
+                >
+                  {{ group.name }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" #cbpspmenu aria-label="Sotto menu per voci interne">
+        <div>
+          <p class="menu-span inline">
+            Menu
+            <span (click)="toggleMenu()" class="icon-close secondary-grey-text"></span>
+          </p>
+        </div>
+        <div class="clearfix">
+          <ul class="cbp-spmenu-vertical-group">
+            <li>
+              <div>
+                <a
+                  [routerLink]="'/'"
+                  role="button"
+                  class="pointer"
+                  [tabindex]="isMenuOpen ? 0 : -1"
+                  data-toggle="collapse"
+                >
+                  <span>Home</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+          <ul class="cbp-spmenu-vertical-group" *ngFor="let group of configuration.menu; let i = index">
+            <li>
+              <div *ngIf="group?.items?.length">
+                <a
+                  href="javascript:void(0)"
+                  class="pointer"
+                  [tabindex]="isMenuOpen ? 0 : -1"
+                  data-toggle="collapse"
+                  (click)="collaspeGroupMenu('vertical-', removeSpaces(group.name))"
+                >
+                  <span>{{ group.name }}</span>
+                  <span class="pull-right icon-arrow-left"></span>
+                </a>
+              </div>
+              <div *ngIf="!group?.items?.length">
+                <a
+                  href="javascript:void(0)"
+                  *ngIf="isAbsoluteUrl(group.openInto)"
+                  [routerLinkActive]="'active'"
+                  #rla="routerLinkActive"
+                  (click)="openExternalUrl(group.openInto)"
+                  id="link-{{ removeSpaces(group.name) }}"
+                  class="megamenu-group-link"
+                  [tabindex]="isMenuOpen ? 0 : -1"
+                  title="{{ group.name }}"
+                >
+                  {{ group.name }}
+                  <span *ngIf="rla.isActive" class="sr-only">(corrente)</span>
+                </a>
+                <a
+                  *ngIf="!isAbsoluteUrl(group.openInto)"
+                  [routerLink]="[group.openInto]"
+                  [routerLinkActive]="'active'"
+                  #rla="routerLinkActive"
+                  id="link-{{ removeSpaces(group.name) }}"
+                  class="megamenu-group-link"
+                  [tabindex]="isMenuOpen ? 0 : -1"
+                  title="{{ group.name }}"
+                >
+                  {{ group.name }}
+                  <span *ngIf="rla.isActive" class="sr-only">(corrente)</span>
+                </a>
+              </div>
+              <ul
+                id="vertical-{{ removeSpaces(group.name) }}"
+                class="cbp-spmenu-vertical-group-item d-none"
+                *ngIf="group?.items?.length"
+              >
+                <li class="first-leaf" *ngFor="let item of group.items" [routerLinkActive]="['active']">
+                  <a
+                    href="javascript:void(0)"
+                    *ngIf="isAbsoluteUrl(item.url)"
+                    (click)="openExternalUrl(item.url)"
+                    [tabindex]="isMenuOpen ? 0 : -1"
+                    >{{ item.label }}</a
+                  >
+                  <a *ngIf="!isAbsoluteUrl(item.url)" [routerLink]="[item.url]" [tabindex]="isMenuOpen ? 0 : -1">{{
+                    item.label
+                  }}</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- End Navigation link -->
+    <div class="clearfix"></div>
+  </header>
+  <div class="clearfix"></div>
+</div>

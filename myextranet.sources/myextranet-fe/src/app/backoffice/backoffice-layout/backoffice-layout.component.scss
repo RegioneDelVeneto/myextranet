@@ -1,0 +1,253 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@import "./../../../styles.scss";
+@include scrollbars(.4em, rgba(116, 122, 128, 1), rgba(0, 0, 0, 0));
+
+app-backoffice-layout {
+  .mat-menu-panel{
+    background-color: black;
+    color: white;
+    font-weight: bold;
+  }
+  .active-link{
+    color: #f76483;
+    .text{
+      color: #f76483 !important;
+    }
+
+    border-right: 5px solid #f76483;
+    
+  }
+  .active-link:active{
+    border-top: 1px solid #f76483;
+    border-bottom: 1px solid #f76483;
+    border-left: 1px solid #f76483;
+  }
+  .mat-list-item:hover{
+    background: rgba(12,22,33,0.3) !important;
+  }
+  .mat-list-item:focus {
+    outline: Highlight solid 2px;
+    outline: -webkit-focus-ring-color solid 2px;
+    
+  }
+  .profile-icon {
+    margin-right: 0.5rem;
+  }
+  .backoffice-spacer {
+    flex: 1 1 auto;
+  }
+  .side-menu-padding {
+    padding-left: 260px !important;
+  }
+
+  .icon-white {
+    color: white !important;
+  }
+  .dashboard-container {
+    .up {
+      vertical-align: top;
+    }
+    .header {
+      color: white;
+      background-color: black;
+      height: 66px;
+      z-index: 3;
+      padding-left: 35px;
+      .img {
+        width: 100px;
+      }
+      .img-user {
+        width: 35px;
+        right: 0;
+        position: fixed;
+        cursor: pointer;
+        margin-right: 40px;
+      }
+      .login-button {
+        right: 50px;
+        background-color: #f76483;
+        position: fixed;
+        cursor: pointer;
+        margin-right: 40px;
+      }
+      .menu {
+        background-color: white;
+        margin-left: 25px;
+        height: 25px;
+        width: 25px;
+        transition: 0.3s;
+        cursor: pointer;
+        .img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+      .menu:hover {
+        background-color: #f76483;
+        transition: 0.3s;
+      }
+    }
+    mat-sidenav-container {
+      position: fixed;
+      background-color: #f2f2f2;
+      height: 100%;
+      left: 0;
+      right: 0;
+      mat-sidenav {
+        padding-top: 5px;
+        margin-bottom: 121px;
+        width: 240px;
+        background-color: #242d37;
+        mat-nav-list {
+          .progress-bar-c {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .line-separator {
+            background-color: #0c1621;
+            height: 1px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          }
+          .icon {
+            height: 25px;
+            width: 25px;
+            margin-right: 15px;
+          }
+          mat-list-item {
+            height: 38px!important;
+            color: white;
+          }
+          mat-list-item.child {
+            height: 33px !important;
+            color: white;
+          }
+          mat-list-item:hover {
+            background-color: #222222;
+            // color: red;
+          }
+          mat-list-item:last-child {
+            margin-bottom:30px
+          }
+          .text {
+            font-size: 16px;
+            line-height: normal;
+            font-family: "Titillium Web", sans-serif;
+            font-weight: bold;
+            color: $white;
+          }
+          .text-center {
+            display: flex;
+            justify-content: center;
+          }
+          .text-selected {
+            color: #ea6282;
+            font-weight: bold;
+          }
+          .box-selected {
+            border-right: 6px solid #ea6282;
+            width: 97%;
+          }
+        }
+        .sidenav-footer {
+          height: 55px !important;
+          background-color: black;
+          color: white;
+          bottom: 0;
+          position: fixed;
+          width: 240px;
+          a {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            .img {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      mat-sidenav-content {
+
+        .breadcumb {
+          padding-left: 20px;
+          padding-top: 20px;
+          font-family: "Titillium Web", sans-serif;
+        }
+
+        a {
+          cursor: pointer;
+          text-decoration: none !important;
+          color: #a32b44 !important;
+          a:hover {
+            color: #a32b44;
+          }
+        }
+        .footer {
+          background-color: white;
+          position: fixed;
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          height: 55px !important;
+          z-index: 1;
+          bottom: 0;
+          font-size: 13px;
+          right: 0;
+          .text {
+            font-style: normal;
+            font-variant-ligatures: normal;
+            font-variant-caps: normal;
+            font-variant-numeric: normal;
+            font-variant-east-asian: normal;
+            font-weight: bold;
+            font-stretch: normal;
+            line-height: normal;
+            font-family: "Titillium Web", sans-serif;
+          }
+          .external-links {
+            list-style-type: none;
+            display: flex;
+            flex-direction: row;
+            position: relative;
+            right: 25px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            margin: 0px;
+            width: 100%;
+            line-height: normal;
+            font-family: "Titillium Web", sans-serif;
+            li {
+              margin-left: 30px;
+            }
+            li.link {
+              cursor: pointer;
+              text-decoration: none !important;
+              color: #a32b44 !important;
+              link:hover {
+                text-decoration: underline !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+  $src: null;
+
+  $extmods: (
+    eot: "?",
+    svg: "#" + str-replace($name, " ", "_"),
+  );
+
+  $formats: (
+    otf: "opentype",
+    ttf: "truetype",
+  );
+
+  @each $ext in $exts {
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote($path + "." + $extmod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font-family: quote($name);
+    font-style: $style;
+    font-weight: $weight;
+    src: $src;
+  }
+}
+
+// =============================================================================
+// Display
+// =============================================================================
+
+@mixin display-align-middle() {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+// =============================================================================
+// Text ellipsis
+// =============================================================================
+
+@mixin text-ellipsis() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* mixin for multiline */
+@mixin multiLineEllipsis($lineHeight, $lineCount, $bgColor) {
+  overflow: hidden;
+  position: relative;
+  //display: block;
+  line-height: $lineHeight;
+  height: $lineHeight * $lineCount;
+
+  word-break: break-word;
+  //white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-line-clamp: $lineCount;
+  -webkit-box-orient: vertical;
+
+  //text-align: justify;
+  // margin-right: -1em;
+  // padding-right: 1em;
+  /*&:before {
+    content: '...';
+	background: $bgColor;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+	@include size(1em, 1em);
+    margin-top: 0.2em;
+    background: $bgColor;
+  }*/
+}
+
+@mixin truncateLines($lineCount, $lineHeight: null) {
+  @if ($lineHeight) {
+    @include multiLineEllipsis($lineHeight, $lineCount, $body-bg);
+  } @else {
+    @include multiLineEllipsis(1.2em, $lineCount, $body-bg);
+  }
+}

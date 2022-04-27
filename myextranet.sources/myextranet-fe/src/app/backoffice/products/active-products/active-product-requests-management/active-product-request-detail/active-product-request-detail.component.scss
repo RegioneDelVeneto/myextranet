@@ -1,0 +1,123 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@use './../../../../style/liststyle';
+app-active-product-request-detail {
+  .mat-tab-header {
+    background-color: #f2f2f2 !important;
+  }
+  .footer-c {
+    background-color: white !important;
+  }
+
+  .card-c {
+    .mat-card-header-text {
+      width: 100%;
+    }
+  }
+  .span-date-icon,
+  .subtitle-c {
+    display: flex;
+    flex-direction: row;
+  }
+  .bottom-box {
+    background-color: #ececec;
+    border-radius: 10px;
+  }
+  .toolbar-bottom {
+    height: 55px;
+    background-color: #30373d;
+    //margin: 0 -20px 0;
+    position: fixed;
+    z-index: 9;
+    bottom: 55px;
+    width: 100%;
+  }
+  .side-toolbar-padding {
+    padding-right: 254px;
+  }
+  .mat-expansion-panel-header-title,
+  .mat-expansion-panel-header-description {
+    flex-basis: 0;
+  }
+  .mat-accordion .mat-expansion-panel {
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    background-color: white;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    .mat-expansion-panel-content {
+      border: solid;
+      border-left-width: 1px;
+      border-right-width: 1px;
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+  }
+  .mat-expansion-panel-header:not([class="fake-header"]) {
+    background-color: white !important;
+    opacity: 1;
+  }
+  .mat-expansion-panel-header.n2-bkg {
+    background-color: #eeebeb !important;
+    opacity: 1;
+  }
+  .fake-header {
+    height: 40px;
+    border: 0;
+    //.mat-header-cell {
+    font-weight: 700;
+    color: #000;
+    font-size: 17px;
+    //font-family: Titillium Web, sans-serif;
+    background-color: #d9d3d4;
+    //}
+
+    .last {
+      margin-right: 26px !important;
+    }
+  }
+  .mat-header-row {
+    //  background-color: #e5e5e5 !important;
+  }
+  .actions {
+    .button {
+      color: black;
+      background-color: #f76483;
+      font-size: 12px;
+    }
+  }
+
+  .big-icon {
+    font-size: 40px !important;
+  }
+
+  .bottom-ac {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .events-card {
+    background-color: white;
+    .list-card-header-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  
+}

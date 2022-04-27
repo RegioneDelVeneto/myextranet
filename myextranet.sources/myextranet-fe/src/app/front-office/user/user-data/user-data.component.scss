@@ -1,0 +1,73 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+app-user-data {
+    .row {
+      //  justify-content: space-around;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+    .sidebar {
+      //margin-top: auto !important;
+      min-width: 330px;
+      //padding : 20px;
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      height: fit-content;
+      //height: 18vw;
+    }
+    .mat-form-field {
+      width: 40%;
+      min-width: 220px;
+    }
+  
+    ::ng-deep .mat-form-field-outline-start,
+    ::ng-deep .mat-form-field-outline-end {
+      border-radius: 0 !important;
+    }
+    .b-row {
+      display: flex;
+      flex-direction: row;
+    }
+    .icon-c {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 16px !important;
+    }
+    .body {
+      word-break: break-word;
+    }
+    button {
+      border-radius: 0 !important;
+    }
+    .sucess{
+        background-color: rgba(249, 248, 243, 1); //rgba(233, 236, 240, 1);
+       
+        border : solid;
+        border-color:  rgba(233, 236, 240,  0.5);
+        border-width: 3px;
+    }
+    .error{
+      background-color: rgba(249, 248, 243, 1); //rgba(233, 236, 240, 1);
+       
+      border : solid;
+      border-color: red;// rgba(233, 236, 240,  0.5);
+      border-width: 3px;
+    }
+  }
+  

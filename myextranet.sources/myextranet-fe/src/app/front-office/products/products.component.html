@@ -1,0 +1,61 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-3">
+      <div class="h1">I miei Prodotti</div>
+    </div>
+    <div class="title mt-4">
+      <div class="h2">Enti che rappresenti - RAP <span vlass="d-none d-lg-inline"> ( Rappresentante Attivazione Prodotti )</span></div>
+    </div>
+    <div class="col-12 mt-5 mb-3 p-0">      
+      <div *ngIf="!!rappEnte && rappEnte?.length > 0">
+        <app-horizontal-card-container [configuration]="{ type: 'tenant-rap', inputCards: rappEnte }">
+        </app-horizontal-card-container>
+      </div>
+      <div *ngIf="!rappEnte || !rappEnte.length">
+        <p class="mt-2 mb-5 font-weight-bold">
+          Non risulti RAP per nessun Ente. Inoltrare una richiesta RAP.
+        </p>
+      </div>
+    </div>
+    <div class="col-12 mt-5 mb-3 p-0">
+      <div class="title mt-4">
+        <div class="h2">Nuova richiesta RAP</div>
+      </div>
+      <p class="mt-2">Puoi richiedere di diventare RAP (Rappresentante Attivazione Prodotto) per un nuovo ente:</p>
+      <div class="mt-2">
+        <button
+          mat-flat-button
+          color="accent"
+          class="t-buttons mb-4"
+          type="button"
+          attr.aria-label="NUOVA RICHIESTA RAP"
+          routerLinkActive="router-link-active"
+          [routerLink]="['/utente/prodotti/RAP']"
+        >
+          NUOVA RICHIESTA RAP
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

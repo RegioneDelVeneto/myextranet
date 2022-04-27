@@ -1,0 +1,217 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-2">
+      <div class="h1">Dati Utente</div>
+    </div>
+
+    <div class="row col-12 pr-0 pl-0">
+      <div class="data-form col-12 mt-3">
+        <app-alert-in-page-fo
+          *ngIf="isError"
+          [type]="3"
+          [title]="'Attenzione'"
+          [msg]="errorMsg || 'Errore durante la risoluzione della richiesta'"
+        >
+        </app-alert-in-page-fo>
+        <app-alert-in-page-fo
+          *ngIf="incompleteData && !isLoading && !hideIncompleteDataError"
+          [type]="2"
+          [title]="'Dati utente incompleti'"
+          [msg]="
+            'Risulta che i dati utenti siano scaduti o incompleti. Aggiornare i dati e salvare prima di proseguire'
+          "
+        >
+        </app-alert-in-page-fo>
+        <app-alert-in-page-fo
+          *ngIf="isSuccess"
+          [type]="1"
+          [title]="'Le modifiche sono state salvate'"
+          [msg]="sucessMsg"
+        >
+        </app-alert-in-page-fo>
+        <form [formGroup]="userDataForm">
+          <div class="row">
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+              <mat-label> Nome </mat-label>
+              <input matInput formControlName="nome" required />
+              <mat-error *ngIf="userDataForm.controls.nome.touched && userDataForm.controls.nome.invalid">
+                <span *ngIf="userDataForm.controls.nome.errors.required"> Campo obbligatorio</span>
+                <span *ngIf="userDataForm.controls.nome.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.nome.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+              <mat-label> Cognome </mat-label>
+              <input matInput formControlName="cognome" required />
+              <mat-error *ngIf="userDataForm.controls.cognome.touched && userDataForm.controls.cognome.invalid">
+                <span *ngIf="userDataForm.controls.cognome.errors.required"> Campo obbligatorio</span>
+                <span *ngIf="userDataForm.controls.cognome.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.cognome.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+              <mat-label> Indirizzo email </mat-label>
+              <input matInput formControlName="email" required />
+              <mat-error *ngIf="userDataForm.controls.email.touched && userDataForm.controls.email.invalid">
+                <span *ngIf="userDataForm.controls.email.errors.required"> Campo obbligatorio</span>
+                <span *ngIf="userDataForm.controls.email.errors.pattern"> La mail inserita non è valida</span>
+                <span *ngIf="userDataForm.controls.email.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.email.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+              <mat-label> Codice Fiscale </mat-label>
+              <input matInput formControlName="codFiscale" required />
+              <mat-error *ngIf="userDataForm.controls.codFiscale.touched && userDataForm.controls.codFiscale.invalid">
+                <span *ngIf="userDataForm.controls.codFiscale.errors.required"> Campo obbligatorio</span>
+                <span *ngIf="userDataForm.controls.codFiscale.errors.pattern">
+                  il codice fiscale inserito non è valido</span
+                >
+                <span *ngIf="userDataForm.controls.codFiscale.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.codFiscale.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+              <mat-label> Numero di telefono </mat-label>
+              <input matInput formControlName="telefono" required />
+              <mat-error *ngIf="userDataForm.controls.telefono.touched && userDataForm.controls.telefono.invalid">
+                <span *ngIf="userDataForm.controls.telefono.errors.required">
+                  Deve essere specificato almeno un numero di telefono</span
+                >
+                <span *ngIf="userDataForm.controls.telefono.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.telefono.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+              <mat-label> Numero di telefono ufficio </mat-label>
+              <input matInput formControlName="telefonoUff" required />
+              <mat-error *ngIf="userDataForm.controls.telefonoUff.touched && userDataForm.controls.telefonoUff.invalid">
+                <span *ngIf="userDataForm.controls.telefonoUff.errors.required">
+                  Deve essere specificato almeno un numero di telefono</span
+                >
+                <span *ngIf="userDataForm.controls.telefonoUff.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.telefonoUff.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <!--telefonoUff -->
+ 
+            <mat-radio-group class="form-field col-12" formControlName="radio">
+                <mat-radio-button *ngFor="let r of radio" (change)="radioButtonChanged($event)" [value]="r" class="mr-3">{{r}}</mat-radio-button>
+            </mat-radio-group>
+
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline" style="width: 100%" *ngIf="userDataForm.value.radio === 'Ente'">
+              <mat-label> Ente </mat-label>
+              <input aria-label="Ente" matInput formControlName="ente" required [matAutocomplete]="auto" />
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDenomination.bind(this)">
+                <mat-option *ngFor="let ente of entiArray" [value]="ente">
+                  {{ ente.denominazione }}
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="userDataForm.controls.ente.touched && userDataForm.controls.ente.invalid">
+                <span *ngIf="userDataForm.controls.ente.errors.required">
+                  Non si può inserire sia ente che azienda</span
+                >
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline" *ngIf="userDataForm.value.radio === 'Azienda'">
+              <mat-label> Azienda </mat-label>
+              <input matInput formControlName="azienda" required />
+              <mat-error *ngIf="userDataForm.controls.azienda.touched && userDataForm.controls.azienda.invalid">
+                <span *ngIf="userDataForm.controls.azienda.errors.required">
+                  Non si può inserire sia ente che azienda
+                </span>
+                <span *ngIf="userDataForm.controls.azienda.errors.pattern"> l'azienda inserita non è valida</span>
+                <span *ngIf="userDataForm.controls.azienda.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.azienda.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-field col-12 col-lg-6" appearance="outline" *ngIf="userDataForm.value.radio === 'Azienda'" >
+              <mat-label> Partita Iva </mat-label>
+              <input matInput formControlName="partitaIva" required />
+              <mat-error *ngIf="userDataForm.controls.partitaIva.touched && userDataForm.controls.partitaIva.invalid">
+                <span *ngIf="userDataForm.controls.partitaIva.errors.required">
+                  Non si può inserire sia ente che azienda
+                </span>
+                <span *ngIf="userDataForm.controls.partitaIva.errors.pattern"> la partita Iva inserita non è valida</span>
+                <span *ngIf="userDataForm.controls.partitaIva.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ userDataForm.controls.azienda.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="row ml-3 mr-3 mt-3">
+            <div>
+              <button  *ngIf="callbackurl != 'null'" mat-stroked-button color="accent" type="button" (click)="goBack()" (keyup.enter)="goBack()">
+                TORNA INDIETRO
+              </button>
+            </div>
+            <div>
+              <button
+                mat-stroked-button
+                class="mr-2"
+                color="accent"
+                type="button"
+                (click)="undo()"
+                (keyup.enter)="undo()"
+              >
+                ANNULLA
+              </button>
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="userDataForm.invalid"
+                (click)="sumbmit()"
+                (keyup.enter)="sumbmit()"
+              >
+                SALVA
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

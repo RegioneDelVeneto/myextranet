@@ -1,0 +1,98 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+@use './../../../style/liststyle';
+app-event-new-member {
+  .list-card-header-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  .big-icon {
+    font-size: 40px !important;
+  }
+  .form-container {
+    .bottom-ac {
+      display: flex;
+      justify-content: flex-end;
+    }
+    // padding : 15px;
+    background-color: white;
+    .row {
+      //  justify-content: space-around;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+
+    .mat-form-field {
+      width: 40%;
+      min-width: 220px;
+    }
+
+    .b-row {
+      display: flex;
+      flex-direction: row;
+    }
+    .icon-c {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 16px !important;
+    }
+  }
+  .events-card {
+    background-color: white;
+  }
+  .icon-vertical-mini {
+    font-size: 18px !important;
+    opacity: (0.6);
+  }
+  .span-date-icon,
+  .subtitle-c {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .list-container {
+    .form-container {
+      // padding : 15px;
+      background-color: white;
+    }
+    .button-c {
+      //display: flex;
+      //justify-content: space-between;
+      padding-left: 0px !important;
+      ::ng-deep mat-icon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .mat-button {
+        padding: 0 16px;
+        padding-top: 0px;
+        padding-right: 16px;
+        padding-bottom: 0px;
+        padding-left: 16px;
+        margin-right: 50px;
+        margin-top: 2rem;
+        color: black;
+        background-color: #f76483 !important;
+        font-size: 12px;
+      }
+    }
+   
+  }
+}

@@ -1,0 +1,68 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+
+<div
+  class="borded-card min-w-fit flex-row flex-md-row flex-lg-column flex-xl-row d-flex"
+  [ngClass]="'borded-card-color-' + data.status"
+>
+  <div
+    class="logo-c link-c"
+    [attr.aria-label] ="data?.routerLinkValid?.link? 'naviga a :'+data?.routerLinkValid?.link.join() : null"
+    [routerLink]="data?.routerLinkValid?.link"
+    [queryParams]="data.routerLinkValid?.params"
+    (keyup.enter)="navigateToRoute(data?.routerLinkValid?.link, data?.routerLinkValid?.params)"
+    (keyup.Space)="navigateToRoute(data?.routerLinkValid?.link, data?.routerLinkValid?.params)"
+  >
+    <!-- data.logo -->  
+    <img class="logo-i" [src]="data.logo" (error)="data.logo = 'assets/images/shield.svg'" [alt]="'Logo per ' + data.titolo"  [title]="'Logo per ' + data.titolo"/>    
+  </div>
+  <div class="title-data-c">
+    <div
+      class="title"
+      [ngClass]="{ 'link-c': !!data?.routerLinkValid }"
+      [routerLink]="data?.routerLinkValid?.link"
+      [attr.aria-label] ="data?.routerLinkValid?.link? 'naviga a :'+data?.routerLinkValid?.link.join() : null"
+      [queryParams]="data?.routerLinkValid?.params"
+      (keyup.enter)="navigateToRoute(data?.routerLinkValid?.link, data?.routerLinkValid?.params)"
+      (keyup.Space)="navigateToRoute(data?.routerLinkValid?.link, data?.routerLinkValid?.params)"
+    >
+      <span class="font-weight-bold text-cut-2">{{ data.titolo }}</span>
+    </div>
+    <div class="subtitle">{{ data.statusLabel }}</div>
+    <div class="link-c">
+      <div
+        class="link-r m-0"
+        [attr.aria-label]="link.label"
+        *ngFor="let link of data.links"
+        [routerLink]="link.link"        
+        [queryParams]="link.params"
+        routerLinkActive="router-link-active"
+        (keyup.enter)="navigateToRoute(link?.link, link.params)"
+        (keyup.Space)="navigateToRoute(link?.link, link.params)"
+      >
+        <mat-icon role="presentation" class="icon-m size-18" [attr.aria-label]="'Icona decorativa ' +link.label"> {{ link.icon }} </mat-icon>
+        <span class="size-16">{{ link.label }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="fiochetto m-0 p-0" [ngClass]="'f-active-' + data.status">
+    <mat-icon role="presentation"> bookmark </mat-icon>
+  </div>
+</div>

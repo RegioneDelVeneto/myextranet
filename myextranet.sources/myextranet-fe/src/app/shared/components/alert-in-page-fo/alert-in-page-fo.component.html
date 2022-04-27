@@ -1,0 +1,49 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div [ngClass]="'border-type-' + type" class="w-100 border-c p-3 mb-3">
+  <div class="d-flex flex-row">
+    <div class="d-flex flex-row justify-content-start min-w-px">
+      <mat-icon
+        role="presentation"
+        class="icon-big"
+        [ngClass]="'icon-type-' + type"
+        attr.arial-label="{{
+          type === 1 ? 'icona successo' : type === 2 ? 'icona avviso' : type === 3 ? 'icona errore' : null
+        }}"
+      >
+        {{ type === 3 ? "sentiment_very_dissatisfied" : type === 2 ? "warning" : "check" }}
+      </mat-icon>
+    </div>
+    <div>
+      <div class="h6" *ngIf="!!title">
+        {{ title }}
+      </div>
+      <div class="message" *ngIf="!!msg">
+        {{ msg }}
+      </div>
+      <div *ngIf="!!template">
+        <ng-container *ngTemplateOutlet="template"></ng-container>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!!bottomTemplate">
+    <ng-container *ngTemplateOutlet="bottomTemplate"></ng-container>
+  </div>
+</div>

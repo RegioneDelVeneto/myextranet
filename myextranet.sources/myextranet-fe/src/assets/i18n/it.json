@@ -1,0 +1,9 @@
+{
+  "generic": {
+    "labels": {
+      "campoObbligatorio": "Campo obbligatorio",
+      "jsonValidationError": "Inserire un valore corretto",
+      "upload_file": "Seleziona file da caricare"
+    }
+  }
+}

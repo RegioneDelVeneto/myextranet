@@ -1,0 +1,74 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="w-100 align-items-center justify-content-between">
+  <div class="w-100 col-12 p-0">
+    <div class="d-flex justify-content-between col-12 p-0">      
+      <div class="file-name d-flex align-items-center" *ngIf="!hideLabel">
+        {{ file ? file.name : downloadId ? "Modifica il File" : "Scegli File" }}
+      </div>
+      <div class="d-flex flex-row justify-content-between">
+        <button
+          *ngIf="!isReadOnly"
+          mat-flat-button
+          [color]="color"
+          type="button"
+          (click)="openFileInput(fileInput)"
+          aria-label="carica file"
+        >
+          Seleziona
+        </button>
+
+        <button
+           
+          *ngIf="!isReadOnly && ((!!file && !!file.name) && (!downloadOn))"
+          mat-flat-button
+          [color]="color"
+          type="button"
+          (click)="clearFileInput()"
+          aria-label="elimina file"
+        >
+          Elimina
+        </button>
+        <button
+            class="ml-1"
+          mat-flat-button
+          [color]="color"
+          *ngIf="(!!file && downloadOn) || !!downloadId"
+          mat-flat-button
+          aria-label="scarica"
+          type="button"
+          (click)="downloadFileFromId()"
+        >
+          <mat-icon aria-label="icona scarica"> download </mat-icon>
+        </button>
+      </div>
+      <input [id]="fileInput" title="file-input" type="file" class="hidden-file-input" lang="it" />
+    </div>
+    <p class="text-danger font-weight-bold col-12" *ngIf="error">{{ error }}</p>
+  </div>
+</div>
+<div class="preview-c row col-12 container mb-3 mt-3" *ngIf="(!!imageSrc || !!downloadId) && showPreview">
+  <img
+    class="preview-image"
+    id="image-preview"
+    [src]="!!downloadId ? downloadId : imageSrc || null"
+    alt="Anteprima immagine caricata"
+  />
+</div>

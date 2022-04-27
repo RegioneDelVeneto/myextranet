@@ -1,0 +1,64 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+app-product-request-procedure-fo {
+  .generic-card-image {
+    width: 171px;
+    vertical-align: middle;
+    cursor: pointer;
+    object-fit: cover;
+
+  }
+  .link {
+    font-weight: bold;
+    color: #095d70;
+    font-size: 18px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .box-green {
+    border-style: solid;
+    background-color: white !important;
+    border-width: 1.5px;
+    border-color: #7addb5;
+  }
+  .toolbar-bottom {
+    height: 55px;
+    background-color: #30373d;
+
+    z-index: 9;
+
+    width: 100%;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+  }
+  .bottom-box {
+    background-color: #ececec;
+    border-radius: 10px;
+  }
+
+  .btn-h {
+    height: 60px;
+  }
+  .btn-h.mat-button.mat-warn,
+  .btn-h.mat-icon-button.mat-warn,
+  .btn-h.mat-stroked-button.mat-warn {
+    color: #b90000;
+    border-color: #B90000;
+  }
+}

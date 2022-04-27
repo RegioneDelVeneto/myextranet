@@ -1,0 +1,113 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+</div>
+<div class="list-container mt-3">
+  <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+
+  <div class="title-container mt-3 d-flex flex-row mt-3 mb-3 justify-content-between">
+    <div role="heading" aria-label="h1" aria-level="1" class="h1 title">Prodotti attivati</div>
+    <div class="actions flex-sm-column flex-lg-row">
+    <button
+      *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['gestisci'] }"
+      class="button mr-lg-2 mr-0 mb-2 m-lg-0"
+      (click)="sendCommToUsers()"
+      mat-raised-button
+    >
+      Invia comunicazione ai gruppi
+    </button>
+     <button
+      aria-label="apri lista esportazione statistiche"
+      class="button"
+      *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+      mat-raised-button
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon role="presentation" aria-label="icona decorativa apri lista esportazione statistiche"> list </mat-icon>
+      Statistiche
+    </button>
+    <mat-menu #menu="matMenu">
+      <button
+      aria-label="esportazione statistiche prodotti"
+        *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+        (click)="downloadProductsStats()"
+        class="button-menu"
+        mat-menu-item
+      >
+      <mat-icon role="presentation" aria-label="icona decorativa esportazione statistiche prodotti"> download </mat-icon>
+        Statistiche prodotti
+      </button>
+      <button
+      aria-label="esportazione statistiche enti"
+        *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+        (click)="downloadTenantsStats()"
+        class="button-menu"
+        mat-menu-item
+      >
+      <mat-icon role="presentation"  aria-label="icona decorativa esportazione statistiche enti"> download </mat-icon>
+        Statistiche enti
+      </button>
+      <button
+      aria-label="esportazione statistiche servizi"
+        *appACLDirective="{ acl: 'myextranet.prodotti', permissions: ['visualizza'] }"
+        (click)="downloadServicesStats()"
+        class="button-menu"
+        mat-menu-item
+      >
+      <mat-icon role="presentation"  aria-label="icona decorativa esportazione statistiche servizi"> download </mat-icon>
+        Statistiche servizi
+      </button>
+    </mat-menu>
+  </div>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="firstLoad || isOpen">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Filtro di ricerca Prodotti attivati</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <mrf-form #morfeoProductsListFilter [form]="formJson" [config]="formFilterConfig"></mrf-form>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <hr />
+  <div *ngIf="!firstLoad">
+    <app-card-table-container
+      (toolBarEvent)="manageEvent($event)"
+      [configuration]="null"
+      [displayedColumns]="tableHeader"
+      (sortEvent)="manageSort($event)"
+      [dataSource]="{
+        data: productsDataSource,
+        preselectedRows: null,
+        sortField: { active: sortByHeaderFilter, direction: sortOrder }
+      }"
+    >
+    </app-card-table-container>
+    <mat-paginator
+      [length]="length"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="updatePaginator($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,121 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-4">
+      <div class="h1">Richiesta per diventare referente (RAP)</div>
+    </div>
+    <div class="col-12 mt-5 mb-3 p-0">
+      <p class="font-weight-bold">
+        {{ RapInfo }}
+      </p> 
+    </div>
+    <div class="col-12 mt-5 mb-3 p-0">
+      <app-alert-in-page-fo
+        *ngIf="showError"
+        [type]="3"
+        [title]="'Attenzione'"
+        [msg]="errorMsg || 'Errore durante la risoluzione della richiesta'"
+      >
+      </app-alert-in-page-fo>
+      <app-alert-in-page-fo
+        *ngIf="isRO && !isExpired && !isRejected && !isActive"
+        [type]="1"
+        [title]="'La tua richiesta è stata inoltrata correttamente'"
+        [msg]="ROmsg"
+      >
+      </app-alert-in-page-fo>
+      <app-alert-in-page-fo *ngIf="isActive" [type]="1" [title]="'Sei già un RAP per questo ente'" [msg]="ActiveMsg">
+      </app-alert-in-page-fo>
+      <app-alert-in-page-fo *ngIf="isExpired" [type]="2" [title]="'RAP disabilitato'" [msg]="ExpMsg">
+      </app-alert-in-page-fo>
+      <app-alert-in-page-fo
+        *ngIf="isReforward"
+        [type]="2"
+        [title]="'Richiesta RAP da risottomettere'"
+        [msg]="reforwardMsg"
+      >
+      </app-alert-in-page-fo>
+      <app-alert-in-page-fo *ngIf="isRejected" [type]="2" [title]="'Richiesta RAP rifiutata'" [msg]="rejMsg">
+      </app-alert-in-page-fo>
+      <form class="mb-5" [formGroup]="isRO ? RAPformRO : RAPform" (submit)="sumbmit()">
+        <div class="row">
+          <mat-form-field class="form-field col-12" appearance="outline">
+            <mat-label> Ente </mat-label>
+            <input aria-label="Ente" matInput formControlName="enteAzienda" required [matAutocomplete]="auto" />
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDenomination.bind(this)">
+              <mat-option *ngFor="let ente of entiArray" [value]="ente">
+                {{ ente.denominazione }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="RAPform.controls.enteAzienda.touched && RAPform.controls.enteAzienda.invalid">
+              <span *ngIf="RAPform.controls.enteAzienda.errors.required"> Campo obbligatorio</span>
+            </mat-error>
+          </mat-form-field>
+        </div>       
+        <div *ngIf="!!datesForm && (isActive || isRejected || isExpired || (isRO && !isExpired && !isRejected && !isActive))">
+          <form [formGroup]="datesForm">
+            <div class="row">
+              
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline" *ngIf="isActive || (isRO && !isExpired && !isRejected && !isActive)">
+                <mat-label> Data della richiesta </mat-label>
+                <input matInput [matDatepicker]="pickerDtRichiesta" formControlName="dtRichiesta" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDtRichiesta"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDtRichiesta></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline" *ngIf="isActive || isExpired">
+                <mat-label> Data di attivazione </mat-label>
+                <input matInput [matDatepicker]="pickerDtInizioVal" formControlName="dtInizioVal" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDtInizioVal"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDtInizioVal></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline" *ngIf="isExpired">
+                <mat-label> Data di disattivazione </mat-label>
+                <input matInput [matDatepicker]="pickerDtFineVal" formControlName="dtFineVal" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDtFineVal"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDtFineVal></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+        <div class="mt-3">
+          <div *ngIf="!isRO">
+            <button
+              mat-stroked-button
+              color="accent"
+              type="button"
+              class="mr-2"
+              [routerLink]="['/utente/prodotti']"
+              routerLinkActive="router-link-active"
+              aria-label="Inserisci RAP"
+            >
+              ANNULLA
+            </button>
+            <button mat-stroked-button color="accent" [disabled]="RAPform.invalid" aria-label="Inserisci RAP">
+              INVIA RICHIESTA
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

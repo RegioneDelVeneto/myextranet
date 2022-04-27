@@ -1,0 +1,29 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="container p-0 w-100 mt-5">
+  <div class="row no-margin-r-l" *ngFor="let cardRow of cardsRows">
+    <ng-container *ngFor="let card of cardRow; let i = index">
+      <div class="col-lg-4 col-12 mb-4">
+        <app-generic-card [i]="i" [data]="card"> </app-generic-card>
+      </div>
+    </ng-container>
+  </div>
+</div>
+

@@ -1,0 +1,83 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="container row col-12" *ngIf="!!showForm">
+  <div class="data-form col-12">
+    <form [formGroup]="userDataForm">
+      <div class="row">
+        <mat-form-field class="form-field" [appearance]="appearance">
+          <mat-label> Nome </mat-label>
+          <input matInput formControlName="nome" required />
+          <mat-error *ngIf="userDataForm.controls.nome.touched && userDataForm.controls.nome.invalid">
+            <span *ngIf="userDataForm.controls.nome.errors.required"> Campo obbligatorio</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" [appearance]="appearance">
+          <mat-label> Cognome </mat-label>
+          <input matInput formControlName="cognome" required />
+          <mat-error *ngIf="userDataForm.controls.cognome.touched && userDataForm.controls.cognome.invalid">
+            <span *ngIf="userDataForm.controls.cognome.errors.required"> Campo obbligatorio</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="form-field" [appearance]="appearance">
+          <mat-label> Indirizzo email </mat-label>
+          <input matInput formControlName="email" required />
+          <mat-error *ngIf="userDataForm.controls.email.touched && userDataForm.controls.email.invalid">
+            <span *ngIf="userDataForm.controls.email.errors.required"> Campo obbligatorio</span>
+            <span *ngIf="userDataForm.controls.email.errors.pattern"> La mail inserita non è valida</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" [appearance]="appearance">
+          <mat-label> Codice Fiscale </mat-label>
+          <input matInput formControlName="codFiscale" required />
+          <mat-error *ngIf="userDataForm.controls.codFiscale.touched && userDataForm.controls.codFiscale.invalid">
+            <span *ngIf="userDataForm.controls.codFiscale.errors.required"> Campo obbligatorio</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <ng-container [ngSwitch]="renderMode">
+        <div class="row" *ngSwitchCase="1">
+          <mat-form-field class="form-field" [appearance]="appearance" style="width: 100%">
+            <mat-label> Ente </mat-label>
+            <input aria-label="Ente" matInput formControlName="ente" required [matAutocomplete]="auto" />
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDenomination.bind(this)">
+              <mat-option *ngFor="let ente of entiArray" [value]="ente.idEnte">
+                {{ ente.denominazione }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="userDataForm.controls.ente.touched && userDataForm.controls.ente.invalid">
+              <span *ngIf="userDataForm.controls.ente.errors.required"> Campo obbligatorio</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row" *ngSwitchCase="2">
+          <mat-form-field class="form-field" [appearance]="appearance">
+            <mat-label> Ente o Azienda </mat-label>
+            <input matInput formControlName="enteAzienda" required />
+            <mat-error *ngIf="userDataForm.controls.enteAzienda.touched && userDataForm.controls.enteAzienda.invalid">
+              <span *ngIf="userDataForm.controls.enteAzienda.errors.required"> Campo obbligatorio</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myextranet-deployment
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+     matchLabels:
+        app: myextranet
+        templateName: myextranet-template
+  template:
+    metadata:
+      labels:
+        templateName: myextranet-template
+        app: myextranet
+    spec:
+      containers:
+        - name: myextranet-container
+          args: ["-c", "/opt/wait-for-it.sh $RVE_POSTGRES11_PORT_5432_TCP_ADDR:5432 -b -s -t 0 -- /opt/start-rve-myextranet.sh"]
+          command: ["/bin/sh"]
+          env:
+            - name: "MYPLACE_DATACENTER_NAME"
+              value: "rve"
+            - name: "MYPLACE_FEDERATED_DATACENTER_NAMES"
+              value: "rve"
+            - name: "proxy_host"
+              value: ""
+            - name: "proxy_port"
+              value: ""
+            - name: http_proxy
+              value: "http://$(proxy_host):$(proxy_port)"
+            - name: https_proxy
+              value: "http://$(proxy_host):$(proxy_port)"
+            - name: no_proxy
+              value: "127.0.0.1,__YOUR_DATA__"
+            - name: MYPLACE_VM_JAVA_OPTS
+              value: "-Dhttp.proxyHost=$(proxy_host) -Dhttp.proxyPort=$(proxy_port) -Dhttp.nonProxyHosts='127.0.0.1|__YOUR_DATA__' -Dhttps.proxyHost=__YOUR_DATA__ -Dhttps.proxyPort=__YOUR_DATA__"
+          image: __YOUR_DATA__/myextranet:1.2.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: __YOUR_DATA__
+          volumeMounts:
+            - name: myextranet-config
+              mountPath: /opt/myextranet/config
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: __YOUR_DATA__
+            initialDelaySeconds: 90
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: __YOUR_DATA__
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 10
+      imagePullSecrets:
+        - name: registry-host-spac-secret
+      volumes:
+        - name: myextranet-config
+          configMap:
+            name: myextranet-config

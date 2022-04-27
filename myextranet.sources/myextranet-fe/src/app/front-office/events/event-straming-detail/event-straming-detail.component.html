@@ -1,0 +1,103 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div class="container mt-3 mb-3">
+  <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+  <div class="title mt-2">
+    <div class="h1">Titolo Evento</div>
+  </div>
+  <div class="row col-12">
+    <div class="data-form col-7 mt-3">
+        <p>Prima di accedere all'evento compilare il seguente questionario: </p>
+        <span class="row no-margin-r-l v-a-l">
+          <a href="/straminglink" class=" v-a-l"> <mat-icon class="icon-vertical"> link </mat-icon> <span> Link al questionario </span> </a>
+        </span>
+      <p class="mt-3"> Per partecipare all'evento è necessario seguire le seguenti istruzioni:</p>
+      <li> passo 1 </li>
+      <li> passo 2 </li>
+      <li> passo 3 </li>
+     
+      <p class="mt-3">Per accedere alla piattaforma di streaming tramite il seguente link: </p>
+      <div>
+      <span class="row no-margin-r-l">
+        <a href="/straminglink" class=" v-a-l"> <mat-icon class="icon-vertical"> link </mat-icon> <span> Link per lo streaming da remoto </span> </a>
+      </span>
+
+      </div>
+    </div>
+    <div class="sidebar mt-3 col-4 ml-5">
+      <div class="container mt-3">
+        <div class="title mb-3">
+          <div class="h4">LUOGO E DATA</div>
+        </div>
+        <div class="body mt-2">
+          <span class="b-row">
+            <mat-icon class="icon-c"> event </mat-icon>
+            <p>{{ date | date: "dd MMMM y ore HH:mm" }}</p>
+          </span>
+          <span class="b-row">
+            <mat-icon class="icon-c"> location_on </mat-icon>
+            <p>Sala polivalente</p>
+          </span>
+          <span class="b-row">
+            <mat-icon class="icon-c"> people </mat-icon>
+            <p>50 posti disponibili</p>
+          </span>
+        </div>
+        <div class="body mt-2 mb-5">
+          Per richiedere informazioni contattare:
+          <span class="b-row mt-1">
+            <mat-icon class="icon-c"> mail </mat-icon>
+            <p>cluster.innovazione@regione.veneto.it</p>
+          </span>
+          <span class="b-row">
+            <mat-icon class="icon-c"> phone </mat-icon>
+            <p>05893545</p>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row ml-3">
+    <button mat-raised-button color="accent" type="submit">ISCRIVITI</button>
+  </div>
+  <div class="sucess mt-5 col-7 pt-3 pb-3 pl-4 pr-4">
+    <div class="container">
+      <span class="row"
+        ><div class="h4">Abbiamo preso in carico la tua richiesta</div>
+        <mat-icon>clear </mat-icon>
+      </span>
+      <p class="row">A breve riceverai una email di conferma all'indirizzo di posta elettronica indicato.</p>
+    </div>
+  </div>
+
+  <div class="error mt-5 col-7 pt-3 pb-3 pl-4 pr-4">
+    <div class="container">
+      <span class="row"
+        ><div class="h4">Ops! Qualcosa è andato storto</div>
+        <mat-icon>clear </mat-icon>
+      </span>
+      <p class="row">
+        Purtroppo non ci sono più posti disponibili per l'evento in oggetto. Vuoi essere avvisato con una email nel caso
+        si liberino dei posti?
+      </p>
+    </div>
+  </div> -->
+</div>

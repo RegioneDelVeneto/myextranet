@@ -1,0 +1,291 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-2">
+      <div class="h1">{{ event.titolo }}</div>
+    </div>
+    <ng-container *ngIf="!isLoadingError">
+      <div class="row col-12 flex-column-reverse flex-lg-row pr-0 pl-0">
+        <div class="data-form col-12 col-lg-7 mt-3">          
+          <app-alert-in-page-fo
+            *ngIf="isError"
+            [type]="3"
+            [title]="'Attenzione'"
+            [msg]="errorMsg || 'Errore durante la risoluzione della richiesta'"
+          >
+          </app-alert-in-page-fo>          
+          <app-alert-in-page-fo
+            *ngIf="isAlreadySigned"
+            [type]="1"
+            [title]="'Sei iscritto a questo evento'"
+            [msg]="signedMsg"
+          >
+          </app-alert-in-page-fo>
+          <app-alert-in-page-fo
+            *ngIf="isUndone"
+            [type]="1"
+            [title]="'Non sei più iscritto a questo evento'"
+            [msg]=""
+          >
+          </app-alert-in-page-fo>
+          <app-alert-in-page-fo
+            *ngIf="!!event?.annullato"
+            [type]="1"
+            [title]="'Questo evento è stato annullato. Consultare la pagina dell portale pubblico per maggior informazioni.'"
+            [msg]=""
+          >
+          </app-alert-in-page-fo>
+
+          <form [formGroup]="eventForm" (submit)="!isAlreadySigned ? sumbmit() : undoSignIn()">
+            <div class="row">
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Nome </mat-label>
+                <input matInput formControlName="nome" required />
+                <mat-error *ngIf="eventForm.controls.nome.touched && eventForm.controls.nome.invalid">
+                  <span *ngIf="eventForm.controls.nome.errors.required"> Campo obbligatorio</span>
+                  
+                  <span *ngIf="eventForm.controls.nome.errors.maxlength"> 
+                    Il campo ha lunghezza massima di {{eventForm.controls.nome.errors.maxlength.requiredLength}} caratteri
+                </span>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Cognome </mat-label>
+                <input matInput formControlName="cognome" required />
+                <mat-error *ngIf="eventForm.controls.cognome.touched && eventForm.controls.cognome.invalid">
+                  <span *ngIf="eventForm.controls.cognome.errors.required"> Campo obbligatorio</span>
+                  
+                  <span *ngIf="eventForm.controls.cognome.errors.maxlength"> 
+                    Il campo ha lunghezza massima di {{eventForm.controls.cognome.errors.maxlength.requiredLength}} caratteri
+                </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Indirizzo email </mat-label>
+                <input matInput formControlName="email" required />
+                <mat-error *ngIf="eventForm.controls.email.touched && eventForm.controls.email.invalid">
+                  <span *ngIf="eventForm.controls.email.errors.required"> Campo obbligatorio</span>
+                  <span *ngIf="eventForm.controls.email.errors.pattern"> La mail inserita non è valida</span>
+                  <span *ngIf="eventForm.controls.email.errors.maxlength"> 
+                    Il campo ha lunghezza massima di {{eventForm.controls.email.errors.maxlength.requiredLength}} caratteri
+                </span>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Numero di telefono </mat-label>
+                <input matInput formControlName="telefono" required />
+                <mat-error *ngIf="eventForm.controls.telefono.touched && eventForm.controls.telefono.invalid">
+                  <span *ngIf="eventForm.controls.telefono.errors.required"> Campo obbligatorio</span>
+                  <span *ngIf="eventForm.controls.telefono.errors.maxlength"> 
+                    Il campo ha lunghezza massima di {{eventForm.controls.telefono.errors.maxlength.requiredLength}} caratteri
+                </span>
+                  
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Ente o Azienda </mat-label>
+                <input matInput aria-label="Ente" formControlName="ente" required />
+
+                <mat-error *ngIf="eventForm.controls.ente.touched && eventForm.controls.ente.invalid">
+                  <span *ngIf="eventForm.controls.ente.errors.required"> Campo obbligatorio</span>
+                  
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Codice Fiscale </mat-label>
+                <input matInput formControlName="codFiscale" required />
+                <mat-error *ngIf="eventForm.controls.codFiscale.touched && eventForm.controls.codFiscale.invalid">
+                  <span *ngIf="eventForm.controls.codFiscale.errors.required"> Campo obbligatorio</span>
+                  <span *ngIf="eventForm.controls.codFiscale.errors.pattern">
+                    il codice fiscale inserito non è valido</span
+                  >
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row col-12">
+              <a
+                class="link"
+                [routerLink]="['/utente/user/edit']"
+                [queryParams]="{ callbackUrl: '/utente/eventi/iscrizione-evento?eventId=' + eventId }"
+                routerLinkActive="router-link-active"
+              >
+                <mat-icon aria-label="modifica profilo"> launch </mat-icon> Modifica dati
+              </a>
+            </div>
+            <div class="row">
+              <div *ngIf="showPreferenza" class="form-field col-12" appearance="outline">
+                <div class="radio-c ml-2">
+                  <fieldset>
+                    <legend class="h6 mb-4">Scelgo di partecipare:</legend>
+
+                    <mat-radio-group
+                      class="mt-2"
+                      aria-label="Preferenza di partecipazione"
+                      formControlName="preferenza"
+                      [disabled]="(!!event?.annullato )"
+                      required
+                    >
+                      <mat-radio-button value="1"> In presenza </mat-radio-button>
+                      <mat-radio-button value="2"> Da remoto </mat-radio-button>
+                    </mat-radio-group>
+                  </fieldset>
+                </div>
+                <mat-error *ngIf="eventForm.controls.preferenza.touched && eventForm.controls.preferenza.invalid">
+                  <span *ngIf="eventForm.controls.preferenza.errors.required"> Campo obbligatorio</span>
+                </mat-error>
+              </div>
+            </div>
+            <div
+              class="notes-c mt-3"
+              *ngIf="
+                isAlreadySigned &&
+                ((!!event?.urlQuestionarioIn && event?.urlQuestionarioIn?.length > 0) ||
+                  (!!event?.htmlStreamingNotes && event?.htmlStreamingNotes?.length > 0))
+              "
+            >
+              <div class="row col-12 mt-3" *ngIf="showInStreaming">
+                <div class="h4">Istruzioni</div>
+              
+              <div class="row col-12" *ngIf="!!event?.urlQuestionarioIn && event?.urlQuestionarioIn?.length > 0">
+                <p>Prima di accedere all'evento compila il seguente questionario:</p>
+              </div>
+              <div class="row col-12" *ngIf="!!event?.urlQuestionarioIn && event?.urlQuestionarioIn?.length > 0">
+                <a class="link" [href]="event.urlQuestionarioIn" target="_blank">
+                  <mat-icon aria-label="Compila questionario"> launch </mat-icon> Accedi al questionario
+                </a>
+              </div>
+              <div class="row col-12" *ngIf="!!event?.htmlStreamingNotes && event?.htmlStreamingNotes?.length > 0">
+                <div [innerHTML]="event.htmlStreamingNotes"></div>
+              </div>
+            </div>
+          </div>
+            <div class="row col-12 mt-3">
+              <div class="mt-3" *ngIf="!isAlreadySigned">
+                <button 
+                  aria-label="Conferma iscrizione"
+                [disabled]="(!!event?.annullato ) || eventForm.invalid" mat-flat-button color="accent" type="submit">
+                  CONFERMA ISCRIZIONE
+                </button>
+              </div>
+              <!-- (click)="undoSignIn()" -->
+              <div class="mt-3" *ngIf="isAlreadySigned">
+                <button 
+                aria-label="Annulla iscrizione"
+                [disabled]="(!!event?.annullato )"
+                mat-stroked-button color="accent"  type="submit">
+                  ANNULLA ISCRIZIONE
+                </button>
+                <button
+                  aria-label="Accedi all'evento in streaming"
+                  class="ml-md-2"
+                  *ngIf="showInStreaming"
+                  [disabled]="(!!event?.annullato) || !event?.streamingLink || event?.streamingLink.length < 1"
+                  (click)="gotToStreamingLink(event?.streamingLink)"
+                  mat-stroked-button
+                  color="accent"
+                  type="button"
+                >
+                  ACCEDI ALL'EVENTO STREAMING
+                </button>
+              </div>
+            </div>
+            <div
+              class="notes-c mt-3"
+              *ngIf=" showInStreaming &&
+                isAlreadySigned && !!iscrittoEvento && !!iscrittoEvento?.flgRelatore &&
+                (!!event?.indicazioniStreamingRelatore && event?.indicazioniStreamingRelatore?.length > 0)
+              "
+            >
+              <div class="row col-12 mt-3">
+                <div class="h4">Istruzioni per il relatore</div>
+              </div>
+              <div class="row col-12" *ngIf="!!event?.indicazioniStreamingRelatore && event?.indicazioniStreamingRelatore?.length > 0">
+                <div [innerHTML]="event.indicazioniStreamingRelatore"></div>
+              </div>
+            </div>
+            <div class="row col-12 mt-3">
+                <button
+                aria-label="Accedi all'evento in streaming per relatore"
+                  class=""
+                  *ngIf="showInStreaming &&
+                  isAlreadySigned && !!iscrittoEvento && !!iscrittoEvento?.flgRelatore"
+                  [disabled]="(!!event?.annullato ) ||!event?.linkStreamingRelatore || event?.linkStreamingRelatore.length < 1"
+                  (click)="gotToStreamingLink(event?.linkStreamingRelatore)"
+                  mat-stroked-button
+                  color="accent"
+                  type="button"
+                >
+                  ACCEDI ALL'EVENTO STREAMING PER RELATORE
+                </button>
+              
+            </div>
+          </form>
+        </div>
+        <div class="sidebar mt-3 col-12 col-lg-4">
+          <div class="container mt-3">
+            <div class="title mb-3">
+              <div class="h4">LUOGO E DATA</div>
+            </div>
+            <div class="body mt-2">
+              <div class="b-row" *ngIf="!!event.dateDa">
+                <mat-icon aria-label="icona decorativa evento da" class="icon-c"> event </mat-icon>
+                <p>Da {{ event.dateDa | date: "dd MMMM y ore HH:mm" }}</p>
+              </div>
+              <div class="b-row" *ngIf="!!event.dateA">
+                <mat-icon aria-label="icona decorativa evento a" class="icon-c"> event </mat-icon>
+                <p>A {{ event.dateA | date: "dd MMMM y ore HH:mm" }}</p>
+              </div>
+              <div class="b-row" *ngIf="!!event.aula">
+                <mat-icon aria-label="icona decorativa aula evento" class="icon-c"> location_on </mat-icon>
+                <p>{{ event.aula }}</p>
+              </div>
+              <div class="b-row" *ngIf="showInStreaming">
+                <mat-icon aria-label="icona decorativa evento in streaming" class="icon-c"> devices </mat-icon>
+                <p>Evento in streming</p>
+              </div>
+              <div class="b-row" *ngIf="!!event.numeroMaxPartecipanti">
+                <mat-icon aria-label="icona decorativa numero di partecipanti" class="icon-c"> people </mat-icon>
+                <p>{{ event.numeroMaxPartecipanti }} posti massimi</p>
+              </div>
+            </div>
+            <div class="body mt-2" *ngIf="!!event.email || !!event.telefono">
+              Per richiedere informazioni contattare:
+              <div class="b-row mt-1" *ngIf="!!event.email">
+                <mat-icon aria-label="icona decorativa indirizzo mail" class="icon-c"> mail </mat-icon>
+                <p>{{ event.email }}</p>
+              </div>
+              <div class="b-row" *ngIf="!!event.telefono">
+                <mat-icon aria-label="icona decorativa numero di telefono" class="icon-c"> phone </mat-icon>
+                <p>{{ event.telefono }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

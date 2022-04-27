@@ -1,0 +1,221 @@
+/**
+ *     MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+ *     Copyright (C) 2022  Regione Veneto
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as
+ *     published by the Free Software Foundation, either version 3 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+  @mixin size($width, $height) {
+    width: $width;
+    height: $height;
+   
+  }
+
+
+h3 {
+    font-weight: 600;
+}
+
+a:focus, button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(0,128,158,0.25); 
+}
+
+form {
+    margin-bottom: 0px;
+}
+
+button, input, optgroup, select, textarea {
+    font-family: 'Titillium Web', sans-serif;
+}
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: none;
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+button {
+    outline: none;
+    border: 0;
+    padding: 0;
+    transition: .3s;
+    transition-timing-function: ease-in-out;
+    -webkit-transition: .3s;
+    -webkit-transition-timing-function: ease-in-out;
+    background-color: transparent;
+}
+button:hover {
+    cursor: pointer;
+}
+button:focus {
+    outline: none;
+}
+input {
+    box-shadow: none;
+    outline: none;
+    border-width: 0;
+    border-style: none;
+}
+
+.width100 {
+    width: 100%;
+}
+
+.row {
+    [class^="col-md-"].widget-container, [class^="col-md-"].widget-container > * > .container-fluid {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    [class^="col-md-"].widget-container > *:not(mylibrary-portal-info) > .container-fluid {
+        min-height: $widget-min-height;
+    }
+}
+
+/* ----- POSITIONS -----*/
+.pull-left {
+    float: left !important;
+}
+
+.pull-right {
+    float: right !important;
+}
+
+/* ----- COLORS -----*/
+.white {
+    color: $white;
+}
+.primary {
+    color: $brand-primary;
+}
+.primary:hover {
+    color: $brand-primary-hover;
+}
+.primary-grey-text {
+    color: $gray-dark;
+}
+.secondary-grey-text {
+    color: $gray;
+}
+.secondary-lightgrey-text {
+    color: $gray-light;
+}
+
+.orange {
+    color: $orange;
+}
+.orange-dark {
+    color: $orange-dark;
+}
+.category-default {
+    color: #ddd;
+}
+.category-news {
+    color: #eed424;
+}
+.category-notice {
+    color: #f76483;
+}
+.category-deadline {
+    color: #f3a113;
+}
+
+/* ----- BUTTON -----*/
+.btn {
+    -webkit-transition: .3s;
+    transition: .3s;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.btn-light {
+    background-color: $brand-primary-btn;
+    color: $gray-dark;
+}
+.btn-light:hover {
+    background-color: $green-tea-dark;
+}
+.btn-md {
+    padding: 13px 25px;
+}
+.btn-sm {
+    padding: 5px 15px;
+}
+
+/*--- IMG ---*/
+.default-picture {
+    position: relative;
+    display: inline-block;
+    background-color: #f2f2f2;
+}
+
+.default-picture-top {
+    background-color: #f2f2f2;
+    height: 200px;
+    position: relative;
+}
+.default-picture-lg {
+    @extend .default-picture;
+    @include size(100%, 400px);
+}
+.default-picture-md {
+    @extend .default-picture;
+    //@include size(105px);
+    vertical-align: top;
+    margin-right: 15px;
+}
+.default-picture-sm {
+    @extend .default-picture;
+    @include size(105px,105px);
+    top: 10px;
+    vertical-align: top;
+    margin: {
+        right: 15px;
+        bottom: 30px;
+    }
+}
+
+.icon-fallback {
+    @extend .icon-picture;
+    color: $body-secondary-color;
+    font-size: 26px;
+
+    &:before {
+        color: $body-secondary-color;
+        opacity: 0.2;
+        font-size: 50px;
+        margin: 0 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+    }
+}
+
+//Remove modal border Radius
+ngb-modal-window {
+  &.no-radius-modal{
+        div.modal-dialog{
+            div.modal-content{
+                border-radius: 0px;
+            }
+        }
+    }
+}
+
+a:focus, button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(0,128,158,0.25); 
+}

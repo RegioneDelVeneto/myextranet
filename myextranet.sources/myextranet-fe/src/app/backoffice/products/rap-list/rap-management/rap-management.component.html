@@ -1,0 +1,181 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="list-container mt-3">
+    <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+    <div class="title-container mt-3 d-flex flex-row justify-content-between">
+
+      <div role="heading" aria-label="h1" aria-level="1" class="h1 title">
+        {{
+          !readOnly
+            ? "Convalida richiesta per diventare referente (RAP)"
+            : "Dettaglio richiesta per diventare referente (RAP)"
+        }}
+      </div>
+    </div>
+  
+    <div class="form-container pt-2 pb-2 pl-5 pr-5" *ngIf="!!idRAP">
+      <div class="bottom-ac mt-3 mb-3"></div>
+
+      <div>
+        <form [formGroup]="RAPformRO">
+          <div class="row">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              <mat-label> Nome </mat-label>
+              <input matInput formControlName="nome" required />
+              <mat-error *ngIf="RAPformRO.controls.nome.touched && RAPformRO.controls.nome.invalid">
+                <span *ngIf="RAPformRO.controls.nome.errors.required"> Campo obbligatorio</span>
+                
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              <mat-label> Cognome </mat-label>
+              <input matInput formControlName="cognome" required />
+              <mat-error *ngIf="RAPformRO.controls.cognome.touched && RAPformRO.controls.cognome.invalid">
+                <span *ngIf="RAPformRO.controls.cognome.errors.required"> Campo obbligatorio</span>
+                
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              <mat-label> Ente </mat-label>
+              <input aria-label="Ente" matInput formControlName="enteAzienda" required [matAutocomplete]="auto" />
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDenomination.bind(this)">
+                <mat-option *ngFor="let ente of entiArray" [value]="ente">
+                  {{ ente.denominazione }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="row" *ngIf="showConfirmDate">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              <mat-label> Data di conferma </mat-label>
+              <input matInput [matDatepicker]="dtConferma" required formControlName="dtConferma" />
+              <mat-datepicker-toggle matSuffix [for]="dtConferma">
+                <mat-icon matDatepickerToggleIcon> </mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #dtConferma></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              
+              <mat-label> Data della richiesta </mat-label>
+              <input matInput [matDatepicker]="dtRichiesta" required formControlName="dtRichiesta" />
+              <mat-datepicker-toggle matSuffix [for]="dtRichiesta">
+                <mat-icon matDatepickerToggleIcon> </mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #dtRichiesta> </mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="row" *ngIf="showFineValidDate">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              <mat-label> Il RAP non è più attivo dalla data </mat-label>
+              <input matInput [matDatepicker]="dtFineValLD" required formControlName="dtFineValLD" />
+              <mat-datepicker-toggle matSuffix [for]="dtFineValLD">
+                <mat-icon matDatepickerToggleIcon> </mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #dtFineValLD> </mat-datepicker>
+            </mat-form-field>
+          </div>                    
+        </form>
+
+        <form *ngIf="!!rapStatus" [formGroup]="rapStatus">
+            <div class="row">
+                <mat-form-field class="form-field col-12" appearance="standard">
+                  <mat-label> Numero di Protocollo </mat-label>
+                  <input matInput formControlName="numProtocollo"/>
+                  <mat-hint align="start" *ngIf="rapStatus.controls.flgConferma.value == 1">Campo obbligatorio</mat-hint>
+                  <mat-error *ngIf="rapStatus.controls.numProtocollo.invalid">
+                    <span *ngIf="rapStatus.controls.numProtocollo.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="rapStatus.controls.numProtocollo.errors.maxlength">
+                      Il campo ha lunghezza massima di
+                      {{ rapStatus.controls.numProtocollo.errors.maxlength.requiredLength }} caratteri
+                    </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="form-field col-12" appearance="standard">
+                
+                  <mat-label> Data di Protocollo </mat-label>
+                  <input matInput [matDatepicker]="dtpicker" formControlName="dtProtocollo">
+<mat-datepicker-toggle matSuffix [for]="dtpicker"></mat-datepicker-toggle>
+<mat-datepicker #dtpicker></mat-datepicker>
+<mat-hint align="start" *ngIf="rapStatus.controls.flgConferma.value == 1">Campo obbligatorio</mat-hint>
+                  <mat-error *ngIf="rapStatus.controls.dtProtocollo.invalid">
+                      <span *ngIf="rapStatus.controls.dtProtocollo.errors.required"> Campo obbligatorio</span>
+                    </mat-error>
+                </mat-form-field>
+              </div>
+          <div class="row mt-4">
+            <div class="form-field col-12" appearance="standard">
+             
+              <fieldset>
+                <legend class="h6 mb-4">Stato della richiesta:</legend>        
+                <mat-radio-group
+                  class="d-flex flex-column pl-2"
+                  aria-label="Stato della richiesta"
+                  formControlName="flgConferma"
+                  required
+                >
+                  <mat-radio-button *ngFor="let status of stati" [value]="status.value">
+                    {{ status.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <mat-form-field class="form-field col-12" appearance="standard">
+              <mat-label> Motivazione </mat-label>
+              <textarea matInput formControlName="motivation" rows="5"></textarea>
+              <mat-hint align="start" *ngIf="rapStatus.controls.flgConferma.value == -1 || rapStatus.controls.flgConferma.value == 2">Campo obbligatorio</mat-hint>
+              <mat-error *ngIf="rapStatus.controls.motivation.invalid">
+                <span *ngIf="rapStatus.controls.motivation.errors.required"> Campo obbligatorio</span>
+                
+                <span *ngIf="rapStatus.controls.motivation.errors.maxlength">
+                  Il campo ha lunghezza massima di
+                  {{ rapStatus.controls.motivation.errors.maxlength.requiredLength }} caratteri
+                </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
+
+      <div class="bottom-ac mt-3 mb-3" *ngIf="!readOnly">
+        <button
+          [disabled]=""
+          mat-raised-button
+          color="primary"
+          aria-label="Aggiorna stato del RAP"
+          [disabled]="rapStatus.invalid"
+          (click)="sendData()"
+        >
+          Aggiorna stato RAP
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

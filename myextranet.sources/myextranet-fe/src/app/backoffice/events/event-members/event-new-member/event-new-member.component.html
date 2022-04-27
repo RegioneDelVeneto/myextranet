@@ -1,0 +1,211 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="list-container mt-3">
+    <app-breadcrumbs [config]="breadcrumbs"> </app-breadcrumbs>
+    <div class="title-container mt-3 d-flex flex-row justify-content-between">
+      
+      <div role="heading" aria-label="h1" aria-level="1" class="h1 title">
+        {{ !isEdit ? "Nuovo iscritto all'evento" : "Modifica l'iscritto all'evento" }} :
+        {{ event.titolo }}
+      </div>
+    </div>
+
+    
+    <div class="form-container pt-2 pb-2 pl-5 pr-5">
+      <div class="container row col-12">
+        <div class="data-form col-12">
+          <form [formGroup]="memberDataForm">
+            <div class="row">
+              <div [hidden]="false" class="form-field col-12 p-0 m-0" appearance="standard">
+                <div class="radio-c">
+                  <fieldset>
+                    <legend class="h6 mb-4">Scegli il tipo di inserimento:</legend>
+                    <mat-radio-group
+                      (change)="manageInstTypeChange($event)"
+                      class="d-flex flex-column"
+                      aria-label="Preferenza di partecipazione"
+                      formControlName="selectInsType"
+                      required
+                    >
+                      <mat-radio-button value="1"> Inserimento manuale </mat-radio-button>
+                      <mat-radio-button value="2"> Inserimento tramite anagrafica utente </mat-radio-button>
+                    </mat-radio-group>
+                  </fieldset>
+                </div>
+                <mat-error
+                  *ngIf="memberDataForm.controls.selectInsType.touched && memberDataForm.controls.selectInsType.invalid"
+                >
+                  <span *ngIf="memberDataForm.controls.selectInsType.errors.required"> Campo obbligatorio</span>
+                </mat-error>
+              </div>
+            </div>
+            <div class="row mt-3 mb-3">
+              <button *ngIf="isSearchActive" mat-stroked-button (click)="openDialog()">
+                <mat-icon aria-label="ricerca utente"> search</mat-icon>
+                Ricerca Utente
+              </button>
+            </div>
+            <div [hidden]="!memberDataForm.controls.selectInsType.value">
+              <div class="row">
+                <mat-form-field class="form-field" appearance="standard">
+                  <mat-label> Nome </mat-label>
+                  <input matInput formControlName="nome" required />
+                  <mat-error *ngIf="memberDataForm.controls.nome.touched && memberDataForm.controls.nome.invalid">
+                    <span *ngIf="memberDataForm.controls.nome.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="memberDataForm.controls.nome.errors.maxlength">
+                      Il campo ha lunghezza massima di
+                      {{ memberDataForm.controls.nome.errors.maxlength.requiredLength }} caratteri</span
+                    >
+                    
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="form-field" appearance="standard">
+                  <mat-label> Cognome </mat-label>
+                  <input matInput formControlName="cognome" required />
+                  <mat-error *ngIf="memberDataForm.controls.cognome.touched && memberDataForm.controls.cognome.invalid">
+                    <span *ngIf="memberDataForm.controls.cognome.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="memberDataForm.controls.cognome.errors.maxlength">
+                      Il campo ha lunghezza massima di
+                      {{ memberDataForm.controls.cognome.errors.maxlength.requiredLength }} caratteri</span
+                    >
+                    
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field class="form-field" appearance="standard">
+                  <mat-label> Indirizzo email </mat-label>
+                  <input matInput formControlName="email" required />
+                  <mat-error *ngIf="memberDataForm.controls.email.touched && memberDataForm.controls.email.invalid">
+                    <span *ngIf="memberDataForm.controls.email.errors.required"> Campo obbligatorio</span>
+                    <span *ngIf="memberDataForm.controls.email.errors.pattern"> La mail inserita non è valida</span>
+                    <span *ngIf="memberDataForm.controls.email.errors.maxlength">
+                      Il campo ha lunghezza massima di
+                      {{ memberDataForm.controls.email.errors.maxlength.requiredLength }} caratteri</span
+                    >
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <div [hidden]="false" class="form-field col-12 p-0 m-0" appearance="standard">
+                  <div class="radio-c">
+                    <fieldset>
+                      <legend class="h6 mb-4">
+                        Specificare se l&#39;utente lavora per un ente, un azienda o nessuno dei due:
+                      </legend>
+                      <mat-radio-group
+                        class="d-flex flex-column"
+                        aria-label="Indicare per chi lavora un utente, se per un ente un azienda o nessuno dei due"
+                        formControlName="slectOrg"
+                        (change)="resetEnteAziendaField($event)"
+                        required
+                      >
+                        <mat-radio-button value="1"> Ente </mat-radio-button>
+                        <mat-radio-button value="2"> Azienda </mat-radio-button>
+                        <mat-radio-button value="3"> Nessuno dei due </mat-radio-button>
+                      </mat-radio-group>
+                    </fieldset>
+                  </div>
+                  <mat-error
+                    *ngIf="memberDataForm.controls.slectOrg.touched && memberDataForm.controls.slectOrg.invalid"
+                  >
+                    <span *ngIf="memberDataForm.controls.slectOrg.errors.required"> Campo obbligatorio</span>
+                  </mat-error>
+                </div>
+              </div>
+              <ng-container [ngSwitch]="memberDataForm.controls.slectOrg.value">
+                <div class="row" *ngSwitchCase="1">
+                  <mat-form-field class="form-field col-12 p-0 w-100" appearance="standard">
+                    <mat-label> Ente </mat-label>
+                    <input aria-label="Ente" matInput formControlName="enteAzienda" required [matAutocomplete]="auto" />
+                   
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="showDenomination.bind(this)">
+                      <mat-option *ngFor="let ente of entiArray" [value]="ente">
+                        {{ ente.denominazione }}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error
+                      *ngIf="memberDataForm.controls.enteAzienda.touched && memberDataForm.controls.enteAzienda.invalid"
+                    >
+                      <span *ngIf="memberDataForm.controls.enteAzienda.errors.required"> Campo obbligatorio</span>
+                     
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="row" *ngSwitchCase="2">
+                  <mat-form-field class="form-field col-12 p-0 w-100" appearance="standard">
+                    <mat-label> Azienda </mat-label>
+                    <input matInput formControlName="enteAzienda" required />
+                    <mat-error
+                      *ngIf="memberDataForm.controls.enteAzienda.touched && memberDataForm.controls.enteAzienda.invalid"
+                    >
+                      <span *ngIf="memberDataForm.controls.enteAzienda.errors.required"> Campo obbligatorio</span>
+                      <span *ngIf="memberDataForm.controls.enteAzienda.errors.maxlength">
+                        Il campo ha lunghezza massima di
+                        {{ memberDataForm.controls.enteAzienda.errors.maxlength.requiredLength }} caratteri</span
+                      >                    
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div *NgSwitchDefault></div>
+              </ng-container>
+              <div class="row" [hidden]="!!prePartecipStatus">
+                <div class="form-field col-12 p-0 m-0" appearance="standard">
+                  <div class="radio-c">
+                    <fieldset>
+                      <legend class="h6 mb-4">Specificare la modalità di partecipazione:</legend>
+                      <mat-radio-group
+                        class="d-flex flex-column"
+                        aria-label="Preferenza di partecipazione"
+                        formControlName="preferenza"
+                        required
+                      >
+                        <mat-radio-button value="PRE"> In presenza </mat-radio-button>
+                        <mat-radio-button value="REM"> Da remoto </mat-radio-button>
+                      </mat-radio-group>
+                    </fieldset>
+                  </div>
+                  <mat-error
+                    *ngIf="memberDataForm.controls.preferenza.touched && memberDataForm.controls.preferenza.invalid"
+                  >
+                    <span *ngIf="memberDataForm.controls.preferenza.errors.required"> Campo obbligatorio</span>
+                  </mat-error>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="bottom-ac mt-3 mb-3">
+        <button
+          [disabled]="memberDataForm.invalid || (memberDataForm.controls.selectInsType.value == 2 && !userid)"
+          mat-raised-button
+          color="primary"
+          (click)="sendData()"
+          type="button"
+          attr.aria-label=" {{ isEdit ? 'Modifica iscritto' : 'Inserisci iscritto' }}"
+        >
+          {{ isEdit ? "Modifica iscritto" : "Inserisci iscritto" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

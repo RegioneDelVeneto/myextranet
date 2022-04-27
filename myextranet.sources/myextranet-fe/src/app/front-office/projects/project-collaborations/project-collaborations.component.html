@@ -1,0 +1,197 @@
+<!--
+
+        MyExtranet, il portale per collaborare con l’ente Regione Veneto.
+        Copyright (C) 2022  Regione Veneto
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU Affero General Public License as
+        published by the Free Software Foundation, either version 3 of the
+        License, or (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU Affero General Public License for more details.
+
+        You should have received a copy of the GNU Affero General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<div *appLoading="isLoading">
+  <div class="container mt-3 mb-3">
+    <app-breadcrumbs class="mt-2 mb-2" [config]="breadcrumbs"> </app-breadcrumbs>
+
+    <div class="title mt-2">
+      <div class="h1">{{ project.titolo }}</div>
+    </div>
+    <div class="row row-c col-12 flex-column-reverse flex-lg-row pr-0 pl-0">
+      <div class="data-form col-12 col-lg-7 mt-3">
+        <!-- ERROR AND WARNINGS  -->
+        <div *ngIf="hasCollabEntry || isError || showDialogMsg">
+          <app-alert-in-page-fo
+            *ngIf="isError"
+            [type]="3"
+            [title]="'Attenzione'"
+            [msg]="errorMsg || 'Errore durante la risoluzione della richiesta'"
+          >
+          </app-alert-in-page-fo>
+
+          <app-alert-in-page-fo
+            *ngIf="isCollaborator && !isError"
+            [type]="1"
+            [title]="'Stai collaborando a questo progetto'"
+            [msg]="signedMsg"
+          >
+          </app-alert-in-page-fo>
+
+          <app-alert-in-page-fo *ngIf="isAwaitingConfirmation && !isError" [type]="2" [title]="awaitMsgTitle" [msg]="awaitMsg">
+          </app-alert-in-page-fo>
+          <app-alert-in-page-fo *ngIf="isRejected && !isError" [type]="2" [title]="rejectedTitle" [msg]="rejectedMsg">
+          </app-alert-in-page-fo>
+          <app-alert-in-page-fo *ngIf="wasCancelled && !isError" [type]="2" [title]="cancelledTitle" [msg]="cancelledMsg">
+          </app-alert-in-page-fo>
+        </div>
+        <!-- PROJ DESCRIPTION (Only if is collab flg 1)-->
+        <div class="description-c">
+          <div [innerHTML]="project.descrizione"></div>
+          <div class="row col-12" *ngIf="(isCollaborator || isAwaitingConfirmation) && !isCancelRequestOpen">
+            <a tabindex="0" class="link" (click)="changeCollab()" alt="Cancella collaborazione">
+              <mat-icon aria-label=" Cancella collaborazione icona">
+                save_alt
+              </mat-icon>
+              Cancella collaborazione
+            </a>
+          </div>
+        </div>
+        <!-- USER DATA (only if is not collab (per ogni caso in cui non è collab accettato -> se in attesa o nuovo)) -->
+        <div class="mt-3" *ngIf="!isCollaborator || isCancelRequestOpen">
+          <form [formGroup]="userDataRO" (submit)="(!hasCollabEntry || isRejected || wasCancelled) && !isCancelRequestOpen ? newCollab() : isCancelRequestOpen ? changeCollab() : null">
+            <div class="row">
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Nome </mat-label>
+                <input matInput formControlName="nome" required />
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Cognome </mat-label>
+                <input matInput formControlName="cognome" required />
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Indirizzo email </mat-label>
+                <input matInput formControlName="email" required />
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Numero di telefono </mat-label>
+                <input matInput formControlName="telefono" required />
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Ente o Azienda </mat-label>
+                <input matInput aria-label="Ente" formControlName="ente" required />
+              </mat-form-field>
+              <mat-form-field class="form-field col-12 col-lg-6" appearance="outline">
+                <mat-label> Codice Fiscale </mat-label>
+                <input matInput formControlName="codFiscale" required />
+              </mat-form-field>
+            </div>
+            <div *ngIf="(!hasCollabEntry || isRejected || wasCancelled) && !isCancelRequestOpen">
+              <button aria-label="Conferma iscrizione" mat-flat-button color="accent" type="submit">
+                RICHIEDI DI COLLABORARE
+              </button>
+            </div>
+          </form>
+        </div>
+        <div id="cancel-collaboration-box">
+          <div *ngIf="isCancelRequestOpen">
+            <div class="border-type-black" class="w-100 border-c-b d-flex flex-row p-3 mb-3">
+              <div>
+                <div class="h3">Annulla collaborazione</div>
+                <div>
+                  <p class="font-weight-bold">Confermi l'annullamento della tua collaborazione al progetto?</p>
+                </div>
+                <div class="buttons">
+                  <button
+                    aria-label="Chiudi form annullamento collaborazione"
+                    class="mr-2"
+                    mat-stroked-button
+                    color="accent"
+                    (click)="changeCollab()"
+                    type="submit"
+                  >
+                  INDIETRO
+                  </button>
+                  <button
+                    aria-label="Conferma annullamento collaborazione"
+                    
+                    mat-flat-button
+                    color="accent"
+                    type="button"
+                    (click)="requestCancelCollab()"
+                  >
+                  CONFERMO
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- SIDE BAR (always) -->
+      <div class="sidebar mt-3 col-12 col-lg-4">
+        <div class="container mt-3">
+          <div class="title mb-3">
+            <div class="h4">CONTATTI E SUPPORTO</div>
+          </div>          
+          <div class="body mt-2 mb-2">
+            <!-- Per richiedere informazioni contattare: -->
+            <div class="b-row mt-1" *ngIf="!!project.email">
+              <mat-icon aria-label="icona decorativa indirizzo mail" class="icon-c"> mail </mat-icon>
+              <p>{{ project.email }}</p>
+            </div>
+            <div class="b-row" *ngIf="!!project.telefono">
+              <mat-icon aria-label="icona decorativa numero di telefono" class="icon-c"> phone </mat-icon>
+              <p>{{ project.telefono }}</p>
+            </div>
+            <div class="b-row" *ngIf="!project.email && !project.telefono">
+              <p>Nessun contatto censito</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- TABLES (Only if is collab flg 1) -->
+    <div class="col-12 mt-5 p-0" *ngIf="isCollaborator && !isCancelRequestOpen">
+      <div>
+        <div class="title mt-2 mb-4">
+          <div class="h4">Coordinatore</div>
+        </div>
+        <div class="fo-table">
+          <app-card-table-container
+            [footer]="footer"
+            [configuration]="null"
+            [displayedColumns]="tableHeader"
+            [dataSource]="{ data: coordinatorsDS, preselectedRows: null }"
+          >
+          </app-card-table-container>
+        </div>
+      </div>
+      <div>
+        <div class="title mt-5 mb-4">
+          <div class="h4">Collaboratori</div>
+        </div>
+        <div class="fo-table">
+          <app-card-table-container
+            [footer]="footer"
+            [configuration]="null"
+            [displayedColumns]="tableHeader"
+            [dataSource]="{ data: collaboratorsDS, preselectedRows: null }"
+          >
+          </app-card-table-container>
+        </div>
+      </div>
+    </div>    
+
+  </div>
+</div>

@@ -1,0 +1,134 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext {
+    swaggerVersion = "1.4.8"
+}
+
+configurations {
+	all*.exclude group: 'xml-apis'
+
+    compile.exclude module: 'tomcat-annotations-api'
+
+    [apiElements, runtimeElements].each {
+        it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }
+        it.outgoing.artifact(bootJar)
+    }
+
+}
+
+group = 'it.regioneveneto.myp3'
+version = '1.2.2'
+description = 'MyExtranet - Java bootable jar'
+sourceCompatibility = 11
+targetCompatibility = 11
+
+bootJar {
+    archiveFileName = "${rootProject.name}-${archiveVersion.get()}.${archiveExtension.get()}"
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation 'org.springframework.security:spring-security-test'
+	
+	 // jwt
+  	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+  	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+  	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.modelmapper:modelmapper:2.3.6'
+    implementation 'org.postgresql:postgresql'    
+
+    
+    implementation fileTree(dir: 'lib', include: ['*.jar'])   
+
+	implementation 'org.apache.commons:commons-lang3:3.11'
+	implementation 'org.apache.httpcomponents:httpclient:4.5.5'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
+	implementation 'commons-io:commons-io:2.5'
+	implementation 'com.amazonaws:aws-java-sdk:1.9.2'
+	
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+    
+    // compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.apache.commons:commons-text:1.9'
+    implementation 'org.apache.poi:poi:3.17'
+    implementation 'org.apache.poi:poi-ooxml:3.17'
+    
+    // SAML2
+    implementation 'org.springframework.security.extensions:spring-security-saml2-core:1.0.10.RELEASE' // SAML2
+    implementation 'org.opensaml:opensaml:2.6.4'
+
+
+
+	implementation 'com.github.markusbernhardt:proxy-vole:1.0.5'
+	
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    implementation "org.springdoc:springdoc-openapi-ui:$swaggerVersion"
+    implementation "org.springdoc:springdoc-openapi-security:$swaggerVersion"
+    
+    implementation "net.logstash.logback:logstash-logback-encoder:6.4"
+    
+
+}
+
+publish {
+    dependsOn assemble
+}
+
+publishToMavenLocal {
+    dependsOn assemble
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId="${rootProject.name}"
+            from(components.java)
+        }
+    }
+}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+tasks.register('processFrontendResources', Copy) {
+    // Directory containing the artifacts in the frontend project
+    def frontendBuildDir = file("${project(':myextranet-fe').buildDir}/www")
+    // Directory where the frontend artifacts must be copied to be packaged alltogether with the backend by the 'war'
+    // plugin.
+    def frontendResourcesDir = file("${project.buildDir}/resources/main/public")
+
+    group 'Frontend'
+    description 'Process frontend resources'
+    dependsOn project(':myextranet-fe').tasks.named('assembleFrontend')
+
+    from frontendBuildDir
+    into frontendResourcesDir
+}
+
+tasks.named('processResources') {
+    dependsOn tasks.named('processFrontendResources')
+}
